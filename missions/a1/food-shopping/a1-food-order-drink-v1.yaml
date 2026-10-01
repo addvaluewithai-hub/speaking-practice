@@ -1,0 +1,142 @@
+id: practice.a1.food.order-drink.v1
+revision: 1
+status: pilot
+level: A1
+world: food-shopping
+title: Order a drink
+title_ar: اطلب مشروب
+estimated_minutes: 4
+
+learner_role: customer
+ai_role: cafe cashier
+setting: small cafe counter
+mission_goal: Order one drink, answer one predictable service question, complete the payment exchange, and close naturally.
+
+truth:
+  menu_items:
+    coffee:
+      sizes: [small, large]
+      prices:
+        small: 3
+        large: 4
+    tea:
+      sizes: [small, large]
+      prices:
+        small: 2
+        large: 3
+    water:
+      sizes: [small, large]
+      prices:
+        small: 1
+        large: 2
+  currency: dollars
+
+runtime:
+  ai_freedom: tight
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: one clear move at a time
+  completion_policy: reach a valid natural closing; completion is not a mastery claim
+
+beats:
+  - id: greet_order
+    type: required
+    ai_intent: Greet the customer naturally and ask what they would like to order.
+    learner_intent: Request one available drink politely.
+    intent_hint_ar: اطلب مشروب
+    useful_language:
+      - I'd like ...
+      - Can I have ...?
+      - please
+    full_help_examples:
+      - I'd like a coffee, please.
+      - Can I have a tea, please?
+    accepted_semantics:
+      - learner clearly requests one available drink
+      - any natural request wording is accepted; exact example wording is not required
+    correction_focus:
+      - correct only a genuine request-form error or wording that is unclear enough to block the order
+      - do not correct a valid alternative just because it differs from the examples
+    next: choose_size
+
+  - id: choose_size
+    type: required
+    ai_intent: Ask whether the learner wants a small or large size.
+    learner_intent: Choose one offered size.
+    intent_hint_ar: اختار الحجم
+    useful_language:
+      - small
+      - large
+      - please
+    full_help_examples:
+      - Small, please.
+      - A large one, please.
+    accepted_semantics:
+      - learner clearly selects small or large
+    correction_focus:
+      - correct only if the learner's answer is genuinely malformed or unclear
+      - short answers such as Small, please are fully valid at A1
+    next: price
+
+  - id: price
+    type: required
+    ai_intent: State the correct price for the selected drink and size, then allow the learner to complete the exchange.
+    learner_intent: Acknowledge the price and complete the payment exchange politely.
+    intent_hint_ar: وافق وكمل الطلب
+    useful_language:
+      - okay
+      - thanks
+      - here you are
+    full_help_examples:
+      - Okay, thanks.
+      - Here you are. Thanks.
+    accepted_semantics:
+      - learner acknowledges the price and completes the exchange naturally
+    correction_focus:
+      - do not demand a long sentence when a short natural response completes the transaction
+    next: close
+
+  - id: close
+    type: ending
+    ai_intent: Give one short natural closing line, such as confirming the order or thanking the customer.
+    learner_intent: Optional polite closing.
+
+agent_policy:
+  - Stay in role as the cafe cashier; do not explain the exercise.
+  - Follow the authored beat order, but phrase each turn naturally rather than reading a fixed script.
+  - Before each AI turn that creates a learner response opportunity, update the runtime to the beat being opened.
+  - Do not advance a beat until the learner has actually completed its communicative intent.
+  - If the learner hesitates, wait; the UI hint is learner-controlled. Do not force-feed the target sentence.
+  - If the learner says something different but correct, accept it and continue.
+  - If there is a genuine current-beat English error, give a concise correction with the natural form and let the learner retry before advancing.
+  - Never invent menu items, sizes, or prices outside scenario truth.
+  - Keep turns short and ask one thing at a time.
+
+hint_policy:
+  level_1_intent: Show only the Arabic communicative intent.
+  level_2_useful_language: Reveal a few useful English chunks.
+  level_3_full_help: Reveal one natural complete example; it is help, not the only accepted answer.
+  personal_data: Never include a learner name, city, age, job, phone number, or other personal details in hints.
+
+success_conditions:
+  - one available drink requested
+  - one offered size selected
+  - price/payment exchange handled
+  - conversation reaches a natural closing
+
+qa_cases:
+  - name: valid_alternative_request
+    learner: Could I get a coffee, please?
+    expected: accept without correction and continue to size
+  - name: short_valid_size
+    learner: Large, please.
+    expected: accept without demanding a full sentence
+  - name: genuine_request_error
+    learner: I like coffee please.
+    expected: briefly correct toward a natural request such as I'd like a coffee, please; invite retry; do not advance yet
+  - name: learner_forgot
+    learner_behavior: learner cannot formulate the move
+    expected: cashier waits naturally; learner may open the Arabic hint, then useful language, then full help; AI does not reveal the answer unasked
+  - name: unsupported_item
+    learner: I'd like an orange juice, please.
+    expected: say orange juice is not available and briefly offer coffee, tea, or water without breaking role
