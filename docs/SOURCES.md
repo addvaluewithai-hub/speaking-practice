@@ -2,7 +2,7 @@
 
 This repository intentionally separates **grounding sources** from **product design decisions**.
 
-No external source directly defines the Englotti Practice mission library. We use references to bound levels and language; we author the actual missions ourselves.
+No external source directly defines the Englotti Practice mission library. We use references to calibrate level, select language, validate real-world workflow, and then author the actual conversations ourselves.
 
 ## 1. Shared Englotti English ground
 
@@ -10,14 +10,34 @@ Primary internal source:
 
 - `addvaluewithai-hub/english-course`
 
-Use it to check:
+Use it actively when authoring a mission to select and validate:
 
-- level-bounded vocabulary, phrases, grammar, and communicative language
+- level-bounded vocabulary
+- phrases/chunks
+- grammar
+- communicative abilities
 - productive vs receptive expectations
-- pronunciation/intelligibility scope
-- source provenance where needed
+- pronunciation/intelligibility scope where relevant
+- source provenance
 
-Important: Practice does **not** mirror Learn lesson order and does not require Learn completion. The shared source is a language boundary, not a Practice syllabus.
+Important: Practice does **not** mirror Learn lesson order and does not require Learn completion.
+
+The shared source is not a Practice sequence, but it is more than a passive ceiling: it is the reviewed **language material from which Practice canonical dialogues should be deliberately written**.
+
+Level inventories in `english-course` represent language newly assigned at each level, while exit expectations are cumulative. Practice authoring should therefore use reviewed language cumulatively through the mission level.
+
+Example:
+
+```text
+A1 Practice mission
+-> select relevant A1 abilities / grammar / phrases / words
+-> write a level-safe canonical dialogue
+-> derive/validate semantic beats and live surface bounds
+```
+
+Do not force every selected item into learner production. Grounding informs authored language and runtime control; it is not a hidden pass/fail checklist.
+
+See `LANGUAGE_GROUNDING_AND_CANONICAL_DIALOGUE_V1.md`.
 
 ## 2. CEFR / Council of Europe
 
@@ -38,6 +58,8 @@ Use CEFR for:
 - action-oriented task thinking
 
 Do **not** treat CEFR as a ready-made list of Practice scenarios. CEFR is a reference framework that must be adapted to the product context.
+
+Where CEFR descriptors have already been reviewed into `english-course` abilities, prefer storing the stable internal ability ID in the mission grounding rather than duplicating unsupported free-text claims.
 
 ## 3. English Profile / learner corpus references
 
@@ -68,7 +90,25 @@ Research notes should record:
 - what real-world fact or workflow it informs
 - whether that fact is locale-specific
 
-## 5. What is explicitly not a source of truth
+Real-world research controls scenario truth/workflow. `english-course` controls language grounding. Englotti authors the actual canonical dialogue that combines the two.
+
+## 5. Authored conversation as product work
+
+A source-grounded mission is still an Englotti-authored object.
+
+The authoring responsibility is:
+
+```text
+reviewed language + real interaction truth
+-> canonical conversation written by us
+-> semantic graph written by us
+-> Listening Preview variant written by us
+-> bounded Gemini performance
+```
+
+Gemini Live is not an external content source for the curriculum. Its role is performance/adaptation and runtime QA.
+
+## 6. What is explicitly not a source of truth
 
 The following may inspire discussion but must not constrain this new repository by default:
 
@@ -88,10 +128,13 @@ When authoring a mission:
 ```text
 1. Real communicative goal
 2. CEFR interaction difficulty appropriate to level
-3. Englotti shared-English level boundary
-4. Real-world task truth / workflow
-5. Authored conversation blueprint
-6. Gemini Live performance and runtime QA
+3. Englotti shared-English reviewed inventory
+4. Selected mission language grounding
+5. Real-world task truth / workflow
+6. Canonical authored dialogue
+7. Semantic graph / branches / runtime bounds
+8. Listening Preview variant where useful
+9. Gemini Live performance and runtime QA
 ```
 
-The final mission is an Englotti-authored product object, not a copied textbook exercise.
+The final mission is an Englotti-authored product object, not a copied textbook exercise and not a conversation invented fresh by Gemini.
