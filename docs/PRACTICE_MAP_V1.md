@@ -20,12 +20,14 @@ There is no mandatory order inside a level.
 | --- | --- | --- |
 | A1 | first full map drafted | `practice-map/A1.md` |
 | A2 | first full map drafted | `practice-map/A2.md` |
-| B1 | next mapping pass | `practice-map/B1.md` when drafted |
-| B2 | pending | `practice-map/B2.md` when drafted |
-| C1 | pending | `practice-map/C1.md` when drafted |
-| C2 | pending | `practice-map/C2.md` when drafted |
+| B1 | first full map drafted | `practice-map/B1.md` |
+| B2 | first full map drafted | `practice-map/B2.md` |
+| C1 | first full map drafted | `practice-map/C1.md` |
+| C2 | first full map drafted | `practice-map/C2.md` |
 
-Existing B1 app experiments may inform runtime research, but they do not define the new Practice map.
+The first complete A1–C2 map is now visible. The next phase is **cross-level review**, not bulk mission production.
+
+Existing app experiments may inform runtime research, but they do not define the Practice map.
 
 ## Map design rules
 
@@ -97,6 +99,8 @@ Across the full map we also review whether progression develops a balanced range
 
 Not every category must appear equally at every level. Some interaction needs only become appropriate at B1+.
 
+See `CROSS_LEVEL_REVIEW_V1.md` for the current whole-map review.
+
 ## Map-to-mission production rule
 
 For each mission promoted from the map into `missions/`:
@@ -124,17 +128,17 @@ See:
 - `MISSION_CONTRACT_V1.md`
 - `AUTHORING_QA_V1.md`
 
-## Next mapping pass
+## Current next step
 
-With A1 and A2 now visible, the next task is **B1**.
+Do **not** bulk-author all mapped missions yet.
 
-B1 must introduce genuinely more independent familiar communication:
+Review the complete A1–C2 map for:
 
-- meaningful complications
-- connected explanation rather than isolated details
-- learner-owned follow-ups
-- short narration/explanation stretches
-- multiple plausible branches
-- realistic problem solving
+- duplicate mission families
+- weak or artificial progression
+- world imbalance
+- level jumps
+- higher-level missions that are merely “more complicated” rather than pragmatically harder
+- mission families worth keeping as deliberate progression ladders
 
-The B1 pass should use A1/A2 as explicit contrast so it does not collapse into “A2 with longer sentences.”
+After that review is accepted, promote the next A1 Core missions through the full grounded-dialogue factory.
