@@ -20,9 +20,23 @@ missions/
   c2/
 ```
 
-A mission file should be self-contained enough for review: goal, scenario truth, conversation graph, learner intents, hints, correction focus, branches, and ending conditions.
+A full mission file should be self-contained enough for review, including:
 
-Do not add bulk-generated catalogs here before the vertical-slice missions have passed runtime QA.
+- real communicative goal
+- selected language grounding from `addvaluewithai-hub/english-course`
+- scenario truth
+- canonical authored dialogue
+- semantic conversation graph
+- learner intents and accepted semantic alternatives
+- preferred AI realizations where useful
+- dynamic hint policy
+- correction focus
+- branches/recovery where useful
+- Listening Preview metadata/variant where applicable
+- ending conditions
+- adversarial QA cases
+
+Do not add bulk-generated catalogs here before the mission factory has passed runtime QA.
 
 ## Naming
 
@@ -33,22 +47,48 @@ a1-food-order-drink-v1.yaml
 b1-travel-change-hotel-booking-v1.yaml
 ```
 
-A revised mission should preserve identity and advance revision rather than silently changing learner expectations.
+A revised mission should preserve identity and advance `revision` rather than silently changing learner expectations/content.
 
 ## Conversation authoring rule
 
-Author **what each turn is doing**, not one password sentence the learner must repeat.
+**Write the conversation, then describe its semantics.**
 
-Good:
+Every full mission needs a reviewed `canonical_dialogue`: one plausible level-safe path from opening to ending.
+
+Then author what each turn is **doing** so Gemini can adapt without turning the reference dialogue into a password script.
+
+Good combination:
 
 ```text
-learner_intent: ask whether an outside table is available
+canonical learner line:
+Do you have a table outside?
+
+learner_intent:
+ask whether an outside table is available
 ```
 
-Bad:
+Bad runtime requirement:
 
 ```text
 required_text: Do you have a table outside?
 ```
 
-Full-answer hints may contain natural example sentences, but valid alternatives remain valid.
+The canonical line controls quality/level. The semantic intent controls acceptance.
+
+Valid alternatives remain valid.
+
+## Language grounding rule
+
+Use reviewed language selectively and naturally.
+
+The mission may reference relevant:
+
+- abilities
+- grammar
+- phrases
+- words
+- pronunciation/performance constraints
+
+These references shape the authored dialogue and runtime bounds. They do **not** create a hidden checklist of items the learner must say.
+
+See `docs/LANGUAGE_GROUNDING_AND_CANONICAL_DIALOGUE_V1.md` and `docs/MISSION_CONTRACT_V1.md`.
