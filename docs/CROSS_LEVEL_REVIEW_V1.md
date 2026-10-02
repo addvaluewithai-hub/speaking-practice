@@ -1,14 +1,12 @@
 # Practice Cross-Level Review v1
 
-Status: **first whole-map review**
+Status: **first whole-map review complete**
 
 Scope: `docs/practice-map/A1.md` through `C2.md`.
 
-The purpose of this review is not to approve every title permanently. It is to test whether the complete library behaves like a coherent progression rather than six unrelated scenario lists.
+This review tests whether the complete library behaves like a coherent progression rather than six unrelated scenario lists.
 
 ## 1. Current map size
-
-Current first-draft inventory:
 
 | Level | Candidate missions | Core |
 | --- | ---: | ---: |
@@ -20,11 +18,11 @@ Current first-draft inventory:
 | C2 | 21 | 7 |
 | **Total** | **138** | **46** |
 
-These counts are descriptive, not targets. Missions may be removed, merged, or replaced after review and runtime evidence.
+Counts are descriptive, not targets. Missions may still be removed, merged, or replaced after canonical-dialogue authoring and Live QA.
 
-## 2. High-level progression verdict
+## 2. Progression result
 
-The first map has a usable interaction progression:
+The first full map has a usable interaction progression:
 
 ```text
 A1  predictable single-goal exchange
@@ -35,234 +33,192 @@ C1  ambiguity + tact + register + relationship-sensitive pragmatics
 C2  subtle implication + precise reformulation + layered mediation/flexibility
 ```
 
-This progression is materially different from simply increasing sentence length or vocabulary difficulty.
+This is materially different from increasing sentence length or vocabulary difficulty.
 
 ## 3. Strong mission families worth preserving
 
-### Request / food-service ladder
+### Request / food-service
 
 ```text
-A1  order one item
-A2  order with preferences / ask about options
-B1  resolve a wrong order
-B2  negotiate when the straightforward correction is unavailable
-C1  handle a significant complaint with tact / ambiguous expectations
-C2  negotiate across policy, fairness, face, and fine distinctions
+A1 order one item
+-> A2 order with preferences / ask about options
+-> B1 resolve a wrong order
+-> B2 negotiate when the straightforward correction is unavailable
+-> C1 handle a significant complaint with tact / ambiguous expectations
+-> C2 manage fine distinctions, policy/fairness/face, and precise reformulation
 ```
 
-This is a strong model family because the real communicative problem changes at every level.
-
-### Clarification / misunderstanding ladder
+### Clarification / misunderstanding
 
 ```text
-A1  ask for repetition
-A2  identify the unclear detail and ask targeted clarification
-B1  explain and repair an actual misunderstanding
-B2  manage conflicting accounts or active disagreement about facts
-C1  separate fact/assumption under ambiguity and relationship risk
-C2  preserve several nuanced interpretations while reframing dynamically
+A1 ask for repetition
+-> A2 identify the unclear detail
+-> B1 explain and repair an actual misunderstanding
+-> B2 manage conflicting accounts / active factual disagreement
+-> C1 separate fact from assumption under ambiguity and relationship risk
+-> C2 preserve several nuanced interpretations while reframing dynamically
 ```
 
-Keep this family; it demonstrates a clean progression in communication repair.
-
-### Travel ladder
+### Travel
 
 ```text
-A1  ask where / buy ticket / straightforward check-in
-A2  clarify route / change one booking detail / add one service request
-B1  recover after disruption / requested change unavailable
-B2  rebook under time-cost trade-offs / negotiate inadequate solution
-C1  coordinate ambiguous responsibility and diplomatic escalation
-C2  coordinate multiple providers/frames while preserving precise distinctions
+A1 locate / ticket / straightforward check-in
+-> A2 route clarification / simple booking change
+-> B1 disruption / unavailable requested change
+-> B2 rebook under meaningful trade-offs
+-> C1 ambiguous responsibility / audience adaptation / diplomatic escalation
+-> C2 coordinate multiple providers, frames, and authority levels
 ```
 
-Travel currently has one of the clearest A1-C2 progressions.
-
-### Plans / arrangements ladder
+### Plans / arrangements
 
 ```text
-A1  make a simple plan
-A2  add preference/reason and one alternative
-B1  re-plan after one meaningful change
-B2  balance competing preferences/constraints
-C1  manage implicit or relationship-sensitive priorities
-C2  redesign the decision frame around hidden/contradictory priorities
+A1 make a simple plan
+-> A2 preference/reason + one alternative
+-> B1 re-plan after one meaningful complication
+-> B2 balance explicit competing preferences/constraints
+-> C1 manage partly implicit social priorities
+-> C2 redesign the decision/communication frame itself
 ```
 
-Keep this family as a model for future map review.
-
-### Service-problem ladder
+### Service problem
 
 ```text
-A1  state visible problem and ask for help
-A2  describe simple symptoms/details and arrange a next step
-B1  explain recurring history / follow up after failure
-B2  negotiate responsibility/cost/time after failed service
-C1  escalate a complex history tactfully / manage uncertain causation
-C2  coordinate several responsibility frames and implicit constraints
+A1 state visible problem + ask for help
+-> A2 describe details + arrange next step
+-> B1 explain history/recurrence + solve
+-> B2 negotiate responsibility/cost/time after failed service
+-> C1 escalate tactfully / manage uncertain causation
+-> C2 coordinate multiple responsibility frames and ambiguous commitments
 ```
 
-Strong progression, but see World-overlap notes below.
+## 4. World taxonomy decisions
 
-## 4. World taxonomy review
+The review exposed useful boundaries, now recorded in `WORLD_TAXONOMY_V1.md`.
 
-### `everyday-life`
+### Everyday Life
 
-Risk: this can become a catch-all World.
+Keep it, but it is **not a catch-all**. A mission belongs there only when its value is genuinely cross-context and no other World is more natural.
 
-Decision for v1: **keep it, but narrow its admission rule**.
-
-A mission belongs in `everyday-life` only when its value is genuinely cross-context and does not have a more natural home in another World. Good examples:
-
-- general clarification/repair
-- lost-item interaction
-- general predictable phone interaction
-- shared everyday coordination
-
-Do not move food, travel, home-service, work/study, or leisure missions into Everyday merely because they also happen “in daily life.”
-
-### `food-shopping` vs `home-services`
-
-There is deliberate overlap in service complaints/transactions.
-
-Boundary:
+### Food & Shopping vs Home & Services
 
 - `food-shopping` = discrete purchase/order/product transaction
-- `home-services` = ongoing service, appointment, repair, subscription, access, delivery/service relationship
+- `home-services` = ongoing provider/service/appointment/repair/subscription relationship
 
-A complaint about a purchased item belongs in Food & Shopping. A recurring internet/repair/provider problem belongs in Home & Services.
+### People & Social vs Plans & Leisure
 
-### `people-social` vs `plans-leisure`
+- `people-social` = the relationship/conversation itself is the goal
+- `plans-leisure` = deciding/organising/repairing an activity or event is the goal
 
-Boundary:
+### Work & Study
 
-- `people-social` = relationship/conversation itself is the goal
-- `plans-leisure` = coordinating/deciding an activity or event is the goal
+Higher-level first drafts leaned professional. During full mission production, deliberately vary workplace and study/academic truth models where the communication problem genuinely transfers. Do not duplicate every mission merely to produce both versions.
 
-Example:
+## 5. Advanced Core balance — resolved in this review
 
-- discussing a recent weekend to connect socially -> People & Social
-- deciding what to do this weekend -> Plans & Leisure
+The first C1/C2 Core selections were too conflict-heavy. The **library itself was not the problem**; advanced learners genuinely need complaint, disagreement, negotiation, and mediation. The problem was the entry/recommendation set implying that advanced English mainly means conflict management.
 
-### `work-study`
+### Revised C1 Core
 
-Current higher-level maps lean more professional than academic/study.
+- `C1-EV-03` — audience/register adaptation
+- `C1-PS-02` — indirect concern / tactful clarification
+- `C1-FS-01` — diplomatic service complaint
+- `C1-TT-02` — complex requirement across staff roles
+- `C1-WS-03` — meeting facilitation / synthesis
+- `C1-HS-03` — reformulate complex service requirements
+- `C1-PL-02` — implicit priorities in collaborative planning
 
-Action: when promoting missions, deliberately vary canonical scenarios between workplace and study/academic settings where the communication problem genuinely transfers. Do not duplicate every mission just to create both versions.
+### Revised C2 Core
 
-## 5. Core-set review
+- `C2-EV-02` — rapid audience adaptation / precise reformulation
+- `C2-PS-02` — shifting tone / implication
+- `C2-FS-03` — preserve fine distinctions while negotiating
+- `C2-TT-02` — role/register shifts across authority levels
+- `C2-WS-01` — one deliberate layered-mediation Core
+- `C2-HS-02` — strategic ambiguity / precise commitments
+- `C2-PL-03` — meta-communication / style mediation
 
-A1–B2 Core sets are reasonably broad and action-oriented.
+Result: advanced Core now demonstrates a broader sample of C1/C2 capability while conflict-heavy missions remain available in the full library.
 
-**C1 and C2 Core sets are currently too conflict-heavy.** Many of the starred missions centre on complaint, dispute, feedback, or mediation.
+## 6. Duplicate / overlap watchlist
 
-This creates a product-presentation risk: an advanced learner could incorrectly experience “advanced English” as mostly conflict management.
+Authoring must preserve these distinctions:
 
-Action before Core publication:
+- A2 personal routine vs A2 work/study responsibilities
+- B1 discrete product/service complaint vs B1 ongoing delayed-service follow-up
+- B2 one-off disputed purchase charge vs B2 ongoing subscription/provider billing dispute
+- C1 discrete service complaint vs C1 persistent provider escalation
+- C2 multi-party travel/home/professional mediation must not become the same graph with different nouns
 
-- keep conflict/tact missions in the library
-- rebalance C1/C2 `Core / Great place to start` selections toward a mix of:
-  - audience/register adaptation
-  - complex explanation/reformulation
-  - subtle social understanding
-  - facilitation/collaboration
-  - one or two negotiation/conflict missions
+**Rule:** if canonical-dialogue authoring produces nearly the same roles, truth, graph, and learner moves with only surface nouns changed, merge or replace one mission.
 
-Do **not** remove advanced conflict skills simply to make the library cheerful; rebalance the entry set.
+## 7. Conflict-density rule for higher levels
 
-## 6. Conflict-density review
+B2–C2 naturally contain more disagreement and negotiation because those create authentic communication pressure.
 
-B2–C2 naturally contain more disagreement, negotiation, and complaint because these create authentic interaction pressure.
+But every high-level World should also include difficulty driven by non-conflict skills such as:
 
-However, the current first draft may over-rely on conflict as the easiest way to create higher-level difficulty.
+- complex explanation
+- audience/register adaptation
+- facilitation
+- indirect meaning
+- precise reformulation
+- ambiguity management
+- synthesis
 
-Before publication, verify each high-level World also contains at least one mission whose difficulty comes mainly from something other than conflict, such as:
-
-- explaining a complex requirement accurately
-- adapting register/audience
-- facilitating a collaborative discussion
-- handling indirect meaning
-- reformulating subtle distinctions
-- organising information under ambiguity
-
-Current C1/C2 maps include examples of these, but the balance should remain an explicit QA criterion.
-
-## 7. Duplicate/overlap watchlist
-
-The following pairs are similar enough that authoring must preserve their distinct communication problem:
-
-- A2 `Describe your routine and compare schedules` vs A2 `Explain your routine responsibilities`
-  - keep Everyday focused on personal daily routine; Work/Study focused on role/task responsibility.
-- B1 `Make a simple complaint and request action` vs B1 `Follow up on a delayed service or delivery`
-  - first is discrete product/service failure; second requires timeline/history and follow-up.
-- B2 `Resolve a disputed bill or charge` vs B2 `Resolve a billing or subscription dispute`
-  - Food/Shopping should be one-off transaction evidence; Home/Services should involve ongoing service terms/account relationship.
-- C1 `Handle a serious service complaint with tact` vs `Escalate a persistent service issue professionally`
-  - discrete transaction vs ongoing history/escalation.
-- C2 service/travel/home multi-party resolution missions
-  - must have different truth models and role dynamics; do not reuse the same negotiation skeleton with different nouns.
-
-If canonical dialogue authoring reveals that two missions produce nearly the same interaction graph, merge or replace one.
+The revised C1/C2 Core sets now model this rule.
 
 ## 8. Listening Preview review
 
-Current level policy still makes sense:
+Current policy remains appropriate:
 
-- A1 Core: required content asset before full publication, optional to learner
+- A1 Core: required content asset before full publication; learner may skip
 - A2 Core: recommended
 - B1: selective
 - B2: selective/rare
 - C1: selective when pragmatic modelling adds value
 - C2: rare
 
-Important: high-level Listening Previews must not remove the ambiguity/unpredictability that defines the mission.
+High-level previews must not remove the ambiguity/unpredictability that defines the mission.
 
 ## 9. Language-grounding review
 
-The map now contains broad source anchors for each level, but **mission-specific grounding still happens only when a mission is promoted**.
+Do **not** pre-tag all 138 mapped missions with full vocabulary/grammar metadata.
 
-That is intentional.
-
-Do not pre-tag all 138 missions with hundreds of words/grammar items before their canonical dialogues are written.
-
-For each promoted mission:
+Mission-specific grounding happens when a mission is promoted:
 
 ```text
-choose real communicative goal
+real communicative goal
 -> select relevant cumulative language inventory
 -> write canonical dialogue
--> record only source items that materially shaped the dialogue/level/correction/support
+-> record only source items that materially shaped language, level, correction, or support
 ```
 
-This prevents metadata work from becoming the curriculum itself.
+This keeps language grounding useful rather than turning metadata into a second curriculum.
 
-## 10. Production decision after this review
+## 10. Production decision
 
-Do not bulk-create 138 YAML mission contracts.
+The mapping phase and first cross-level review are complete enough to resume real mission production.
 
-Recommended next production step:
+Do not bulk-create 138 YAML files.
 
-1. rebalance C1/C2 Core selections before those levels are surfaced as recommendations
-2. keep all six level maps as design drafts
-3. return to **A1 Core promotion**
-4. author the next Core mission end-to-end using:
-   - language grounding
-   - canonical dialogue
-   - semantic graph
-   - Listening Preview
-   - dynamic Hint policy
-   - correction boundaries
-   - adversarial Live QA
-5. use failures from those real missions to change the factory before scaling
+Next production loop:
 
-`Order a drink` remains the first completed vertical slice. The next A1 Core mission should test a different interaction family rather than another food transaction.
+1. promote one A1 Core mission
+2. ground it in `english-course`
+3. write the canonical dialogue
+4. derive/validate the semantic graph
+5. author its Listening Preview variant
+6. define correction + dynamic Hint boundaries
+7. run adversarial Gemini Live/audio QA
+8. change the factory/map if real implementation exposes a systemic problem
 
-Recommended next candidate: **`A1-EV-01 — Ask someone to repeat`** or **`A1-PS-01 — Meet someone new`**.
+`Order a drink` is the first completed vertical slice.
+
+Recommended next mission: **`A1-EV-01 — Ask someone to repeat`**, because it tests a different interaction family: clarification/repair instead of transaction.
 
 ## 11. Whole-map principle
 
-The map should remain editable.
+> **A mission title is not sacred. The progression is.**
 
-> A mission title is not sacred. The progression is.
-
-If real authored dialogue or Gemini Live QA shows that two missions collapse into the same conversation, change the map rather than forcing the implementation to preserve a weak distinction.
+If real authored dialogue or Gemini Live QA shows that two missions collapse into the same conversation, change the map rather than forcing implementation to preserve a weak distinction.
