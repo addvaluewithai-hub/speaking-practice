@@ -43,34 +43,20 @@ beats:
     type: required
     ai_intent: Greet the customer naturally and ask what they would like to order.
     learner_intent: Request one available drink politely.
-    intent_hint_ar: اطلب مشروب
-    useful_language:
-      - I'd like ...
-      - Can I have ...?
-      - please
-    full_help_examples:
-      - I'd like a coffee, please.
-      - Can I have a tea, please?
+    overview_ar: اطلب المشروب اللي عايزه
     accepted_semantics:
       - learner clearly requests one available drink
       - any natural request wording is accepted; exact example wording is not required
     correction_focus:
       - correct only a genuine request-form error or wording that is unclear enough to block the order
-      - do not correct a valid alternative just because it differs from the examples
+      - do not correct a valid alternative just because it differs from a common model sentence
     next: choose_size
 
   - id: choose_size
     type: required
     ai_intent: Ask whether the learner wants a small or large size.
     learner_intent: Choose one offered size.
-    intent_hint_ar: اختار الحجم
-    useful_language:
-      - small
-      - large
-      - please
-    full_help_examples:
-      - Small, please.
-      - A large one, please.
+    overview_ar: اختار الحجم
     accepted_semantics:
       - learner clearly selects small or large
     correction_focus:
@@ -82,14 +68,7 @@ beats:
     type: required
     ai_intent: State the correct price for the selected drink and size, then allow the learner to complete the exchange.
     learner_intent: Acknowledge the price and complete the payment exchange politely.
-    intent_hint_ar: وافق وكمل الطلب
-    useful_language:
-      - okay
-      - thanks
-      - here you are
-    full_help_examples:
-      - Okay, thanks.
-      - Here you are. Thanks.
+    overview_ar: كمّل الدفع واقفل الطلب
     accepted_semantics:
       - learner acknowledges the price and completes the exchange naturally
     correction_focus:
@@ -106,17 +85,39 @@ agent_policy:
   - Follow the authored beat order, but phrase each turn naturally rather than reading a fixed script.
   - Before each AI turn that creates a learner response opportunity, update the runtime to the beat being opened.
   - Do not advance a beat until the learner has actually completed its communicative intent.
-  - If the learner hesitates, wait; the UI hint is learner-controlled. Do not force-feed the target sentence.
+  - If the learner hesitates, wait; do not force-feed a target sentence.
   - If the learner says something different but correct, accept it and continue.
   - If there is a genuine current-beat English error, give a concise correction with the natural form and let the learner retry before advancing.
   - Never invent menu items, sizes, or prices outside scenario truth.
   - Keep turns short and ask one thing at a time.
 
 hint_policy:
-  level_1_intent: Show only the Arabic communicative intent.
-  level_2_useful_language: Reveal a few useful English chunks.
-  level_3_full_help: Reveal one natural complete example; it is help, not the only accepted answer.
-  personal_data: Never include a learner name, city, age, job, phone number, or other personal details in hints.
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current authored beat and learner intent
+    - scenario truth
+    - CEFR level and runtime language ceiling
+  bundle:
+    intent_ar: short Egyptian-Arabic description of the best next communicative move now
+    context_ar: optional short recovery/context note when the conversation has moved away from the expected path
+    useful_language_en: two to five short English words or chunks useful for this exact moment
+    full_response_en: one natural complete response that works in the current conversation state
+  reveal:
+    level_1: intent_ar plus context_ar when present
+    level_2: useful_language_en from the cached bundle
+    level_3: full_response_en from the cached bundle
+  rules:
+    - request the complete bundle once; later reveal levels must not make additional model requests for the same active beat
+    - the full response is an example, never the only accepted answer
+    - hints must follow the conversation that actually happened, not an imagined fixed transcript
+    - a detour should produce a recovery-aware hint that still moves toward the mission goal
+    - do not advance the mission beat because a hint was requested or revealed
+    - never include a learner name, city, age, job, phone number, or other personal details in hints
 
 success_conditions:
   - one available drink requested
@@ -134,9 +135,18 @@ qa_cases:
   - name: genuine_request_error
     learner: I like coffee please.
     expected: briefly correct toward a natural request such as I'd like a coffee, please; invite retry; do not advance yet
-  - name: learner_forgot
-    learner_behavior: learner cannot formulate the move
-    expected: cashier waits naturally; learner may open the Arabic hint, then useful language, then full help; AI does not reveal the answer unasked
+  - name: contextual_hint_after_menu_question
+    conversation:
+      - learner: What do you have?
+      - cashier: We have coffee, tea and water.
+      - learner_action: taps Hint
+    expected: one hint bundle is generated from this exact context; Arabic intent should tell the learner to choose one of the available drinks and order it; later useful-language/full-response reveals reuse the same cached bundle
+  - name: contextual_hint_after_unavailable_item
+    conversation:
+      - learner: Do you have orange juice?
+      - cashier: Sorry, we don't. We have coffee, tea and water.
+      - learner_action: taps Hint
+    expected: hint bundle helps the learner choose an available alternative rather than showing a generic prewritten order hint
   - name: unsupported_item
     learner: I'd like an orange juice, please.
     expected: say orange juice is not available and briefly offer coffee, tea, or water without breaking role
