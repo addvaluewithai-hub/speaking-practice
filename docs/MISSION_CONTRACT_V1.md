@@ -12,6 +12,7 @@ revision: 1
 status: pilot
 level: A1
 world: food-shopping
+library_role: core
 title: Order a drink
 estimated_minutes: 4
 
@@ -63,6 +64,17 @@ hint_policy:
   trigger: learner_taps_hint
   request_count: one_model_request_per_active_beat
   cache_scope: active_beat
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  transcript_default: hidden
+  transcript:
+    - speaker: ai_role
+      text: Hi. What can I get for you?
+    - speaker: customer
+      text: Can I have a tea, please?
+  audio_asset: null
 ```
 
 ## Required mission fields
@@ -72,6 +84,7 @@ Every published authored mission must define:
 - stable ID and revision
 - CEFR level
 - world/context
+- `library_role`: `core` or `library`
 - learner role
 - AI role
 - concrete mission goal
@@ -83,8 +96,11 @@ Every published authored mission must define:
 - exit / success conditions
 - runtime freedom appropriate to the level
 - contextual hint policy
+- Listening Preview metadata where included or required by level policy
 
 Optional `overview_ar` is learner-facing mission preview copy. It is **not** the runtime hint.
+
+`library_role: core` means **Great place to start**. It does not create a prerequisite or mandatory order.
 
 ## Semantic beats, not passwords
 
@@ -183,11 +199,29 @@ The live agent therefore authors the **help wording**, while the mission continu
 - A hint request is a private UI event, not learner speech.
 - Requesting a hint never advances a mission beat.
 - The hint tool must not be called proactively.
-- The runtime should reject stale tool payloads for an old beat.
+- The runtime should reject stale tool payloads for an old beat/request.
 - Intent, useful-language and full-response reveals are recorded separately as support telemetry.
 - Full-response help is stronger support than an Arabic intent hint.
 - Hint text must never inject learner personal details.
 - If generation fails, allow another request; do not silently substitute a fixed answer card as the normal path.
+
+## Listening Preview
+
+A mission may include an optional authored Listening Preview.
+
+The preview is:
+
+- one plausible version of the same situation
+- fixed/reviewed content for the mission revision
+- orientation, not rehearsal
+- skippable by the learner
+- separate from speaking evidence
+
+The live mission is **not bound to the preview transcript**. Gemini may use different natural wording and the learner may make different valid choices.
+
+For A1 Core missions, an authored preview transcript + audio asset is required before full publication. During contract drafting, `audio_asset: null` is acceptable.
+
+See `LISTENING_PREVIEW_V1.md`.
 
 ## Branching
 
@@ -249,6 +283,8 @@ Useful attempt data:
 }
 ```
 
+Listening Preview playback is not included as speaking independence evidence.
+
 ## Authoring anti-patterns
 
 Do not publish missions that:
@@ -256,6 +292,8 @@ Do not publish missions that:
 - are only a role prompt with no authored conversation structure
 - require exact memorized responses
 - hardcode the primary runtime hint ladder as if the conversation cannot move
+- use the Listening Preview as the script the learner must reproduce
+- make Listening Preview mandatory to unlock the mission
 - hide the learner's goal and accidentally test memory of turn order
 - force a large vocabulary checklist into one interaction
 - create fake misunderstandings only to trigger repair
