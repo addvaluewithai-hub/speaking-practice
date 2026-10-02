@@ -2,83 +2,67 @@
 
 A Practice mission is a reviewed conversational experience. It is authored as a **semantic graph**, not a fixed dialogue transcript.
 
+The mission owns the level, roles, scenario truth, conversation beats, learner intents, branches and correction boundaries. Gemini performs the role naturally inside those boundaries.
+
 ## Canonical shape
 
 ```yaml
 id: practice.a1.food.order-drink.v1
-status: draft
+revision: 1
+status: pilot
 level: A1
 world: food-shopping
 title: Order a drink
-estimated_minutes: 3
+estimated_minutes: 4
 
 learner_role: customer
-ai_role: cashier
+ai_role: cafe cashier
 setting: small cafe
-mission_goal: Order one drink, respond to one predictable service question, and close naturally.
+mission_goal: Order one drink, answer one predictable service question, complete the payment exchange, and close naturally.
 
 truth:
-  # Stable facts Gemini must not contradict during the mission.
   menu_items: [coffee, tea, water]
   sizes: [small, large]
-  prices:
-    small: 3
-    large: 4
 
 runtime:
   ai_freedom: tight
-  max_ai_turn_style: short
   default_hint_mode: tap
 
 beats:
   - id: greet_order
     type: required
     ai_intent: Greet the learner and ask what they would like.
-    learner_intent: Order one available drink politely.
-    intent_hint_ar: اطلب مشروب
-    useful_language:
-      - I'd like ...
-      - Can I have ...?
-      - please
-    full_help_examples:
-      - I'd like a coffee, please.
-      - Can I have a tea, please?
-    accepted_semantics:
-      - learner clearly requests one available drink
+    learner_intent: Request one available drink politely.
+    overview_ar: اطلب المشروب اللي عايزه
     correction_focus:
-      - request form only when the learner's form is genuinely incorrect or unclear
+      - correct a genuine request-form error when it matters
+      - accept natural alternative wording
     next: choose_size
 
   - id: choose_size
     type: required
     ai_intent: Ask whether the learner wants small or large.
-    learner_intent: Choose a size.
-    intent_hint_ar: اختار الحجم
-    useful_language: [small, large]
-    full_help_examples:
-      - Small, please.
-      - A large one, please.
-    accepted_semantics:
-      - learner clearly selects one offered size
+    learner_intent: Choose one offered size.
+    overview_ar: اختار الحجم
     next: price
 
   - id: price
     type: required
-    ai_intent: State the correct price for the chosen size.
-    learner_intent: Acknowledge and complete the exchange.
-    intent_hint_ar: وافق وكمل الطلب
-    useful_language:
-      - okay
-      - thanks
-      - here you are
-    full_help_examples:
-      - Okay, thanks.
+    ai_intent: State the correct price and allow the learner to complete the exchange.
+    learner_intent: Acknowledge and complete payment politely.
+    overview_ar: كمّل الدفع واقفل الطلب
     next: close
 
   - id: close
     type: ending
     ai_intent: Close the transaction naturally and briefly.
     learner_intent: Optional polite closing.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
 ```
 
 ## Required mission fields
@@ -93,23 +77,23 @@ Every published authored mission must define:
 - concrete mission goal
 - stable scenario truth / facts
 - required conversation beats
-- optional branches where needed
+- optional branches where genuinely useful
 - learner intent for each meaningful move
-- Arabic intent hint where a hint is appropriate
-- useful-language support
-- full-help examples
-- correction focus
+- correction focus / language boundaries
 - exit / success conditions
 - runtime freedom appropriate to the level
+- contextual hint policy
+
+Optional `overview_ar` is learner-facing mission preview copy. It is **not** the runtime hint.
 
 ## Semantic beats, not passwords
 
-`full_help_examples` are examples, not required answers.
+The mission defines what the learner is trying to accomplish, not one required sentence.
 
-If the intended move is:
+If the learner intent is:
 
 ```text
-اسأل لو فيه مكان بره
+ask whether an outside table is available
 ```
 
 all of these may be acceptable depending on level/context:
@@ -120,7 +104,7 @@ Is there anywhere to sit outside?
 Can we sit outside?
 ```
 
-The runtime must judge meaning and naturalness, not string similarity.
+The runtime judges meaning and naturalness, not string similarity.
 
 ## Error versus variation
 
@@ -144,37 +128,66 @@ But:
 What city does she live in?
 ```
 
-is a valid alternative and should not be corrected merely because it differs from the authored full-help example.
+is a valid alternative and should not be corrected merely because it differs from a common model sentence.
 
-## Hint ladder
+After a genuine current-beat error, give a short natural correction and let the learner retry before advancing when the corrected form matters to the task.
 
-Hints are optional runtime support surfaces tied to the current learner intent.
+## Contextual hint bundle
 
-### Level 1 — Intent
+Runtime hints are **not hardcoded answer cards**.
 
-Arabic meaning only:
+When the learner taps Hint, the existing live agent uses the conversation context, current beat, scenario truth and level to generate a complete structured support bundle in **one tool call**:
 
-```text
-اسأل عن السعر
+```json
+{
+  "beat_id": "greet_order",
+  "intent_ar": "اختار مشروب من الموجود واطلبه",
+  "context_ar": "هو قال إن المتاح قهوة أو شاي أو مية.",
+  "useful_language_en": ["I'd like ...", "Can I have ...?", "please"],
+  "full_response_en": "Can I have a tea, please?"
+}
 ```
 
-### Level 2 — Useful language
+The UI caches the complete bundle for the active beat and reveals it progressively:
 
-Limited English chunks:
+1. `intent_ar` (+ `context_ar` when useful)
+2. `useful_language_en`
+3. `full_response_en`
+
+Levels 2 and 3 are UI reveals from the same cached payload. They must not make additional model requests for the same active beat.
+
+Hiding and reopening a hint in the same beat reuses the cache. Changing the active beat invalidates the old bundle.
+
+The full response is a support example, never the only accepted answer.
+
+See `DYNAMIC_HINTS_V1.md` for the runtime contract and QA examples.
+
+## Why hints are generated live
+
+The authored graph controls difficulty, but a real conversation may take a valid detour.
+
+For example, before ordering the learner might ask:
 
 ```text
-how much · cost · is it
+What do you have?
 ```
 
-### Level 3 — Full help
+or ask for an unavailable item. The next helpful hint should refer to what actually happened rather than show a generic prewritten sentence.
 
-One or more natural complete examples:
+The live agent therefore authors the **help wording**, while the mission continues to author the **learner intent and boundaries**.
 
-```text
-How much is it?
-```
+> We author the intent. Gemini authors the help.
 
-The learner may continue after any support level. The attempt records which support was exposed.
+## Hint safety and bookkeeping
+
+- A hint request is a private UI event, not learner speech.
+- Requesting a hint never advances a mission beat.
+- The hint tool must not be called proactively.
+- The runtime should reject stale tool payloads for an old beat.
+- Intent, useful-language and full-response reveals are recorded separately as support telemetry.
+- Full-response help is stronger support than an Arabic intent hint.
+- Hint text must never inject learner personal details.
+- If generation fails, allow another request; do not silently substitute a fixed answer card as the normal path.
 
 ## Branching
 
@@ -191,6 +204,8 @@ report_problem
 ```
 
 Do not author branches merely to make a mission look complex.
+
+A1 missions may be mostly linear. Higher levels can allow more authored branch choices and more natural surface variation.
 
 ## Scenario truth
 
@@ -210,7 +225,7 @@ The model may phrase facts naturally but must not invent contradictions that inv
 
 Suggested values:
 
-- `tight` — A1-heavy; short turns, narrow paraphrase range, linear flow
+- `tight` — A1-heavy; short turns, narrow paraphrase range, mostly linear flow
 - `bounded` — A2/B1; natural paraphrase and authored branches
 - `open_within_graph` — B2+; greater wording and discourse freedom while preserving graph/truth/goal
 
@@ -240,6 +255,7 @@ Do not publish missions that:
 
 - are only a role prompt with no authored conversation structure
 - require exact memorized responses
+- hardcode the primary runtime hint ladder as if the conversation cannot move
 - hide the learner's goal and accidentally test memory of turn order
 - force a large vocabulary checklist into one interaction
 - create fake misunderstandings only to trigger repair
