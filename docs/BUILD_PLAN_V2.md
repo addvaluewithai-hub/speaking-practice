@@ -1,8 +1,6 @@
 # Practice Build Plan v2
 
-Status: **current**
-
-Supersedes `BUILD_PLAN_V1.md` where the two differ.
+Status: **current source of truth**
 
 ## Goal
 
