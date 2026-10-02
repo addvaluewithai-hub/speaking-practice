@@ -1,8 +1,6 @@
 # Practice Architecture v2
 
-Status: **current**
-
-Supersedes `PRACTICE_ARCHITECTURE_V1.md` where the two differ.
+Status: **current source of truth**
 
 ## 1. Product definition
 
