@@ -6,7 +6,7 @@ Supersedes `BUILD_PLAN_V1.md` where the two differ.
 
 ## Goal
 
-Build a reviewed Practice library from a visible level/world map, then promote missions into production one by one through a repeatable authoring and Live-QA factory.
+Build a reviewed Practice library from a visible A1–C2 level/world map, then promote missions into production one by one through a repeatable authoring and Live-QA factory.
 
 ## Phase 0 — Current foundation
 
@@ -25,11 +25,11 @@ Current architecture includes:
 
 Remaining foundation work should be driven by real authoring problems, not speculative schema expansion.
 
-## Phase 1 — Build the library map
+## Phase 1 — Build the full library map
 
 Status: **in progress**.
 
-Map missions before bulk-authoring detailed contracts.
+Map A1–C2 before bulk-authoring detailed mission contracts.
 
 For each level define:
 
@@ -42,7 +42,7 @@ For each level define:
 
 Do not design a required lesson order.
 
-### Current order
+### Mapping order
 
 1. A1 map + review
 2. A2 map
@@ -53,27 +53,38 @@ Do not design a required lesson order.
 
 This ordering is for authoring/review only; it is not learner progression inside Practice.
 
-## Phase 2 — Review A1 coverage
+### Why map all levels first
 
-Current A1 draft contains 24 missions across 7 worlds and 8 Core missions.
+Seeing the full map before bulk implementation lets us catch:
 
-Review for:
+- repeated missions pretending to be progression
+- A2/B1 missions that are only A1 with longer sentences
+- gaps in real-life coverage
+- worlds that disappear at certain levels without a reason
+- difficulty jumps that are too large or too small
+- higher-level missions that rely on obscure vocabulary instead of a harder communication problem
 
-- real usefulness
-- overlap
-- missing everyday interaction needs
-- world balance
-- interaction-shape balance
-- A1 safety/predictability
-- language pressure that accidentally exceeds A1
+The existing `Order a drink` pilot remains useful runtime research while the map is completed.
 
-Do not keep a mission simply to hit the number 24.
+## Phase 2 — Cross-level map review
+
+After A1–C2 titles/goals are visible, review the whole library for progression.
+
+Questions:
+
+- Does the communication problem genuinely evolve across levels?
+- Are the same real-life worlds revisited in richer ways where useful?
+- Are some missions duplicates under different names?
+- Does each level have a balanced mix of social, information, service, planning, repair, problem-solving and higher-level interaction needs?
+- Are Core missions a helpful entry set rather than a hidden sequence?
+
+Mission count is a result of coverage quality, not a target.
 
 ## Phase 3 — Promote A1 Core missions
 
-Promote the Core set into full authored contracts one by one.
+Promote the reviewed A1 Core set into full authored contracts one by one.
 
-Current Core draft:
+Current draft Core set:
 
 1. Meet someone new
 2. Ask someone to repeat
@@ -99,7 +110,7 @@ Each promoted mission gets:
 - QA cases
 - Listening Preview transcript and audio asset before full publication
 
-## Phase 4 — Live QA the Core set
+## Phase 4 — Live QA the A1 Core set
 
 Run real voice QA, not transcript-only QA.
 
@@ -121,17 +132,18 @@ Required test paths include:
 
 Fix the mission factory when a repeated systemic problem appears. Do not patch every mission independently for the same runtime bug.
 
-## Phase 5 — Complete the rest of A1
+## Phase 5 — Complete A1 and start A2 production
 
-Once Core missions are stable, promote the remaining reviewed A1 map missions.
+Once the Core missions are stable:
 
-Not every non-Core A1 mission requires a Listening Preview, but add one where it materially helps the learner understand the interaction shape.
+- promote the remaining reviewed A1 missions
+- begin A2 Core production using the already-reviewed cross-level map
 
-## Phase 6 — Map and build A2/B1
+Not every non-Core mission requires a Listening Preview. Add one where it materially helps the learner understand the interaction shape.
 
-A2 must not be A1 with longer sentences.
+## Phase 6 — A2 and B1 production
 
-A2 should introduce:
+A2 must introduce more than longer sentences:
 
 - one main goal plus a secondary detail
 - small preferences/reasons
@@ -146,9 +158,9 @@ B1 should introduce:
 - multiple plausible branches
 - more independence
 
-Existing B1 vertical-slice research may inform runtime testing but does not dictate the new Practice map.
+Existing B1 vertical-slice research may inform runtime testing but does not dictate the Practice map.
 
-## Phase 7 — B2–C2
+## Phase 7 — B2–C2 production
 
 Expand only after bounded branching works reliably.
 
@@ -194,7 +206,9 @@ Keep Free Speak separate: open conversation without authored mission graph guara
 
 ## Working rule
 
-At any point, prefer:
+Before bulk production, prefer a **complete visible map with honest gaps** over dozens of detailed mission files that accidentally lock us into the wrong curriculum shape.
+
+After the map is approved, prefer:
 
 > one mission fully sourced, authored, previewed where useful, and Live-tested
 
