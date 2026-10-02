@@ -77,7 +77,14 @@ plans-leisure
 
 ## Current curriculum work
 
-`docs/PRACTICE_MAP_V1.md` currently contains the first A1 map: **24 candidate missions across 7 worlds**, including **8 Core / Great place to start missions**.
+The master map is `docs/PRACTICE_MAP_V1.md`, with detailed level maps under `docs/practice-map/`.
+
+Current status:
+
+- **A1:** 24 candidate missions across 7 worlds, including 8 Core / Great place to start missions.
+- **A2:** 24 candidate missions across 7 worlds, including 8 Core missions with explicit A1→A2 progression.
+- **B1:** next mapping pass.
+- **B2–C2:** pending.
 
 Core is recommendation, not prerequisite.
 
@@ -94,6 +101,10 @@ docs/
   README.md
   PRACTICE_ARCHITECTURE_V2.md
   PRACTICE_MAP_V1.md
+  practice-map/
+    A1.md
+    A2.md
+    ...
   LEVEL_BIBLE_V1.md
   WORLD_TAXONOMY_V1.md
   LANGUAGE_GROUNDING_AND_CANONICAL_DIALOGUE_V1.md
