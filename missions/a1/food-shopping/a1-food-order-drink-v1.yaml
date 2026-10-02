@@ -3,6 +3,7 @@ revision: 1
 status: pilot
 level: A1
 world: food-shopping
+library_role: core
 title: Order a drink
 title_ar: اطلب مشروب
 estimated_minutes: 4
@@ -118,6 +119,25 @@ hint_policy:
     - a detour should produce a recovery-aware hint that still moves toward the mission goal
     - do not advance the mission beat because a hint was requested or revealed
     - never include a learner name, city, age, job, phone number, or other personal details in hints
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  transcript_default: hidden
+  transcript:
+    - speaker: ai_role
+      text: Hi. What can I get for you?
+    - speaker: customer
+      text: A tea, please.
+    - speaker: ai_role
+      text: Sure. Small or large?
+    - speaker: customer
+      text: Large, please.
+    - speaker: ai_role
+      text: That's three dollars.
+    - speaker: customer
+      text: Okay, thanks.
+  audio_asset: null
 
 success_conditions:
   - one available drink requested
