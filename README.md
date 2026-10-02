@@ -10,41 +10,90 @@ Practice is not a second English course and not a random scenario browser.
 
 - **Learn** teaches English through a guided curriculum.
 - **Practice** lets learners use English in authored, level-controlled real-life missions.
-- **Custom Practice** lets a learner request a scenario that is generated at runtime.
+- **Custom Practice** lets a learner request a scenario generated at runtime.
 - **Free Speak** is open conversation without an authored mission blueprint.
 
-Practice has **no linear lesson sequence** such as `Lesson 1 -> Lesson 2 -> Lesson 3`.
+Practice has **no mandatory linear lesson sequence**.
 
-Instead, learners enter at their current level (`A1` to `C2`) and browse/replay missions by world or goal. The default view should show missions appropriate to the learner's level; other levels remain explorable rather than locked.
+Learners enter at their current level (`A1` to `C2`) and browse/replay missions by world or goal. Their current level is the default filter; other levels remain explorable rather than locked.
 
-## Core design principles
+## Current architecture
 
-1. **Mission difficulty is authored.** A1 and B2 versions of a hotel situation are separate missions, not one scenario with an Easy/Hard switch.
-2. **Conversation is designed by us.** Gemini performs and adapts inside an authored conversation blueprint; it does not invent the pedagogical structure.
-3. **Blueprints are semantic, not rigid transcripts.** We author conversation beats, learner intents, branches, and exit conditions. Gemini may phrase its own turn naturally inside those bounds.
-4. **Hints are support, not difficulty.** A learner may use `Auto`, `Tap to show`, or `Off` support without changing the mission's CEFR level.
-5. **Different valid English is valid.** The learner is never required to reproduce one memorized sentence when another natural form achieves the same intent.
-6. **Correct genuine errors, not variation.** Otti briefly corrects a real target-language error, gives the usable form, then continues the conversation.
-7. **Authored help is measurable.** We distinguish no help, intent hint, useful-word hint, and full response reveal.
-8. **Mission completion is not mastery.** Practice can record useful observations without pretending one conversation proves a broad ability.
-9. **Custom and Free Speak are separate runtime modes.** They do not inherit the quality guarantees of authored missions.
+The current product/runtime definition is:
+
+- authored semantic conversation graphs, not fixed scripts
+- mission difficulty authored at CEFR level
+- Gemini performs naturally inside the graph and scenario truth
+- valid alternative English is accepted
+- genuine important errors receive brief correction
+- dynamic contextual hints are generated from the live conversation
+- the complete hint bundle is generated once per active beat and revealed progressively from cache
+- optional Listening Preview can show one plausible version of the situation before the live mission
+- mission completion is useful evidence from one context, not broad mastery
 
 ## Repository map
 
-- `docs/PRACTICE_ARCHITECTURE_V1.md` — product and runtime architecture
-- `docs/LEVEL_BIBLE_V1.md` — what changes from A1 through C2
-- `docs/MISSION_CONTRACT_V1.md` — canonical authored mission schema
-- `docs/SOURCES.md` — external and internal grounding sources
-- `missions/` — reviewed authored conversation missions and blueprints
+### Current documents
 
-## First build target
+- `docs/PRACTICE_ARCHITECTURE_V2.md` — current product/runtime architecture
+- `docs/PRACTICE_MAP_V1.md` — level/world mission library map; A1 currently drafted
+- `docs/LEVEL_BIBLE_V1.md` — interaction difficulty from A1 through C2
+- `docs/WORLD_TAXONOMY_V1.md` — canonical Practice worlds
+- `docs/MISSION_CONTRACT_V1.md` — semantic mission contract and dynamic hint contract
+- `docs/DYNAMIC_HINTS_V1.md` — live contextual hint behaviour
+- `docs/LISTENING_PREVIEW_V1.md` — optional pre-mission example conversation
+- `docs/AUTHORING_QA_V1.md` — mission review and Live-QA gates
+- `docs/SOURCES.md` — grounding/source hierarchy
+- `docs/BUILD_PLAN_V2.md` — current production plan
+- `missions/` — reviewed authored mission contracts
 
-Do not bulk-author A1-C2 yet.
+Older versioned docs remain as historical context where a newer document explicitly supersedes them.
 
-First prove the mission factory with a small vertical slice:
+## Canonical learner structure
 
-- 6 authored A1 missions across different worlds
-- 3 authored B1 missions with meaningful branches and complications
-- real Gemini Live QA for alternative valid language, genuine errors, hesitation, hints, interruptions, clarification, off-path but valid learner moves, and natural endings
+```text
+Practice
+  -> Level
+  -> World
+  -> Mission
+  -> optional Listening Preview
+  -> Gemini Live conversation
+  -> Recap / retry
+```
 
-Only after that architecture survives real conversations should the library scale.
+Canonical worlds:
+
+```text
+everyday-life
+people-social
+food-shopping
+travel-transport
+work-study
+home-services
+plans-leisure
+```
+
+## Current curriculum work
+
+A1 now has a first full map of **24 candidate missions across the 7 worlds**, with **8 Core / Great place to start missions**.
+
+Core is recommendation, not prerequisite.
+
+The immediate production loop is:
+
+1. review A1 map for usefulness, overlap, coverage and A1 safety
+2. promote Core missions into full authored contracts
+3. add Listening Previews to A1 Core missions
+4. run adversarial Gemini Live/audio QA
+5. complete the rest of A1
+6. map A2, then B1–C2 so cross-level progression remains visible
+
+Do not bulk-author mission files just to hit a lesson count.
+
+## Core design rule
+
+> **We author the intent. Gemini authors the help.**
+
+The mission owns level, goal, truth, graph, learner intents, correction boundaries and ending conditions.
+
+Gemini owns natural partner wording and contextual help inside those bounds.
