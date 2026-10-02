@@ -15,7 +15,7 @@ Current architecture includes:
 - level-aware Practice product shell
 - A1–C2 Level Bible
 - canonical World taxonomy
-- Practice Map approach
+- Practice Map approach with one file per level
 - shared-language grounding from `english-course`
 - canonical authored dialogue as a required full-mission artifact
 - semantic mission graph
@@ -31,7 +31,16 @@ Remaining foundation work should be driven by real authoring problems, not specu
 
 Status: **in progress**.
 
-Map A1–C2 before bulk-authoring detailed mission contracts.
+Detailed maps live under `docs/practice-map/`, with `PRACTICE_MAP_V1.md` as the master index.
+
+Current progress:
+
+1. A1 — first full map drafted (`practice-map/A1.md`)
+2. A2 — first full map drafted (`practice-map/A2.md`)
+3. B1 — **next mapping pass**
+4. B2 — pending
+5. C1 — pending
+6. C2 — pending
 
 For each level define:
 
@@ -41,26 +50,16 @@ For each level define:
 - interaction problem/shape
 - Core / library status
 - Listening Preview expectation
+- explicit contrast with nearby levels when a context repeats
 
 Do not design a required lesson order.
-
-### Mapping order
-
-1. A1 map + review
-2. A2 map
-3. B1 map
-4. B2 map
-5. C1 map
-6. C2 map
-
-This ordering is for authoring/review only; it is not learner progression inside Practice.
 
 ### Why map all levels first
 
 Seeing the full map before bulk implementation lets us catch:
 
 - repeated missions pretending to be progression
-- A2/B1 missions that are only A1 with longer sentences
+- A2/B1 missions that are only lower-level missions with longer sentences
 - gaps in real-life coverage
 - worlds that disappear at certain levels without a reason
 - difficulty jumps that are too large or too small
@@ -79,6 +78,7 @@ Questions:
 - Are some missions duplicates under different names?
 - Does each level have a balanced mix of social, information, service, planning, repair, problem-solving and higher-level interaction needs?
 - Are Core missions a helpful entry set rather than a hidden sequence?
+- Do lower-level missions leave enough headroom for meaningful B1–C2 progression?
 
 Mission count is a result of coverage quality, not a target.
 
@@ -105,12 +105,13 @@ Current draft Core set:
 2. select relevant reviewed language from `english-course`
 3. write the complete canonical dialogue
 4. review the dialogue for level, realism, turn length and language coverage
-5. author/validate the semantic graph around the dialogue
-6. add preferred AI realizations and surface-freedom bounds
-7. write the Listening Preview as a reviewed variant where required/useful
+5. define compact scenario truth
+6. author/validate the semantic graph around the dialogue
+7. add preferred AI realizations and surface-freedom bounds
 8. define correction focus, dynamic-hint context and completion conditions
-9. add adversarial QA cases
-10. compile into the production runtime and test Live
+9. write the Listening Preview as a reviewed variant where required/useful
+10. add adversarial QA cases
+11. compile into the production runtime and test Live
 
 Each promoted mission therefore gets:
 
@@ -158,7 +159,7 @@ Fix the mission factory when a repeated systemic problem appears. Do not patch e
 Once the Core missions are stable:
 
 - promote the remaining reviewed A1 missions
-- begin A2 Core production using the already-reviewed cross-level map
+- begin A2 Core production using the reviewed A2 map
 
 Not every non-Core mission requires a Listening Preview. Add one where it materially helps the learner understand the interaction shape.
 
@@ -173,12 +174,22 @@ A2 must introduce more than longer sentences:
 - short follow-up chains
 - one bounded variation/minor complication
 
+The current A2 map explicitly checks progression such as:
+
+```text
+A1 straightforward request -> A2 request with preferences
+A1 simple plan -> A2 preference/reason + one alternative
+A1 visible problem -> A2 describe details + arrange next step
+A1 ask for repetition -> A2 targeted clarification
+```
+
 B1 should introduce:
 
 - meaningful complications
 - connected explanation
 - learner-owned follow-ups
 - multiple plausible branches
+- short narration/explanation stretches
 - more independence
 
 At A2/B1, canonical dialogues remain required, but Gemini's allowed surface variation and authored branching can increase.
