@@ -6,7 +6,7 @@ Supersedes `BUILD_PLAN_V1.md` where the two differ.
 
 ## Goal
 
-Build a reviewed Practice library from a visible A1–C2 level/world map, then promote missions into production one by one through a repeatable authoring and Live-QA factory.
+Build a reviewed Practice library from a visible A1–C2 level/world map, then promote missions into production one by one through a repeatable **language-grounded dialogue authoring + semantic graph + Live-QA** factory.
 
 ## Phase 0 — Current foundation
 
@@ -17,7 +17,11 @@ Current architecture includes:
 - level-aware Practice product shell
 - A1–C2 Level Bible
 - canonical World taxonomy
-- semantic mission contract
+- Practice Map approach
+- shared-language grounding from `english-course`
+- canonical authored dialogue as a required full-mission artifact
+- semantic mission graph
+- bounded Gemini surface freedom
 - dynamic contextual hints
 - first live A1 vertical slice (`Order a drink`)
 - optional Listening Preview design
@@ -95,20 +99,38 @@ Current draft Core set:
 7. Book a simple appointment
 8. Make a simple plan
 
-`Order a drink` is already the first runtime vertical slice.
+`Order a drink` is already the first runtime vertical slice and first mission upgraded to the grounded-dialogue model.
 
-Each promoted mission gets:
+### Authoring order for every promoted mission
+
+1. validate the real communicative goal/workflow
+2. select relevant reviewed language from `english-course`
+3. write the complete canonical dialogue
+4. review the dialogue for level, realism, turn length and language coverage
+5. author/validate the semantic graph around the dialogue
+6. add preferred AI realizations and surface-freedom bounds
+7. write the Listening Preview as a reviewed variant where required/useful
+8. define correction focus, dynamic-hint context and completion conditions
+9. add adversarial QA cases
+10. compile into the production runtime and test Live
+
+Each promoted mission therefore gets:
 
 - source checks
+- language grounding references
+- canonical authored dialogue
 - scenario truth
 - semantic graph
 - learner intents
+- preferred AI realizations where useful
 - correction focus
 - branch/recovery rules
 - dynamic hint policy
 - completion condition
 - QA cases
-- Listening Preview transcript and audio asset before full publication
+- Listening Preview transcript and audio asset before full publication when required
+
+See `LANGUAGE_GROUNDING_AND_CANONICAL_DIALOGUE_V1.md`.
 
 ## Phase 4 — Live QA the A1 Core set
 
@@ -116,7 +138,7 @@ Run real voice QA, not transcript-only QA.
 
 Required test paths include:
 
-- normal response
+- canonical normal path
 - valid paraphrase
 - genuine error
 - short natural answer
@@ -129,6 +151,7 @@ Required test paths include:
 - off-topic detour and recovery
 - replay with less support
 - natural ending
+- surface-control check: Gemini should not make a low-level normal path harder merely for stylistic variety
 
 Fix the mission factory when a repeated systemic problem appears. Do not patch every mission independently for the same runtime bug.
 
@@ -140,6 +163,8 @@ Once the Core missions are stable:
 - begin A2 Core production using the already-reviewed cross-level map
 
 Not every non-Core mission requires a Listening Preview. Add one where it materially helps the learner understand the interaction shape.
+
+Every full mission still requires an authored canonical dialogue even when no Listening Preview is included.
 
 ## Phase 6 — A2 and B1 production
 
@@ -157,6 +182,8 @@ B1 should introduce:
 - learner-owned follow-ups
 - multiple plausible branches
 - more independence
+
+At A2/B1, canonical dialogues remain required, but Gemini's allowed surface variation and authored branching can increase.
 
 Existing B1 vertical-slice research may inform runtime testing but does not dictate the Practice map.
 
@@ -178,6 +205,8 @@ Increase:
 - register/tact
 
 Higher-level difficulty must come from the communication problem, not obscure vocabulary.
+
+Canonical conversation/branch exemplars still matter at higher levels, but runtime surface freedom becomes wider inside authored truth, goals and pragmatic constraints.
 
 ## Phase 8 — Recommendations
 
@@ -210,8 +239,8 @@ Before bulk production, prefer a **complete visible map with honest gaps** over 
 
 After the map is approved, prefer:
 
-> one mission fully sourced, authored, previewed where useful, and Live-tested
+> one mission with reviewed language grounding, a deliberately written canonical conversation, a semantic graph, bounded Live behaviour, a useful preview where appropriate, and real audio QA
 
 instead of:
 
-> twenty plausible-looking mission files that have never survived a real conversation.
+> twenty scenario prompts that leave Gemini to invent the curriculum at runtime.
