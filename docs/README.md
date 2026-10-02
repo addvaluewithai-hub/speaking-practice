@@ -8,16 +8,17 @@ Historical/superseded design files should not be kept beside current docs. Git h
 
 1. `PRACTICE_ARCHITECTURE_V2.md` — what Practice is and how authored conversation + Gemini Live work together.
 2. `PRACTICE_MAP_V1.md` — master index for the level/world mission library map.
-3. `practice-map/A1.md`, `practice-map/A2.md`, ... — detailed level maps as they are drafted.
-4. `LEVEL_BIBLE_V1.md` — what interaction difficulty means from A1 to C2.
-5. `WORLD_TAXONOMY_V1.md` — the canonical browsing worlds.
-6. `LANGUAGE_GROUNDING_AND_CANONICAL_DIALOGUE_V1.md` — how reviewed `english-course` language becomes an authored Practice conversation.
-7. `MISSION_CONTRACT_V1.md` — the full mission object/schema.
-8. `DYNAMIC_HINTS_V1.md` — contextual Hint generation and caching.
-9. `LISTENING_PREVIEW_V1.md` — optional reviewed example conversation before Live Practice.
-10. `AUTHORING_QA_V1.md` — review and publication gates.
-11. `SOURCES.md` — source hierarchy and provenance rules.
-12. `BUILD_PLAN_V2.md` — current production sequence.
+3. `practice-map/A1.md` through `practice-map/C2.md` — detailed level maps.
+4. `CROSS_LEVEL_REVIEW_V1.md` — first whole-map progression/overlap review.
+5. `LEVEL_BIBLE_V1.md` — what interaction difficulty means from A1 to C2.
+6. `WORLD_TAXONOMY_V1.md` — canonical browsing worlds and boundary rules.
+7. `LANGUAGE_GROUNDING_AND_CANONICAL_DIALOGUE_V1.md` — how reviewed `english-course` language becomes an authored Practice conversation.
+8. `MISSION_CONTRACT_V1.md` — the full mission object/schema.
+9. `DYNAMIC_HINTS_V1.md` — contextual Hint generation and caching.
+10. `LISTENING_PREVIEW_V1.md` — optional reviewed example conversation before Live Practice.
+11. `AUTHORING_QA_V1.md` — review and publication gates.
+12. `SOURCES.md` — source hierarchy and provenance rules.
+13. `BUILD_PLAN_V2.md` — current production sequence.
 
 ## Repository boundaries
 
@@ -33,8 +34,12 @@ Do not add a `Learn/` curriculum folder here. Practice may reference `english-co
 
 - A1 — first full map drafted: `practice-map/A1.md`
 - A2 — first full map drafted: `practice-map/A2.md`
-- B1 — next mapping pass
-- B2/C1/C2 — pending
+- B1 — first full map drafted: `practice-map/B1.md`
+- B2 — first full map drafted: `practice-map/B2.md`
+- C1 — first full map drafted: `practice-map/C1.md`
+- C2 — first full map drafted: `practice-map/C2.md`
+
+The first complete A1–C2 map is visible. `CROSS_LEVEL_REVIEW_V1.md` records the first whole-map review and current overlap/balance risks.
 
 The map files describe the library and progression. They are not published mission contracts.
 
@@ -59,3 +64,5 @@ real communicative goal
 Detailed authored missions live in `../missions/`.
 
 Use `../missions/MISSION_TEMPLATE.yaml` when promoting a reviewed Practice Map item into a full mission contract.
+
+Current production guidance after the whole-map draft: do **not** bulk-create all mapped missions. Promote reviewed Core missions one by one so real dialogue authoring and Live QA can still change the factory/map when needed.
