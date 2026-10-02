@@ -1,5 +1,5 @@
 id: practice.a1.food.order-drink.v1
-revision: 1
+revision: 2
 status: pilot
 level: A1
 world: food-shopping
@@ -12,6 +12,51 @@ learner_role: customer
 ai_role: cafe cashier
 setting: small cafe counter
 mission_goal: Order one drink, answer one predictable service question, complete the payment exchange, and close naturally.
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: Selected language opportunities and level anchors; these are not mandatory learner item checks.
+  abilities:
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p078.a1.obtaining_goods_and_services.001
+      source_text: Can ask people for things and give people things.
+      role: supporting_transaction_grounding
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p078.a1.obtaining_goods_and_services.002
+      source_text: Can ask for food and drink using basic expressions.
+      role: core_communicative_grounding
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p078.a1.obtaining_goods_and_services.003
+      source_text: Can handle numbers, quantities, cost and time.
+      role: price_and_size_grounding
+  grammar:
+    - id: egp.1741163710391x459074403345042000
+      label: can for requests
+      role: productive_opportunity
+    - id: egp.1741163711300x569087712695511000
+      label: would like for wishes and preferences
+      role: productive_or_receptive_alternative
+  phrases:
+    - id: oxford.phrase.online.0076
+      phrase: ask for sth
+      role: functional_grounding
+    - id: oxford.phrase.online.0668
+      phrase: Thank you
+      role: closing_and_politeness
+  words:
+    - id: oxford.o3000.p01.154
+      word: coffee
+    - id: oxford.o3000.p03.237
+      word: tea
+    - id: oxford.o3000.p04.054
+      word: water
+    - id: oxford.o3000.p03.183
+      word: small
+    - id: oxford.o3000.p02.179
+      word: large
+    - id: oxford.o3000.p01.214
+      word: dollar
+    - id: oxford.o3000.p03.077
+      word: please
 
 truth:
   menu_items:
@@ -32,32 +77,72 @@ truth:
         large: 2
   currency: dollars
 
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: This is the reviewed normal path. Live learner wording may differ whenever it fulfils the semantic intent naturally.
+  turns:
+    - beat: greet_order
+      speaker: ai_role
+      text: Hello. What would you like?
+    - beat: greet_order
+      speaker: learner
+      text: Can I have a coffee, please?
+    - beat: choose_size
+      speaker: ai_role
+      text: Small or large?
+    - beat: choose_size
+      speaker: learner
+      text: Small, please.
+    - beat: price
+      speaker: ai_role
+      text: Three dollars, please.
+    - beat: price
+      speaker: learner
+      text: Okay. Thank you.
+    - beat: close
+      speaker: ai_role
+      text: Thank you.
+
 runtime:
-  ai_freedom: tight
+  surface_freedom: tight
   max_ai_turn_style: short
   default_hint_mode: tap
   learner_turn_policy: one clear move at a time
   completion_policy: reach a valid natural closing; completion is not a mastery claim
+  normal_path_policy: stay close to canonical/preferred language unless adaptation is needed for a valid learner move, correction, clarification, or scenario truth
 
 beats:
   - id: greet_order
     type: required
     ai_intent: Greet the customer naturally and ask what they would like to order.
+    preferred_realizations:
+      - Hello. What would you like?
+      - Hi. What can I get for you?
     learner_intent: Request one available drink politely.
     overview_ar: اطلب المشروب اللي عايزه
+    authored_learner_models:
+      - Can I have a coffee, please?
+      - I'd like a tea, please.
+      - Water, please.
     accepted_semantics:
       - learner clearly requests one available drink
-      - any natural request wording is accepted; exact example wording is not required
+      - any natural request wording is accepted; exact model wording is not required
+      - a short natural A1 request may be sufficient
     correction_focus:
       - correct only a genuine request-form error or wording that is unclear enough to block the order
-      - do not correct a valid alternative just because it differs from a common model sentence
+      - do not correct a valid alternative just because it differs from the canonical dialogue or models
     next: choose_size
 
   - id: choose_size
     type: required
     ai_intent: Ask whether the learner wants a small or large size.
+    preferred_realizations:
+      - Small or large?
     learner_intent: Choose one offered size.
     overview_ar: اختار الحجم
+    authored_learner_models:
+      - Small, please.
+      - Large, please.
     accepted_semantics:
       - learner clearly selects small or large
     correction_focus:
@@ -68,8 +153,12 @@ beats:
   - id: price
     type: required
     ai_intent: State the correct price for the selected drink and size, then allow the learner to complete the exchange.
+    preferred_realization_rule: State the exact truth-model price in one short sentence, normally using '<number> dollars, please.'
     learner_intent: Acknowledge the price and complete the payment exchange politely.
     overview_ar: كمّل الدفع واقفل الطلب
+    authored_learner_models:
+      - Okay. Thank you.
+      - Thank you.
     accepted_semantics:
       - learner acknowledges the price and completes the exchange naturally
     correction_focus:
@@ -78,17 +167,22 @@ beats:
 
   - id: close
     type: ending
-    ai_intent: Give one short natural closing line, such as confirming the order or thanking the customer.
+    ai_intent: Give one short natural closing line confirming/closing the transaction.
+    preferred_realizations:
+      - Thank you.
     learner_intent: Optional polite closing.
 
 agent_policy:
   - Stay in role as the cafe cashier; do not explain the exercise.
-  - Follow the authored beat order, but phrase each turn naturally rather than reading a fixed script.
+  - Treat canonical_dialogue and preferred_realizations as the reviewed normal-path language anchor, especially because this is A1.
+  - On the normal path, stay close to the authored wording instead of inventing stylistic alternatives for variety alone.
+  - Adapt wording when the learner makes a valid alternative move, asks a reasonable question, needs clarification/correction, or selects an unavailable item.
+  - Follow the authored beat order and semantic intents; never force the learner to repeat a canonical line.
   - Before each AI turn that creates a learner response opportunity, update the runtime to the beat being opened.
   - Do not advance a beat until the learner has actually completed its communicative intent.
   - If the learner hesitates, wait; do not force-feed a target sentence.
   - If the learner says something different but correct, accept it and continue.
-  - If there is a genuine current-beat English error, give a concise correction with the natural form and let the learner retry before advancing.
+  - If there is a genuine current-beat English error, give a concise correction with a natural level-appropriate form and let the learner retry before advancing.
   - Never invent menu items, sizes, or prices outside scenario truth.
   - Keep turns short and ask one thing at a time.
 
@@ -103,6 +197,8 @@ hint_policy:
     - current authored beat and learner intent
     - scenario truth
     - CEFR level and runtime language ceiling
+    - selected language grounding
+    - canonical dialogue and authored learner models as support anchors, never password answers
   bundle:
     intent_ar: short Egyptian-Arabic description of the best next communicative move now
     context_ar: optional short recovery/context note when the conversation has moved away from the expected path
@@ -114,6 +210,7 @@ hint_policy:
     level_3: full_response_en from the cached bundle
   rules:
     - request the complete bundle once; later reveal levels must not make additional model requests for the same active beat
+    - prefer level-grounded useful language when it fits the actual current context
     - the full response is an example, never the only accepted answer
     - hints must follow the conversation that actually happened, not an imagined fixed transcript
     - a detour should produce a recovery-aware hint that still moves toward the mission goal
@@ -123,20 +220,24 @@ hint_policy:
 listening_preview:
   status: authored
   purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_shape_reviewed_variant
+  variant_note: Uses a different request form, drink, and size while staying inside the same A1 language grounding and interaction shape.
   transcript_default: hidden
   transcript:
     - speaker: ai_role
-      text: Hi. What can I get for you?
+      text: Hi. What would you like?
     - speaker: customer
-      text: A tea, please.
+      text: I'd like a tea, please.
     - speaker: ai_role
-      text: Sure. Small or large?
+      text: Small or large?
     - speaker: customer
       text: Large, please.
     - speaker: ai_role
-      text: That's three dollars.
+      text: Three dollars, please.
     - speaker: customer
-      text: Okay, thanks.
+      text: Okay. Thank you.
+    - speaker: ai_role
+      text: Thank you.
   audio_asset: null
 
 success_conditions:
@@ -146,21 +247,30 @@ success_conditions:
   - conversation reaches a natural closing
 
 qa_cases:
+  - name: canonical_path
+    learner_turns:
+      - Can I have a coffee, please?
+      - Small, please.
+      - Okay. Thank you.
+    expected: complete naturally with AI wording close to canonical/preferred realizations
   - name: valid_alternative_request
     learner: Could I get a coffee, please?
-    expected: accept without correction and continue to size
+    expected: accept without correction and continue to size even though the sentence is not the canonical learner line
+  - name: minimal_valid_request
+    learner: Coffee, please.
+    expected: accept as a natural A1 request and continue
   - name: short_valid_size
     learner: Large, please.
     expected: accept without demanding a full sentence
   - name: genuine_request_error
     learner: I like coffee please.
-    expected: briefly correct toward a natural request such as I'd like a coffee, please; invite retry; do not advance yet
+    expected: briefly correct toward a natural request such as I'd like a coffee, please or Can I have a coffee, please; invite retry; do not advance yet
   - name: contextual_hint_after_menu_question
     conversation:
       - learner: What do you have?
       - cashier: We have coffee, tea and water.
       - learner_action: taps Hint
-    expected: one hint bundle is generated from this exact context; Arabic intent should tell the learner to choose one of the available drinks and order it; later useful-language/full-response reveals reuse the same cached bundle
+    expected: one hint bundle is generated from this exact context; Arabic intent should tell the learner to choose one of the available drinks and order it; useful language should stay A1-grounded; later reveal levels reuse the same cached bundle
   - name: contextual_hint_after_unavailable_item
     conversation:
       - learner: Do you have orange juice?
@@ -169,4 +279,7 @@ qa_cases:
     expected: hint bundle helps the learner choose an available alternative rather than showing a generic prewritten order hint
   - name: unsupported_item
     learner: I'd like an orange juice, please.
-    expected: say orange juice is not available and briefly offer coffee, tea, or water without breaking role
+    expected: say orange juice is not available and briefly offer coffee, tea, or water without breaking role; remain at A1-level language as much as possible
+  - name: surface_control
+    learner_behavior: follows the normal authored path
+    expected: AI should not replace short canonical/preferred turns with longer or lexically harder stylistic improvisation merely for variety
