@@ -1,0 +1,304 @@
+id: practice.a1.everyday.ask-repeat.v1
+revision: 1
+status: contract_reviewed
+level: A1
+world: everyday-life
+library_role: core
+title: Ask someone to repeat
+title_ar: اطلب من الشخص يعيد الكلام
+estimated_minutes: 3
+
+learner_role: visitor
+ai_role: helpful activity host
+setting: entrance to a small community activity
+mission_goal: Recover one missed detail from a short everyday message by signalling difficulty, asking for repetition, confirming the recovered detail, and closing politely.
+
+learner_context:
+  known_before_live:
+    - You are going to a small community activity.
+    - The host will tell you the start time and room number.
+    - You missed the room number and need the host to repeat it.
+  privacy_rule: No real learner personal information is needed.
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: Selected language anchors for clarification/repair. They guide the authored dialogue and support; they are not mandatory learner passwords.
+  abilities:
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p089.a1.asking_for_clarification.001
+      source_text: Can indicate with simple words/signs, intonation and gestures that they do not understand.
+      role: core_repair_grounding
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p089.a1.asking_for_clarification.002
+      source_text: Can express in a simple way that they do not understand.
+      role: core_repair_grounding
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p074.a1.conversation.001
+      source_text: Can understand everyday expressions for simple concrete needs when delivered clearly, slowly and with repetition by a sympathetic interlocutor.
+      role: supportive_interlocutor_and_repetition_grounding
+  grammar:
+    - id: egp.1741163710391x459074403345042000
+      label: can for requests
+      role: productive_opportunity
+  phrases:
+    - id: oxford.phrase.online.0229
+      phrase: excuse me
+      role: optional_polite_repair_opener
+    - id: oxford.phrase.online.0668
+      phrase: Thank you
+      role: polite_closing
+  words:
+    - id: oxford.o3000.p01.016
+      word: again
+      role: repair_language
+    - id: oxford.o3000.p03.142
+      word: say
+      role: repair_language
+    - id: oxford.o3000.p03.132
+      word: room
+      role: scenario_language
+  allowed_untracked_models:
+    - Sorry.
+    - Can you say that again, please?
+    - Sorry, what room?
+    - Again, please.
+  note: Not every natural model sentence has to correspond to one phrase-list entry; the cumulative A1 inventory and reviewed ability/grammar boundary control the dialogue as a whole.
+
+truth:
+  activity:
+    type: class
+    start_time_spoken: six
+    room_number_spoken: fifteen
+  missed_detail: room_number
+  correct_room_number: fifteen
+  interaction_facts:
+    - The learner already knows they missed the room number.
+    - The host is cooperative and will repeat the relevant detail clearly.
+    - The host must not invent another time or room number.
+    - The host must not pretend the learner heard incorrectly if the learner confirms room fifteen.
+
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: The learner is told before Live that the room number was missed; Gemini should speak clearly rather than manufacture difficulty through mumbling or artificial speed.
+  turns:
+    - beat: hear_message
+      speaker: ai_role
+      text: Hi. The class starts at six in room fifteen.
+    - beat: ask_repeat
+      speaker: learner
+      text: Sorry. Can you say the room number again, please?
+    - beat: repeat_detail
+      speaker: ai_role
+      text: Room fifteen.
+    - beat: confirm_detail
+      speaker: learner
+      text: Room fifteen?
+    - beat: confirm_detail
+      speaker: ai_role
+      text: Yes, that's right.
+    - beat: close
+      speaker: learner
+      text: Thank you.
+    - beat: close
+      speaker: ai_role
+      text: You're welcome.
+
+runtime:
+  surface_freedom: tight
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: one clear communicative move at a time
+  completion_policy: learner successfully requests repetition, recovers/confirms the missed room detail, and reaches a natural close
+  normal_path_policy: stay close to canonical/preferred wording; adapt only for a natural learner alternative, clarification, correction, or recovery
+  audio_policy:
+    initial_message: clear_natural_a1_delivery
+    repeated_detail: clear_and_slightly_separated_without_exaggeration
+    no_fake_mumbling: true
+
+beats:
+  - id: hear_message
+    type: setup
+    ai_intent: Give the learner the short authored message once, clearly and naturally.
+    preferred_realizations:
+      - Hi. The class starts at six in room fifteen.
+    learner_intent: No learner response is evaluated inside this setup beat; immediately open ask_repeat after the message.
+    transition: ask_repeat
+
+  - id: ask_repeat
+    type: required
+    ai_intent: Wait for the learner to signal that the room detail was missed and request repetition or clarification.
+    learner_intent: Signal difficulty and ask the host to repeat or clarify the room number.
+    overview_ar: اطلب منه يعيد رقم الأوضة
+    authored_learner_models:
+      - Sorry. Can you say the room number again, please?
+      - Sorry, what room?
+      - Again, please.
+      - Sorry?
+    accepted_semantics:
+      - learner clearly signals that something was not understood and requests repetition
+      - learner specifically asks for the room number again
+      - a short natural A1 repair such as Sorry? or Again, please is valid
+      - a request to repeat the whole message is also valid
+    correction_focus:
+      - accept short natural repair language; do not force the canonical full sentence
+      - if the learner produces a clearly malformed request that makes the repair intention difficult to understand, correct briefly and invite retry
+      - do not correct simply because the learner uses Sorry? instead of Can you say that again, please?
+    next: repeat_detail
+
+  - id: repeat_detail
+    type: required
+    ai_intent: Repeat the missed room information clearly; if the learner asked for the whole message, repeat the whole short message once, still preserving the same truth.
+    preferred_realizations:
+      - Room fifteen.
+      - It's room fifteen.
+    learner_intent: Listen to the repeated information; the next meaningful learner move is to confirm the recovered room detail.
+    transition: confirm_detail
+
+  - id: confirm_detail
+    type: required
+    ai_intent: Allow the learner to confirm the recovered detail, then confirm it briefly.
+    learner_intent: Confirm that the room is fifteen or otherwise show the recovered detail clearly.
+    overview_ar: اتأكد إنك سمعت الرقم صح
+    authored_learner_models:
+      - Room fifteen?
+      - Fifteen?
+      - Okay, room fifteen.
+    accepted_semantics:
+      - learner repeats or checks the correct room number fifteen
+      - learner clearly demonstrates the recovered room detail
+    correction_focus:
+      - if learner says the wrong room number, correct the factual detail naturally; do not describe it as a grammar error
+      - if learner confirms fifteen naturally, accept immediately
+      - short confirmation is fully valid at A1
+    next: close
+
+  - id: close
+    type: ending
+    ai_intent: Close briefly and naturally after the detail is confirmed.
+    preferred_realizations:
+      - Yes, that's right.
+      - Yes. Room fifteen.
+    learner_intent: Optional polite closing such as Thank you.
+
+agent_policy:
+  - Stay in role as the helpful activity host; never explain the mission engine.
+  - Do not create difficulty by mumbling, racing, changing accent unnaturally, or deliberately mispronouncing the initial message.
+  - The learner is already told by the scenario that the room number was missed; simply deliver the authored message once and allow them to initiate repair.
+  - Treat canonical_dialogue and preferred_realizations as the normal-path A1 language anchor.
+  - Accept natural A1 repair alternatives, including very short forms such as Sorry?, What room?, or Again, please.
+  - Do not demand the full canonical request to count as success.
+  - When the learner requests repetition, respond as a cooperative real person would: repeat the relevant detail or the whole short message if that is what they requested.
+  - Preserve the authored time and room truth on every repetition.
+  - If the learner confirms an incorrect room number, repair the factual misunderstanding briefly, for example Room fifteen, then let the learner confirm again before completion.
+  - Genuine English errors that block the repair move receive one concise correction and retry; harmless variation does not.
+  - Keep every spoken turn short and ask at most one thing at a time.
+  - If the learner hesitates, wait; do not automatically say the repair phrase for them.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current semantic beat and learner intent
+    - scenario truth
+    - A1 language grounding
+    - canonical dialogue and learner models as support anchors, never password answers
+  expected_behavior:
+    ask_repeat:
+      intent_example_ar: قوله إنك مسمعتش رقم الأوضة واطلب منه يعيده
+      useful_language_examples: [Sorry, again, please, Can you say ... again?]
+      full_response_example: Sorry. Can you say the room number again, please?
+    confirm_detail:
+      intent_example_ar: اتأكد إنك سمعت رقم الأوضة صح
+      useful_language_examples: [room, fifteen, okay]
+      full_response_example: Room fifteen?
+  rules:
+    - examples above are QA/support anchors, not hardcoded UI cards
+    - Gemini generates one complete contextual bundle on the first Hint tap for the active beat
+    - later support levels reveal the same cached bundle with no extra request
+    - if the conversation has moved naturally, the generated Hint must fit what actually happened
+    - a Hint request never counts as learner speech and never advances the mission
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_repair_shape_reviewed_variant
+  variant_note: Uses different concrete time/room details and a shorter repair form to demonstrate that the live mission does not have one required sentence.
+  transcript_default: hidden
+  transcript:
+    - speaker: ai_role
+      text: The meeting starts at seven in room twelve.
+    - speaker: visitor
+      text: Sorry, what room?
+    - speaker: ai_role
+      text: Room twelve.
+    - speaker: visitor
+      text: Room twelve?
+    - speaker: ai_role
+      text: Yes, that's right.
+    - speaker: visitor
+      text: Thank you.
+  audio_asset: null
+
+success_conditions:
+  - learner signals a comprehension problem and requests repetition or clarification
+  - host repeats the authored information cooperatively
+  - learner correctly recovers/confirms room fifteen
+  - conversation reaches a natural close
+
+qa_cases:
+  - name: canonical_repair
+    learner: Sorry. Can you say the room number again, please?
+    expected: accept without correction; repeat Room fifteen; continue to confirmation
+
+  - name: minimal_repair_sorry
+    learner: Sorry?
+    expected: accept as a natural A1 repair signal; repeat the short message or relevant room detail; do not demand a full sentence
+
+  - name: minimal_repair_again
+    learner: Again, please.
+    expected: accept without correction and repeat clearly
+
+  - name: specific_repair
+    learner: What room?
+    expected: accept and repeat Room fifteen
+
+  - name: valid_alternative_request
+    learner: Can you say that again, please?
+    expected: accept; repeat the whole short message once; preserve six and room fifteen
+
+  - name: malformed_repair_request
+    learner: You say again room?
+    expected: if understood but clearly malformed, give one concise natural correction such as Can you say the room number again? and invite retry before advancing
+
+  - name: wrong_detail_confirmation
+    conversation:
+      - host: Room fifteen.
+      - learner: Room fifty?
+    expected: correct the factual misunderstanding briefly with Room fifteen; keep confirm_detail active; allow learner to confirm again; do not call it a grammar error
+
+  - name: correct_short_confirmation
+    conversation:
+      - host: Room fifteen.
+      - learner: Fifteen?
+    expected: accept and confirm Yes, that's right
+
+  - name: hint_before_repair
+    learner_action: taps Hint while ask_repeat is active
+    expected: one contextual Hint bundle supports signalling the missed room detail and requesting repetition; later word/full-response reveals reuse the same bundle
+
+  - name: hint_after_repeat
+    conversation:
+      - learner: Sorry?
+      - host: The class starts at six in room fifteen.
+      - learner_action: taps Hint while confirm_detail is active
+    expected: Hint supports confirming room fifteen rather than showing the original repair request
+
+  - name: silence
+    learner_behavior: hesitates after the initial message
+    expected: wait patiently; do not supply Can you say that again? unasked; Hint remains learner-controlled
+
+  - name: no_fake_difficulty
+    expected: initial message is clear A1 speech; agent must not manufacture the task by mumbling or speaking unnaturally fast
