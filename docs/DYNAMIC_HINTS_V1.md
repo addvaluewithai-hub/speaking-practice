@@ -2,13 +2,25 @@
 
 Practice hints are **generated from the live conversation context**, not rendered from fixed authored sentences.
 
-The authored mission still owns the level, scenario truth, current learner intent, graph and correction boundaries. Gemini owns the wording of the help for the conversation that actually happened.
+The authored mission owns:
+
+- level
+- language grounding
+- canonical dialogue / learner models
+- scenario truth
+- current learner intent
+- graph
+- correction boundaries
+
+Gemini owns the wording of the help for the conversation that actually happened.
 
 ## Core rule
 
 > We author the intent. Gemini authors the help.
 
 A hint request must never turn Gemini into the mission designer. The model generates support only inside the current authored beat and mission constraints.
+
+The mission's canonical/grounded language should act as a **support anchor**, not as a password answer.
 
 ## One model request per active beat
 
@@ -45,7 +57,14 @@ When the authored beat changes, invalidate the old bundle. The first hint reques
 
 ## Context-sensitive generation
 
-Gemini should use the whole conversation so far.
+Gemini should use all of the following:
+
+- whole conversation so far
+- current semantic beat / learner intent
+- scenario truth
+- CEFR level
+- mission language grounding
+- canonical learner models / reference dialogue as examples of level-safe language
 
 Example: the authored learner intent is `request one available drink politely`.
 
@@ -59,6 +78,14 @@ A suitable intent hint could be:
 
 ```text
 اطلب المشروب اللي عايزه
+```
+
+And the useful language may naturally reuse authored A1 anchors such as:
+
+```text
+Can I have ...?
+I'd like ...
+please
 ```
 
 But after a detour:
@@ -107,17 +134,23 @@ Optional. A short contextual/recovery note when what just happened matters to th
 
 Two to five short English words or chunks appropriate to the current level and current moment.
 
+Prefer mission-grounded / reviewed language when it fits the actual conversation.
+
+Do not force a grounded item when a different simpler expression is more useful in context.
+
 ### `full_response_en`
 
-One natural complete learner response that would work **now**. It is a support example, never the only accepted answer.
+One natural complete learner response that would work **now**.
+
+The canonical learner line may be used when it fits the current context, or Gemini may generate another level-safe valid response. Either way it remains a support example, never the only accepted answer.
 
 ## Safety and pedagogy rules
 
 - A UI hint request is not learner speech and not evidence of an answer attempt.
 - Requesting or revealing a hint never advances the authored beat; the runtime freezes beat advancement while the request is active.
-- A valid learner alternative remains valid even when it differs from `full_response_en`.
+- A valid learner alternative remains valid even when it differs from `full_response_en` or the canonical dialogue.
 - Full-response help counts as stronger support than an intent hint.
-- Keep generated support inside the mission's CEFR level and scenario truth.
+- Keep generated support inside the mission's CEFR level, language grounding and scenario truth.
 - Never insert learner personal details into a generated hint.
 - Gemini must not call the hint tool proactively; a live UI request must be active.
 - The runtime rejects stale payloads whose `request_id` or `beat_id` no longer matches the active request.
@@ -130,6 +163,8 @@ Mission files should not contain the exact user-facing hint ladder as the primar
 
 They should contain:
 
+- language grounding
+- canonical dialogue / reviewed learner models
 - `learner_intent`
 - scenario truth
 - CEFR/runtime bounds
@@ -137,4 +172,4 @@ They should contain:
 - optional learner-facing mission overview text
 - the dynamic hint policy
 
-The conversation graph remains authored. The support wording is contextual at runtime.
+The canonical dialogue gives Gemini controlled level-safe language anchors. The semantic graph controls meaning. The help wording remains contextual at runtime.
