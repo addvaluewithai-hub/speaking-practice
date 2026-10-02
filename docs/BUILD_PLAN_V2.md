@@ -4,222 +4,212 @@ Status: **current source of truth**
 
 ## Goal
 
-Build a reviewed Practice library from a visible A1–C2 level/world map, then promote missions into production one by one through a repeatable **language-grounded dialogue authoring + semantic graph + Live-QA** factory.
+Build a reviewed Practice library from a visible A1–C2 map, then promote missions into production one by one through a repeatable:
 
-## Phase 0 — Current foundation
+> **language grounding -> canonical dialogue -> semantic graph -> Listening variant -> bounded Live performance -> QA**
 
-Status: substantially complete.
+factory.
 
-Current architecture includes:
+## Phase 0 — Foundation
+
+Status: **substantially complete**.
+
+Current foundation includes:
 
 - level-aware Practice product shell
 - A1–C2 Level Bible
-- canonical World taxonomy
-- Practice Map approach with one file per level
+- canonical World taxonomy + boundary rules
+- semantic mission contract
 - shared-language grounding from `english-course`
 - canonical authored dialogue as a required full-mission artifact
-- semantic mission graph
 - bounded Gemini surface freedom
-- dynamic contextual hints
-- first live A1 vertical slice (`Order a drink`)
+- dynamic contextual Hint bundles
 - optional Listening Preview design
-- authoring / QA gates
+- correction and authoring QA rules
+- first live A1 vertical slice: `Order a drink`
 
-Remaining foundation work should be driven by real authoring problems, not speculative schema expansion.
+Remaining architecture changes should be driven by real mission authoring/runtime failures, not speculative schema work.
 
-## Phase 1 — Build the full library map
+## Phase 1 — Full Practice Map
 
-Status: **in progress**.
+Status: **complete first draft**.
 
-Detailed maps live under `docs/practice-map/`, with `PRACTICE_MAP_V1.md` as the master index.
+Detailed level maps:
 
-Current progress:
+- A1: 24 missions / 8 Core
+- A2: 24 / 8
+- B1: 24 / 8
+- B2: 24 / 8
+- C1: 21 / 7
+- C2: 21 / 7
 
-1. A1 — first full map drafted (`practice-map/A1.md`)
-2. A2 — first full map drafted (`practice-map/A2.md`)
-3. B1 — **next mapping pass**
-4. B2 — pending
-5. C1 — pending
-6. C2 — pending
+Total: **138 candidate missions / 46 Core**.
 
-For each level define:
+Counts are not targets and remain editable.
 
-- primary world
-- mission title
-- real communicative goal
-- interaction problem/shape
-- Core / library status
-- Listening Preview expectation
-- explicit contrast with nearby levels when a context repeats
+See `PRACTICE_MAP_V1.md` and `practice-map/A1.md` through `C2.md`.
 
-Do not design a required lesson order.
+## Phase 2 — Cross-level review
 
-### Why map all levels first
+Status: **first pass complete**.
 
-Seeing the full map before bulk implementation lets us catch:
+The first review confirmed the broad progression:
 
-- repeated missions pretending to be progression
-- A2/B1 missions that are only lower-level missions with longer sentences
-- gaps in real-life coverage
-- worlds that disappear at certain levels without a reason
-- difficulty jumps that are too large or too small
-- higher-level missions that rely on obscure vocabulary instead of a harder communication problem
+```text
+A1 predictable single-goal exchange
+A2 routine + preference/detail/minor variation
+B1 meaningful complication + explanation/problem solving
+B2 trade-offs + negotiation/disagreement
+C1 ambiguity + tact + register + relationship-sensitive pragmatics
+C2 subtle implication + precise reformulation + layered flexibility/mediation
+```
 
-The existing `Order a drink` pilot remains useful runtime research while the map is completed.
+Actions already taken from review:
 
-## Phase 2 — Cross-level map review
+- narrowed `everyday-life` so it cannot become a catch-all
+- clarified World boundaries
+- documented duplicate/overlap watchlists
+- rebalanced C1/C2 Core sets away from conflict-heavy entry experiences
+- preserved conflict/negotiation missions in the wider advanced library
 
-After A1–C2 titles/goals are visible, review the whole library for progression.
+See `CROSS_LEVEL_REVIEW_V1.md`.
 
-Questions:
-
-- Does the communication problem genuinely evolve across levels?
-- Are the same real-life worlds revisited in richer ways where useful?
-- Are some missions duplicates under different names?
-- Does each level have a balanced mix of social, information, service, planning, repair, problem-solving and higher-level interaction needs?
-- Are Core missions a helpful entry set rather than a hidden sequence?
-- Do lower-level missions leave enough headroom for meaningful B1–C2 progression?
-
-Mission count is a result of coverage quality, not a target.
+Cross-level review is not permanently “finished”: canonical-dialogue writing and Live QA may still expose weak distinctions and send missions back to the map.
 
 ## Phase 3 — Promote A1 Core missions
 
-Promote the reviewed A1 Core set into full authored contracts one by one.
+Status: **active production phase**.
 
-Current draft Core set:
+A1 Core:
 
-1. Meet someone new
-2. Ask someone to repeat
-3. Order a drink
-4. Buy one item and ask the price
-5. Ask where a place is
-6. Check into a hotel
-7. Book a simple appointment
-8. Make a simple plan
+1. `A1-PS-01` — Meet someone new
+2. `A1-EV-01` — Ask someone to repeat
+3. `A1-FS-01` — Order a drink
+4. `A1-FS-03` — Buy one item and ask the price
+5. `A1-TT-01` — Ask where a place is
+6. `A1-TT-03` — Check into a hotel
+7. `A1-HS-02` — Book a simple appointment
+8. `A1-PL-03` — Make a simple plan
 
-`Order a drink` is already the first runtime vertical slice and first mission upgraded to the grounded-dialogue model.
+`Order a drink` is already the first full vertical slice.
+
+### Next mission
+
+Promote **`A1-EV-01 — Ask someone to repeat`** next.
+
+Reason: it tests a different mission family from the café transaction:
+
+- clarification/repair
+- silence/listening timing
+- repeat vs slow-down requests
+- confirming a recovered detail
+- dynamic Hint generation after misunderstanding
+- correction without turning repair into a grammar quiz
+
+That gives better architectural evidence than immediately authoring another transaction.
 
 ### Authoring order for every promoted mission
 
 1. validate the real communicative goal/workflow
-2. select relevant reviewed language from `english-course`
-3. write the complete canonical dialogue
-4. review the dialogue for level, realism, turn length and language coverage
-5. define compact scenario truth
-6. author/validate the semantic graph around the dialogue
-7. add preferred AI realizations and surface-freedom bounds
-8. define correction focus, dynamic-hint context and completion conditions
-9. write the Listening Preview as a reviewed variant where required/useful
-10. add adversarial QA cases
-11. compile into the production runtime and test Live
+2. inspect cumulative reviewed level language in `english-course`
+3. select relevant ability/grammar/phrase/word source IDs
+4. write the complete canonical dialogue
+5. review dialogue for level, realism, turn length, density, and naturalness
+6. define scenario truth
+7. derive/validate semantic beats/branches around the dialogue
+8. add preferred AI realizations and level-appropriate surface freedom
+9. define correction focus and accepted semantic alternatives
+10. define dynamic Hint context/anchors
+11. write Listening Preview as a reviewed variant where required/useful
+12. add adversarial QA cases
+13. compile/sync to production runtime
+14. run real Gemini Live/audio QA
 
-Each promoted mission therefore gets:
+## Phase 4 — A1 Core Live QA
 
-- source checks
-- language grounding references
-- canonical authored dialogue
-- scenario truth
-- semantic graph
-- learner intents
-- preferred AI realizations where useful
-- correction focus
-- branch/recovery rules
-- dynamic hint policy
-- completion condition
-- QA cases
-- Listening Preview transcript and audio asset before full publication when required
+Status: **starts mission-by-mission during Phase 3**.
 
-See `LANGUAGE_GROUNDING_AND_CANONICAL_DIALOGUE_V1.md`.
-
-## Phase 4 — Live QA the A1 Core set
-
-Run real voice QA, not transcript-only QA.
-
-Required test paths include:
+Required test paths:
 
 - canonical normal path
 - valid paraphrase
-- genuine error
-- short natural answer
-- silence/hesitation
-- dynamic Hint on expected path
-- dynamic Hint after a detour
-- unavailable/impossible option
+- short natural response
+- genuine target-relevant error
+- unclear response
+- silence / hesitation
 - learner interruption
 - Arabic help request
+- dynamic Hint on expected path
+- dynamic Hint after a valid detour
+- impossible/unavailable option where relevant
 - off-topic detour and recovery
 - replay with less support
 - natural ending
-- surface-control check: Gemini should not make a low-level normal path harder merely for stylistic variety
+- surface-control check: Gemini must not make low-level normal paths harder merely for variety
 
-Fix the mission factory when a repeated systemic problem appears. Do not patch every mission independently for the same runtime bug.
+When the same failure appears across missions, fix the **factory/runtime**, not each mission independently.
 
-## Phase 5 — Complete A1 and start A2 production
+## Phase 5 — Complete A1 + begin A2 production
 
-Once the Core missions are stable:
+After A1 Core survives real Live QA:
 
-- promote the remaining reviewed A1 missions
-- begin A2 Core production using the reviewed A2 map
+- promote remaining reviewed A1 missions
+- start A2 Core using the already-reviewed A2 map
+- keep canonical dialogue required for every full mission
+- add Listening Preview only where level policy says it materially helps
 
-Not every non-Core mission requires a Listening Preview. Add one where it materially helps the learner understand the interaction shape.
+## Phase 6 — A2 / B1 production
 
-Every full mission still requires an authored canonical dialogue even when no Listening Preview is included.
+A2 must preserve:
 
-## Phase 6 — A2 and B1 production
+- one main goal + secondary detail
+- preference/reason
+- short connected follow-ups
+- bounded variation/minor complication
 
-A2 must introduce more than longer sentences:
+B1 must add:
 
-- one main goal plus a secondary detail
-- small preferences/reasons
-- short follow-up chains
-- one bounded variation/minor complication
-
-The current A2 map explicitly checks progression such as:
-
-```text
-A1 straightforward request -> A2 request with preferences
-A1 simple plan -> A2 preference/reason + one alternative
-A1 visible problem -> A2 describe details + arrange next step
-A1 ask for repetition -> A2 targeted clarification
-```
-
-B1 should introduce:
-
-- meaningful complications
-- connected explanation
+- meaningful complication
+- connected explanation/narration
 - learner-owned follow-ups
-- multiple plausible branches
-- short narration/explanation stretches
-- more independence
+- several plausible branches
+- reasonably independent problem solving
 
-At A2/B1, canonical dialogues remain required, but Gemini's allowed surface variation and authored branching can increase.
+Canonical dialogue remains required while Gemini surface freedom increases.
 
-Existing B1 vertical-slice research may inform runtime testing but does not dictate the Practice map.
+## Phase 7 — B2 / C1 / C2 production
 
-## Phase 7 — B2–C2 production
+Increase difficulty through communication demands, not obscure vocabulary.
 
-Expand only after bounded branching works reliably.
-
-Increase:
+### B2
 
 - competing constraints
-- negotiation
 - trade-offs
 - disagreement
-- learner initiative
-- discourse length
-- pragmatic choices
+- counterproposals
+- negotiation
+
+### C1
+
 - ambiguity
-- reformulation
-- register/tact
+- register
+- tact
+- power/relationship sensitivity
+- facilitation/reframing
 
-Higher-level difficulty must come from the communication problem, not obscure vocabulary.
+### C2
 
-Canonical conversation/branch exemplars still matter at higher levels, but runtime surface freedom becomes wider inside authored truth, goals and pragmatic constraints.
+- subtle implication
+- precise repeated reformulation
+- rapid role/register shifts
+- layered mediation
+- meta-communication / reframing the interaction itself
+
+Advanced Core selections should remain balanced; do not equate advanced English with complaints and disputes.
 
 ## Phase 8 — Recommendations
 
-After enough mission history exists, recommend missions using signals such as:
+After enough mission history exists, optional recommendations may use signals such as:
 
 ```text
 current level
@@ -230,13 +220,13 @@ current level
 + replay freshness
 ```
 
-Recommendations remain optional and never become a hidden mandatory path.
+Recommendations never become a hidden mandatory path.
 
 ## Phase 9 — Custom Practice
 
-Only after authored Practice is stable, create runtime-generated temporary missions from learner requests.
+Only after authored Practice is stable, allow runtime-generated temporary missions requested by learners.
 
-Custom Practice must remain visibly different from reviewed authored missions because calibration and QA confidence are lower.
+Custom Practice must stay visibly distinct from reviewed authored missions because calibration/QA guarantees are weaker.
 
 ## Phase 10 — Free Speak
 
@@ -244,12 +234,14 @@ Keep Free Speak separate: open conversation without authored mission graph guara
 
 ## Working rule
 
-Before bulk production, prefer a **complete visible map with honest gaps** over dozens of detailed mission files that accidentally lock us into the wrong curriculum shape.
+Before scale:
 
-After the map is approved, prefer:
+> **one mission fully grounded, deliberately written, semantically modelled, previewed where useful, and Live-tested**
 
-> one mission with reviewed language grounding, a deliberately written canonical conversation, a semantic graph, bounded Live behaviour, a useful preview where appropriate, and real audio QA
+is more valuable than:
 
-instead of:
+> **twenty scenario prompts that leave Gemini to invent the curriculum.**
 
-> twenty scenario prompts that leave Gemini to invent the curriculum at runtime.
+And at map level:
+
+> **A mission title is not sacred. The progression is.**
