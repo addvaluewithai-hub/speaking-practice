@@ -77,18 +77,23 @@ plans-leisure
 
 ## Current curriculum work
 
-The master map is `docs/PRACTICE_MAP_V1.md`, with detailed level maps under `docs/practice-map/`.
+The first complete A1–C2 Practice Map is now drafted.
 
-Current status:
+- A1: 24 candidate missions / 8 Core
+- A2: 24 / 8 Core
+- B1: 24 / 8 Core
+- B2: 24 / 8 Core
+- C1: 21 / 7 Core
+- C2: 21 / 7 Core
+- Total: 138 candidate missions
 
-- **A1:** 24 candidate missions across 7 worlds, including 8 Core / Great place to start missions.
-- **A2:** 24 candidate missions across 7 worlds, including 8 Core missions with explicit A1→A2 progression.
-- **B1:** next mapping pass.
-- **B2–C2:** pending.
+Detailed maps live under `docs/practice-map/`; `docs/PRACTICE_MAP_V1.md` is the master index.
+
+`docs/CROSS_LEVEL_REVIEW_V1.md` contains the first whole-map review. It confirms the broad progression while flagging World overlap and a current C1/C2 Core-set bias toward conflict-heavy scenarios.
 
 Core is recommendation, not prerequisite.
 
-Before bulk-writing detailed missions, the plan is to make the A1–C2 map visible and review cross-level progression. Reviewed map items are then promoted one by one through the grounded-dialogue authoring factory.
+The next production phase is **not** bulk YAML generation. Reviewed map items are promoted one by one through the grounded-dialogue authoring factory so canonical-dialogue writing and Live QA can still change the map/factory when needed.
 
 `Order a drink` is the first mission already promoted to the full model. Its A1 language grounding, canonical conversation, semantic graph, dynamic hints, Listening Preview variant and QA cases live together in the mission source.
 
@@ -101,10 +106,14 @@ docs/
   README.md
   PRACTICE_ARCHITECTURE_V2.md
   PRACTICE_MAP_V1.md
+  CROSS_LEVEL_REVIEW_V1.md
   practice-map/
     A1.md
     A2.md
-    ...
+    B1.md
+    B2.md
+    C1.md
+    C2.md
   LEVEL_BIBLE_V1.md
   WORLD_TAXONOMY_V1.md
   LANGUAGE_GROUNDING_AND_CANONICAL_DIALOGUE_V1.md
