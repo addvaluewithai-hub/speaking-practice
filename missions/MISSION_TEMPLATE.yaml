@@ -1,0 +1,191 @@
+# Practice authored mission template
+# Copy this file only after the mission exists in the reviewed Practice Map.
+# Remove comments/unused optional fields during authoring.
+
+id: practice.<level>.<world>.<mission>.v1
+revision: 1
+status: draft
+level: A1
+world: <world-id>
+library_role: library # core | library
+title: <English title>
+title_ar: <Arabic title>
+estimated_minutes: 4
+
+learner_role: <role>
+ai_role: <role>
+setting: <setting>
+mission_goal: <one concrete real-world communication goal>
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: Selected language opportunities and level anchors; not mandatory learner item checks.
+  abilities:
+    - id: <stable ability id>
+      source_text: <reviewed ability text>
+      role: core_communicative_grounding
+  grammar:
+    - id: <stable grammar id>
+      label: <short reviewed label>
+      role: productive_opportunity
+  phrases:
+    - id: <stable phrase id>
+      phrase: <phrase>
+      role: <why it matters>
+  words:
+    - id: <stable word id>
+      word: <word>
+
+truth:
+  # Only facts Gemini must keep stable during this mission.
+  <key>: <value>
+
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: Reviewed normal path written by Englotti. Learner wording may differ when the semantic intent is fulfilled naturally.
+  turns:
+    - beat: opening_beat
+      speaker: ai_role
+      text: <reviewed AI line>
+    - beat: opening_beat
+      speaker: learner
+      text: <reviewed learner model line>
+    - beat: next_beat
+      speaker: ai_role
+      text: <reviewed AI line>
+    - beat: next_beat
+      speaker: learner
+      text: <reviewed learner model line>
+    - beat: close
+      speaker: ai_role
+      text: <short natural close>
+
+runtime:
+  surface_freedom: tight # tight | bounded | open_within_graph
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: <policy appropriate to level>
+  completion_policy: reach a valid natural closing; completion is not a mastery claim
+  normal_path_policy: stay appropriately close to canonical/preferred language; adapt only when the live conversation needs it
+
+beats:
+  - id: opening_beat
+    type: required
+    ai_intent: <semantic purpose of AI turn>
+    preferred_realizations:
+      - <reviewed AI line>
+    learner_intent: <semantic move learner needs to make>
+    overview_ar: <mission-preview copy; NOT runtime hint>
+    authored_learner_models:
+      - <one natural level-safe response>
+      - <another natural response if useful>
+    accepted_semantics:
+      - <what meaning counts as success>
+      - valid natural alternatives are accepted without exact-string matching
+    correction_focus:
+      - <genuine error worth correcting here>
+      - do not correct valid variation merely because it differs from a model
+    next: next_beat
+
+  - id: next_beat
+    type: required
+    ai_intent: <semantic purpose>
+    preferred_realizations:
+      - <reviewed AI line>
+    learner_intent: <semantic learner move>
+    authored_learner_models:
+      - <model>
+    accepted_semantics:
+      - <meaning boundary>
+    correction_focus:
+      - <correction boundary>
+    next: close
+
+  - id: close
+    type: ending
+    ai_intent: Close naturally and briefly.
+    preferred_realizations:
+      - <reviewed close>
+    learner_intent: Optional polite closing.
+
+agent_policy:
+  - Stay in role; do not explain the exercise.
+  - Treat canonical_dialogue and preferred_realizations as reviewed normal-path language anchors.
+  - Respect runtime.surface_freedom for this level.
+  - Never require the learner to repeat an authored learner model exactly.
+  - Accept valid semantic alternatives and adapt naturally.
+  - Keep scenario truth consistent.
+  - Correct genuine current-beat errors briefly and continue after a useful retry when needed.
+  - Do not over-correct harmless variation or minor non-target errors.
+  - Keep turn length and lexical density appropriate to the authored level.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current authored beat and learner intent
+    - scenario truth
+    - CEFR level/runtime language ceiling
+    - selected language grounding
+    - canonical dialogue and authored learner models as support anchors, never password answers
+  bundle:
+    intent_ar: short Egyptian-Arabic description of the best next communicative move now
+    context_ar: optional short recovery/context note
+    useful_language_en: two to five short level-safe English words/chunks useful now
+    full_response_en: one natural complete response that works now
+  rules:
+    - request the complete bundle once per active beat
+    - later UI reveal levels reuse the cached bundle
+    - prefer grounded language when it fits the actual live context
+    - the full response is an example, never the only accepted answer
+    - a hint request/reveal never advances the mission beat
+    - never inject learner personal details
+
+# Include when required/useful by Listening Preview policy.
+listening_preview:
+  status: draft
+  purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_shape_reviewed_variant
+  variant_note: <what wording/concrete choices differ from canonical>
+  transcript_default: hidden
+  transcript:
+    - speaker: ai_role
+      text: <variant line>
+    - speaker: learner
+      text: <variant learner line>
+  audio_asset: null
+
+success_conditions:
+  - <communicative condition>
+  - conversation reaches a natural valid closing
+
+qa_cases:
+  - name: canonical_path
+    expected: canonical learner path completes naturally with AI close to preferred wording
+  - name: valid_paraphrase
+    learner: <different valid wording>
+    expected: accept without correction
+  - name: short_valid_alternative
+    learner: <short natural response>
+    expected: accept when level/context permits
+  - name: genuine_error
+    learner: <genuine current-target error>
+    expected: concise correction + useful retry before advancing when needed
+  - name: contextual_hint_after_detour
+    conversation:
+      - learner: <reasonable detour>
+      - ai_role: <natural response>
+      - learner_action: taps Hint
+    expected: contextual grounded hint bundle helps the current next move; later layers reuse cache
+  - name: scenario_truth_edge
+    learner: <request/claim impossible under truth>
+    expected: respond naturally within truth and recover toward mission goal
+  - name: surface_control
+    learner_behavior: follows normal authored path
+    expected: AI stays appropriately close to canonical/preferred language for configured surface freedom
