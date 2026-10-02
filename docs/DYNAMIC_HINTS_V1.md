@@ -14,10 +14,13 @@ A hint request must never turn Gemini into the mission designer. The model gener
 
 When the learner taps **Hint** for the first time in the current beat, the app sends one private UI control event to the existing Gemini Live session.
 
+Each request gets a short-lived `request_id`. Gemini must echo that ID in the tool call so a late response from an older request cannot populate a newer hint.
+
 Gemini must answer that event by calling a structured client tool once with the **complete hint bundle**:
 
 ```json
 {
+  "request_id": "f8f0...",
   "beat_id": "greet_order",
   "intent_ar": "اختار مشروب من الموجود واطلبه",
   "context_ar": "هو قال إن المتاح قهوة أو شاي أو مية.",
@@ -88,6 +91,10 @@ It should not fall back to a generic prewritten card when the live context gives
 
 ## Bundle fields
 
+### `request_id`
+
+Exact correlation ID from the active UI hint request. The runtime rejects missing, stale or mismatched IDs.
+
 ### `intent_ar`
 
 A short Egyptian-Arabic description of the learner's best next communicative move now. It should express meaning, not translate a password sentence.
@@ -107,14 +114,15 @@ One natural complete learner response that would work **now**. It is a support e
 ## Safety and pedagogy rules
 
 - A UI hint request is not learner speech and not evidence of an answer attempt.
-- Requesting or revealing a hint never advances the authored beat.
+- Requesting or revealing a hint never advances the authored beat; the runtime freezes beat advancement while the request is active.
 - A valid learner alternative remains valid even when it differs from `full_response_en`.
 - Full-response help counts as stronger support than an intent hint.
 - Keep generated support inside the mission's CEFR level and scenario truth.
 - Never insert learner personal details into a generated hint.
 - Gemini must not call the hint tool proactively; a live UI request must be active.
-- The runtime should reject stale hint payloads whose `beat_id` no longer matches the current beat.
+- The runtime rejects stale payloads whose `request_id` or `beat_id` no longer matches the active request.
 - If generation fails or times out, let the learner retry the hint request; do not silently substitute a fixed answer card as the normal path.
+- Reopening an already cached hint does not count as a new hint-use event; telemetry records the highest support layer revealed per beat.
 
 ## Authoring implication
 
