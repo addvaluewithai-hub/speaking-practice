@@ -27,6 +27,7 @@ missions/
 | --- | --- | --- |
 | A1-FS-01 — Order a drink | `a1/food-shopping/a1-food-order-drink-v1.yaml` | runtime pilot / Live QA ongoing |
 | A1-EV-01 — Ask someone to repeat | `a1/everyday-life/a1-everyday-ask-repeat-v1.yaml` | contract reviewed + runtime mirror created; Live/audio QA pending |
+| A1-PS-01 — Meet someone new | `a1/people-social/a1-people-meet-someone-v1.yaml` | contract reviewed; runtime promotion waits for repeat-mission QA |
 
 `runtime pilot` is not the same as `published`. Full publication still requires the mission's QA gate, including Listening Preview audio where the level/map marks it as required.
 
