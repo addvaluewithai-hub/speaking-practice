@@ -1,0 +1,321 @@
+id: practice.a1.food.buy-one-item-price.v1
+revision: 1
+status: contract_reviewed
+level: A1
+world: food-shopping
+library_role: core
+title: Buy one item and ask the price
+title_ar: اشتري حاجة واسأل عن السعر
+estimated_minutes: 4
+
+learner_role: customer
+ai_role: shop assistant
+setting: a small stationery shop
+mission_goal: Ask for one familiar item, ask and understand its price, clearly choose to buy it, and close the transaction politely.
+
+learner_context:
+  known_before_live:
+    - You want to buy one pen.
+    - You need to ask the price before you confirm the purchase.
+  privacy_rule: No learner personal information or payment details are required.
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: Selected anchors support a minimal shop transaction with a price question. They guide authored language and runtime bounds, not exact-answer checking.
+  abilities:
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p078.a1.obtaining_goods_and_services.001
+      source_text: Can ask people for things and give people things.
+      role: basic_goods_request_grounding
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p078.a1.obtaining_goods_and_services.003
+      source_text: Can handle numbers, quantities, cost and time.
+      role: cost_transaction_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p15.007
+      source_text: Can identify how much something costs in short, simple dialogues about price when delivered slowly and clearly.
+      role: receptive_price_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p15.019
+      source_text: Can follow simple everyday transactions such as shopping if carried out slowly and clearly.
+      role: transaction_shape_grounding
+  grammar:
+    - id: egp.1741163710391x459074403345042000
+      label: can for requests
+      role: productive_request_opportunity
+  phrases:
+    - id: oxford.phrase.online.0349
+      phrase: How much…?
+      role: price_question
+    - id: oxford.phrase.online.0668
+      phrase: Thank you
+      role: polite_closing
+  words:
+    - id: oxford.o3000.p03.054
+      word: pen
+      role: scenario_item
+    - id: oxford.o3000.p01.214
+      word: dollar
+      role: price_language
+    - id: oxford.o3000.p03.233
+      word: take
+      role: optional_purchase_confirmation_language
+  allowed_untracked_models:
+    - Can I have this pen, please?
+    - How much is it?
+    - Four dollars.
+    - Yes, please.
+    - This one, please.
+    - I'll take it.
+  note: Short fixed transactional formulas are valid even when the exact whole sentence is not a single phrase-list item.
+
+truth:
+  shop:
+    available_item: pen
+    price_dollars: 4
+    stock: available
+  interaction_facts:
+    - The pen is available.
+    - The pen costs exactly four dollars.
+    - There is no need to discuss colour, size, quantity choices, discounts, returns, or payment method.
+    - No real card, account, or payment information is requested.
+
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: This mission isolates requesting one item and asking its price. Product variants and comparison are deliberately excluded because they belong to other missions/higher interaction shapes.
+  turns:
+    - beat: ask_item
+      speaker: ai_role
+      text: Hello. Can I help you?
+    - beat: ask_item
+      speaker: learner
+      text: Yes. Can I have this pen, please?
+    - beat: ask_price
+      speaker: ai_role
+      text: Yes, of course.
+    - beat: ask_price
+      speaker: learner
+      text: How much is it?
+    - beat: decide_buy
+      speaker: ai_role
+      text: Four dollars. Would you like it?
+    - beat: decide_buy
+      speaker: learner
+      text: Yes, please.
+    - beat: close
+      speaker: ai_role
+      text: Here you are.
+    - beat: close
+      speaker: learner
+      text: Thank you.
+    - beat: close
+      speaker: ai_role
+      text: You're welcome.
+
+runtime:
+  surface_freedom: tight
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: one clear transactional move at a time
+  completion_policy: learner requests the pen, asks/understands the four-dollar price, clearly confirms purchase, and reaches a natural close
+  normal_path_policy: stay close to the reviewed transaction and do not introduce product variants or extra sales questions
+
+beats:
+  - id: ask_item
+    type: required
+    ai_intent: Greet the customer and offer help in one short turn.
+    preferred_realizations:
+      - Hello. Can I help you?
+      - Hi. Can I help you?
+    learner_intent: Ask for the available pen clearly enough that the assistant understands what item is wanted.
+    overview_ar: اطلب القلم
+    authored_learner_models:
+      - Can I have this pen, please?
+      - This pen, please.
+      - Can I get the pen, please?
+      - A pen, please.
+    accepted_semantics:
+      - learner clearly requests the pen
+      - short natural shop language is valid
+      - polite please is encouraged but not a password requirement
+    correction_focus:
+      - accept concise natural requests and do not force the canonical Can I have form
+      - if a genuine request-form error makes the request clearly malformed, correct briefly and invite retry before advancing
+      - do not nitpick article choice when the request is natural and clear enough for A1 communication
+    next: ask_price
+
+  - id: ask_price
+    type: required
+    ai_intent: Confirm that the pen is available and give the learner space to ask its price; do not volunteer the price before the learner asks.
+    preferred_realizations:
+      - Yes, of course.
+      - Sure.
+    learner_intent: Ask how much the pen costs.
+    overview_ar: اسأل عن السعر
+    authored_learner_models:
+      - How much is it?
+      - How much is the pen?
+      - How much?
+    accepted_semantics:
+      - learner clearly asks for the price of the pen
+      - a short How much? is valid in this established context
+    correction_focus:
+      - accept short contextual price questions
+      - correct only a genuine malformed price question that blocks or clearly breaks the intended move
+    next: decide_buy
+
+  - id: decide_buy
+    type: required
+    ai_intent: State the stable price clearly as four dollars and ask one simple yes/no purchase-confirmation question.
+    preferred_realizations:
+      - Four dollars. Would you like it?
+      - It's four dollars. Do you want it?
+    learner_intent: Clearly accept the purchase after hearing the price.
+    overview_ar: وافق إنك هتشتريه
+    authored_learner_models:
+      - Yes, please.
+      - Okay, yes.
+      - I'll take it.
+      - This one, please.
+    accepted_semantics:
+      - learner clearly communicates that they want to buy the pen
+      - a simple affirmative answer to the assistant's purchase question is fully valid
+    correction_focus:
+      - do not require I'll take it when Yes, please is natural and sufficient
+      - if learner declines, stay in role and allow a natural close, but mission success requires a later clear purchase acceptance; do not pressure the learner unnaturally
+    next: close
+
+  - id: close
+    type: ending
+    ai_intent: Hand over the fictional item and close the short transaction politely.
+    preferred_realizations:
+      - Here you are. Thank you.
+      - Here you are.
+    learner_intent: Optional short thanks/closing; no payment credentials or extra information are required.
+
+agent_policy:
+  - Stay in role as a friendly shop assistant; never explain the mission engine.
+  - Keep the item and price truth stable: one pen, four dollars.
+  - Do not volunteer the price before the learner has a reasonable opportunity to ask it.
+  - Do not add colour, size, brand, quantity, discount, return-policy, or payment-method branches in this A1 mission.
+  - Treat canonical dialogue and preferred realizations as normal-path A1 anchors, not required learner wording.
+  - Accept natural alternatives such as A pen, please; How much?; Yes, please; This one, please.
+  - If the learner requests another item, say briefly that this mission shop currently has the authored pen available and return naturally to the bounded transaction; do not invent a large catalog.
+  - Genuine current English errors receive one concise correction and retry before advancing; harmless wording variation does not.
+  - If the learner gives a wrong price back, repair the factual misunderstanding as Four dollars rather than calling it a grammar error.
+  - Hints are learner-controlled; never volunteer the full request or price question.
+  - Keep spoken turns short and ask at most one simple question at a time.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current semantic beat and learner intent
+    - stable item and price truth
+    - A1 language grounding
+    - canonical dialogue and learner models as support anchors, never passwords
+  expected_behavior:
+    ask_item:
+      intent_example_ar: اطلب القلم اللي عايز تشتريه
+      useful_language_examples: [pen, Can I have ...?, please]
+      full_response_example: Can I have this pen, please?
+    ask_price:
+      intent_example_ar: اسأل القلم بكام
+      useful_language_examples: [How much?, How much is it?]
+      full_response_example: How much is it?
+    decide_buy:
+      intent_example_ar: قوله إنك موافق تشتري القلم
+      useful_language_examples: [yes, please, I'll take it]
+      full_response_example: Yes, please.
+  rules:
+    - examples above are QA/support anchors, not hardcoded UI cards
+    - Gemini returns the complete contextual support bundle once on first Hint tap for the active beat
+    - later reveals reuse the cached bundle
+    - a Hint requested after the four-dollar price has been spoken must support the purchase decision, not repeat the earlier price question
+    - a Hint request never advances the mission
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_transaction_shape_reviewed_variant
+  variant_note: Uses a pencil at a different fictional price and short alternative wording to model the interaction shape without supplying the Live answer path.
+  transcript_default: hidden
+  transcript:
+    - speaker: shop_assistant
+      text: Hi. Can I help you?
+    - speaker: customer
+      text: A pencil, please.
+    - speaker: shop_assistant
+      text: Sure.
+    - speaker: customer
+      text: How much is it?
+    - speaker: shop_assistant
+      text: Two dollars. Do you want it?
+    - speaker: customer
+      text: Yes, please.
+    - speaker: shop_assistant
+      text: Here you are.
+    - speaker: customer
+      text: Thank you.
+  audio_asset: null
+
+success_conditions:
+  - learner clearly requests the pen
+  - learner asks for the price rather than receiving it unprompted on the normal path
+  - learner understands or successfully repairs the four-dollar price if needed
+  - learner clearly accepts the purchase
+  - conversation reaches a natural close without extra personal/payment data
+
+qa_cases:
+  - name: canonical_item_request
+    learner: Can I have this pen, please?
+    expected: accept without correction; do not force different request wording
+
+  - name: short_item_request
+    learner: A pen, please.
+    expected: accept as natural A1 shop language
+
+  - name: canonical_price_question
+    learner: How much is it?
+    expected: answer Four dollars and continue
+
+  - name: minimal_price_question
+    learner: How much?
+    expected: accept because the pen is already established in context
+
+  - name: price_not_volunteered_early
+    expected: assistant confirms availability after item request but does not skip the learner's price-question opportunity by immediately giving four dollars
+
+  - name: canonical_purchase_acceptance
+    learner: Yes, please.
+    expected: accept and close transaction
+
+  - name: alternative_purchase_acceptance
+    learner: I'll take it.
+    expected: accept naturally; no correction for differing from canonical learner line
+
+  - name: wrong_price_confirmation
+    conversation:
+      - assistant: Four dollars. Would you like it?
+      - learner: Five dollars?
+    expected: repair factual detail briefly as Four dollars; do not call it a grammar error; let learner continue the decision
+
+  - name: unrelated_item
+    learner: Can I have a notebook?
+    expected: remain bounded to authored shop truth; say notebook is not available here and offer/return to the pen without inventing a catalog
+
+  - name: hint_after_price
+    conversation:
+      - learner: How much is it?
+      - assistant: Four dollars. Would you like it?
+      - learner_action: taps Hint
+    expected: one contextual Hint bundle supports accepting/declining the purchase decision, not asking How much again
+
+  - name: silence
+    learner_behavior: hesitates before item request or price question
+    expected: wait; do not supply the learner's line; Hint remains learner-controlled
+
+  - name: no_payment_data
+    expected: transaction completes fictionally without card number, account, address, or real payment information
