@@ -241,14 +241,14 @@ hint_policy:
 listening_preview:
   status: authored
   purpose: orientation_not_rehearsal
-  relationship_to_canonical: same_small-choice_booking_shape_reviewed_variant
-  variant_note: Uses a different routine service and different day/time choices while preserving the A1 booking pattern.
+  relationship_to_canonical: same_small_choice_booking_shape_reviewed_variant
+  variant_note: Uses the same safe routine scheduling context but different wording, days and times so it models the interaction without supplying the Live path.
   transcript_default: hidden
   transcript:
     - speaker: receptionist
       text: Hello. Can I help you?
     - speaker: customer
-      text: I need a time for a haircut.
+      text: Can I see the doctor?
     - speaker: receptionist
       text: Wednesday or Thursday?
     - speaker: customer
