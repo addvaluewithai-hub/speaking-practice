@@ -3,7 +3,7 @@ revision: 1
 status: contract_reviewed
 level: A1
 world: food-shopping
-library_role: core
+library_role: library
 title: Buy one item and ask the price
 title_ar: اشتري حاجة واسأل عن السعر
 estimated_minutes: 4
@@ -214,7 +214,7 @@ hint_policy:
     - full conversation so far
     - current semantic beat and learner intent
     - stable item and price truth
-    - A1 language grounding
+    - A1 language_grounding
     - canonical dialogue and learner models as support anchors, never passwords
   expected_behavior:
     ask_item:
