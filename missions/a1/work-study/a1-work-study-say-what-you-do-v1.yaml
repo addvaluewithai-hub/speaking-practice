@@ -1,0 +1,265 @@
+id: practice.a1.work-study.say-what-you-do.v1
+revision: 1
+status: contract_reviewed
+level: A1
+world: work-study
+library_role: core
+title: Say what you do or study
+title_ar: قول بتشتغل أو بتدرس إيه
+estimated_minutes: 4
+
+learner_role: person meeting someone at a community class
+ai_role: another attendee
+setting: a short friendly conversation before a class starts
+mission_goal: Say whether you work or study, give one simple familiar role/subject fact, ask the other person back, and react briefly.
+
+learner_context:
+  known_before_live:
+    - Another attendee asks one simple question about work or study.
+    - You may answer with real, chosen, or fictional information.
+    - You only need one simple role or study fact.
+  privacy_rule: The mission never requires the learner's real employer, school, workplace, address, schedule, salary, or other identifying information.
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: This mission turns reviewed A1 self-description and familiar-job language into a short reciprocal social/work-study exchange. The learner can always use chosen or fictional information.
+  abilities:
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p063.a1.sustained_monologue_describing_experience.001
+      source_text: Can describe themselves, what they do and where they live.
+      role: core_self_description_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p23.005
+      source_text: Can say what someone's job is, using familiar common job names.
+      role: familiar_job_language_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p22.013
+      source_text: Can greet people, ask how they are and react to news.
+      role: reciprocal_social_reaction_grounding
+  grammar:
+    - id: egp.1741163708329x286701804737242940
+      label: simple affirmative declarative clauses
+      role: simple_work_study_statement
+  words:
+    - id: oxford.o3000.p03.218
+      word: student
+      role: study_role_language
+    - id: oxford.o3000.p03.239
+      word: teacher
+      role: common_job_language
+  allowed_untracked_models:
+    - I'm a student.
+    - I'm a teacher.
+    - I study English.
+    - I work in a cafe.
+    - What about you?
+    - And you?
+    - That's nice.
+  note: Natural A1 work/study formulas may be used even when the whole sentence is not a single phrase-list item. Communicative abilities and the cumulative level boundary control the authored dialogue.
+
+truth:
+  ai_person:
+    first_name: Maya
+    work_or_study: teacher
+  interaction_facts:
+    - Maya is a teacher in this fictional scenario.
+    - The learner may use real, chosen, or fictional work/study information.
+    - Any simple plausible familiar role or study fact is acceptable.
+    - No employer, institution, salary, exact workplace, schedule, or contact detail is required.
+
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: The normal path uses a fictional student answer because it is simple and privacy-safe. The learner is never required to claim that identity.
+  turns:
+    - beat: say_role
+      speaker: ai_role
+      text: What do you do? Do you work or study?
+    - beat: say_role
+      speaker: learner
+      text: I'm a student. I study English.
+    - beat: ask_back
+      speaker: ai_role
+      text: Nice.
+    - beat: ask_back
+      speaker: learner
+      text: And you?
+    - beat: react_close
+      speaker: ai_role
+      text: I'm a teacher.
+    - beat: react_close
+      speaker: learner
+      text: That's nice.
+    - beat: react_close
+      speaker: ai_role
+      text: Nice talking to you.
+
+runtime:
+  surface_freedom: tight
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: one clear work/study move at a time
+  completion_policy: learner gives one usable work/study fact, asks the other person back or clearly returns the question, reacts briefly, and closes naturally
+  normal_path_policy: keep personal information shallow and familiar; do not expand into employer, salary, detailed duties, institution, timetable, career history, or qualifications
+
+beats:
+  - id: say_role
+    type: required
+    ai_intent: Ask one simple A1 question that lets the learner say whether they work or study.
+    preferred_realizations:
+      - What do you do? Do you work or study?
+      - Do you work or study?
+    learner_intent: Give one simple familiar work or study fact using real, chosen, or fictional information.
+    overview_ar: قول بتشتغل أو بتدرس إيه
+    authored_learner_models:
+      - I'm a student.
+      - I'm a teacher.
+      - I study English.
+      - I work in a cafe.
+    accepted_semantics:
+      - learner clearly gives one simple work/study status or familiar role
+      - learner may use chosen or fictional information
+      - one short fact is enough
+    correction_focus:
+      - do not demand a job title if the learner says they study, or vice versa
+      - accept a short natural role statement
+      - correct only a genuine current-form error that clearly breaks the work/study meaning
+    next: ask_back
+
+  - id: ask_back
+    type: required
+    ai_intent: React briefly to the learner's work/study fact and leave space for a reciprocal question.
+    preferred_realizations:
+      - Nice.
+      - That's nice.
+    learner_intent: Ask or return the same simple social question to the other person.
+    overview_ar: اسألها هي كمان
+    authored_learner_models:
+      - And you?
+      - What about you?
+      - Do you work?
+      - What do you do?
+    accepted_semantics:
+      - learner clearly returns attention to Maya's work/study situation
+      - short reciprocal forms such as And you? are fully valid
+    correction_focus:
+      - do not force a complete wh-question when a contextual reciprocal phrase is natural
+      - if the learner does not ask back yet, keep this beat open without calling their previous answer wrong
+    next: react_close
+
+  - id: react_close
+    type: ending
+    ai_intent: Say simply that Maya is a teacher and close after a brief learner reaction.
+    preferred_realizations:
+      - I'm a teacher.
+      - I work as a teacher.
+    learner_intent: A short friendly reaction such as That's nice / Nice is welcome; no further personal detail is required.
+
+agent_policy:
+  - Stay in role as Maya, another attendee, and never explain the mission engine.
+  - Keep the scope to one simple work/study fact, reciprocal question, brief reaction and close.
+  - Never ask for employer name, school name, salary, exact workplace, address, schedule, qualifications, or career history.
+  - The learner may use real, chosen, or fictional information; never challenge whether it is true.
+  - Accept common familiar roles and simple study statements inside the A1 boundary.
+  - Do not turn the mission into a job interview or career-advice conversation.
+  - Accept short reciprocal language such as And you? and short reactions such as Nice.
+  - Genuine current English errors receive one concise correction and learner retry; harmless short forms do not.
+  - Hints are contextual and learner-controlled.
+  - Keep every turn short and ask at most one simple thing at a time.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current semantic beat and learner intent
+    - learner's chosen work/study fact if already stated
+    - Maya's fictional teacher role
+    - A1 language grounding
+  expected_behavior:
+    say_role:
+      intent_example_ar: قول معلومة بسيطة عن شغلك أو دراستك، وممكن تستخدم معلومة خيالية
+      useful_language_examples: [I'm a ..., I study ..., I work ...]
+      full_response_example: I'm a student. I study English.
+    ask_back:
+      intent_example_ar: اسألها هي بتشتغل أو بتدرس إيه
+      useful_language_examples: [And you?, What about you?, What do you do?]
+      full_response_example: And you?
+  rules:
+    - examples are QA/support anchors, not hardcoded UI cards
+    - first Hint tap returns the complete contextual bundle once; later reveals reuse it
+    - if the learner already chose a fictional/real role, generated support must not replace that fact with a different identity unless explicitly offering an example as an alternative
+    - Hint requests never count as learner speech or advance the beat
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_reciprocal_work_study_shape_reviewed_variant
+  variant_note: Uses different fictional roles and wording so it demonstrates the exchange rather than supplying the Live path.
+  transcript_default: hidden
+  transcript:
+    - speaker: attendee_a
+      text: Do you work or study?
+    - speaker: attendee_b
+      text: I work. I'm a cook.
+    - speaker: attendee_a
+      text: Nice.
+    - speaker: attendee_b
+      text: And you?
+    - speaker: attendee_a
+      text: I'm a student.
+    - speaker: attendee_b
+      text: Nice.
+  audio_asset: null
+
+success_conditions:
+  - learner gives one clear simple work/study fact
+  - learner makes a reciprocal work/study move toward Maya
+  - learner can use chosen or fictional information and still complete successfully
+  - conversation closes without requesting detailed personal/professional data
+
+qa_cases:
+  - name: canonical_student
+    learner: I'm a student. I study English.
+    expected: accept and leave space for reciprocal move
+
+  - name: simple_job
+    learner: I'm a teacher.
+    expected: accept without demanding employer or duties
+
+  - name: simple_work_place_type
+    learner: I work in a cafe.
+    expected: accept as a sufficient simple work fact; do not ask for the real cafe name
+
+  - name: chosen_fictional_identity
+    learner: I'm a cook.
+    expected: accept without questioning whether the learner is really a cook
+
+  - name: short_reciprocal
+    learner: And you?
+    expected: accept and answer that Maya is a teacher
+
+  - name: answer_without_reciprocal
+    conversation:
+      - learner: I'm a student.
+      - maya: Nice.
+      - learner: Thanks.
+    expected: keep ask_back opportunity open naturally; do not call Thanks wrong and do not supply the learner's reciprocal question
+
+  - name: agent_asks_employer
+    expected: reject runtime behaviour that asks employer, company, exact school, salary, or contact information
+
+  - name: agent_turns_into_interview
+    expected: reject multiple job-duty/experience/qualification questions; this is a short A1 social exchange
+
+  - name: contextual_hint_after_role
+    conversation:
+      - learner: I'm a cook.
+      - maya: Nice.
+      - learner_action: taps Hint
+    expected: Hint supports the reciprocal move And you?/What about you? and does not restart with a new learner identity
+
+  - name: silence
+    learner_behavior: hesitates on role or reciprocal move
+    expected: wait; do not answer for learner; Hint remains learner-controlled
