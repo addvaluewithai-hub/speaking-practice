@@ -4,7 +4,7 @@ Status: **current source of truth**
 
 ## Goal
 
-Build a reviewed Practice library from a visible A1–C2 map, then promote missions into production one by one through a repeatable:
+Build a reviewed Practice library from a visible A1–C2 map, then promote missions through a repeatable:
 
 > **language grounding -> canonical dialogue -> semantic graph -> Listening variant -> bounded Live performance -> QA**
 
@@ -53,7 +53,7 @@ See `PRACTICE_MAP_V1.md` and `practice-map/A1.md` through `C2.md`.
 
 Status: **first pass complete**.
 
-The first review confirmed the broad progression:
+The broad progression is:
 
 ```text
 A1 predictable single-goal exchange
@@ -64,83 +64,76 @@ C1 ambiguity + tact + register + relationship-sensitive pragmatics
 C2 subtle implication + precise reformulation + layered flexibility/mediation
 ```
 
-Actions already taken from review:
-
-- narrowed `everyday-life` so it cannot become a catch-all
-- clarified World boundaries
-- documented duplicate/overlap watchlists
-- rebalanced C1/C2 Core sets away from conflict-heavy entry experiences
-- preserved conflict/negotiation missions in the wider advanced library
+Actions already taken include World-boundary cleanup, overlap watchlists, and advanced-Core rebalancing.
 
 See `CROSS_LEVEL_REVIEW_V1.md`.
 
-Cross-level review is not permanently “finished”: canonical-dialogue writing and Live QA may still expose weak distinctions and send missions back to the map.
+## Phase 3 — A1 Core source production
 
-## Phase 3 — Promote A1 Core missions
+Status: **content/editorial pass complete for all eight current Core missions**.
 
-Status: **all eight Core source contracts authored; runtime promotion in progress**.
+Current A1 Core:
 
-A1 Core:
+1. `A1-PS-01` — Meet someone new
+2. `A1-EV-01` — Ask someone to repeat
+3. `A1-FS-01` — Order a drink
+4. `A1-TT-01` — Ask where a place is
+5. `A1-TT-03` — Check into a hotel
+6. `A1-WS-01` — Say what you do or study
+7. `A1-HS-02` — Book a simple appointment
+8. `A1-PL-03` — Make a simple plan
 
-1. `A1-PS-01` — Meet someone new — source contract + runtime mirror
-2. `A1-EV-01` — Ask someone to repeat — source contract + runtime mirror
-3. `A1-FS-01` — Order a drink — source contract + runtime pilot
-4. `A1-FS-03` — Buy one item and ask the price — source contract
-5. `A1-TT-01` — Ask where a place is — source contract
-6. `A1-TT-03` — Check into a hotel — source contract
-7. `A1-HS-02` — Book a simple appointment — source contract
-8. `A1-PL-03` — Make a simple plan — source contract
+All eight now have:
 
-See `missions/README.md` for exact source files and promotion status.
+- selected A1 grounding from `english-course`
+- authored canonical dialogue
+- semantic conversation graph
+- accepted natural alternatives
+- correction boundaries
+- dynamic contextual Hint policy
+- authored Listening Preview transcript
+- adversarial QA cases
 
-### Current production strategy
+See:
 
-Do not wait for every mission to finish audio QA before authoring the next source contract. Keep two lanes moving:
+- `A1_CORE_REVIEW_V1.md`
+- `A1_CORE_LANGUAGE_COVERAGE_V1.md`
+- `missions/README.md`
 
-```text
-source lane: grounded contract -> canonical dialogue -> graph -> preview -> QA cases
-runtime lane: compile selected reviewed contract -> CI/Visual QA -> real Live/audio QA
-```
+`A1-FS-03 — Buy one item and ask the price` is also fully authored but remains a wider-library mission rather than Core after starter-set balancing.
 
-However, do not bulk-promote untested contracts into the app. Runtime promotion should move in small batches so systemic failures are found before the whole library is compiled.
+### Runtime pilot set
 
-Current runtime pilot set intentionally spans different interaction families:
+Five Core missions have already been mirrored into the application runtime:
 
 - transaction: `Order a drink`
 - clarification/repair: `Ask someone to repeat`
 - social opening: `Meet someone new`
+- directions/location: `Ask where a place is`
+- collaborative planning: `Make a simple plan`
 
-The next runtime promotions should add another distinct interaction shape, preferably **directions/location** or **simple planning/arrangement**, before adding several near-identical transactions.
+The remaining three source contracts are deliberately not being bulk-compiled while the application UI is being refreshed:
 
-### Authoring order for every promoted mission
+- `Check into a hotel`
+- `Say what you do or study`
+- `Book a simple appointment`
 
-1. validate the real communicative goal/workflow
-2. inspect cumulative reviewed level language in `english-course`
-3. select relevant ability/grammar/phrase/word source IDs
-4. write the complete canonical dialogue
-5. review dialogue for level, realism, turn length, density, and naturalness
-6. define scenario truth
-7. derive/validate semantic beats/branches around the dialogue
-8. add preferred AI realizations and level-appropriate surface freedom
-9. define correction focus and accepted semantic alternatives
-10. define dynamic Hint context/anchors
-11. write Listening Preview as a reviewed variant where required/useful
-12. add adversarial QA cases
-13. compile/sync to production runtime
-14. run CI/Visual QA
-15. run real Gemini Live/audio QA
+Source work can continue independently in `speaking-practice`; app compilation should remain small-batch and coordinated with the runtime/UI baseline.
 
-## Phase 4 — A1 Core Live QA
+## Phase 4 — A1 Core empirical Live/audio QA
 
-Status: **active mission-by-mission during Phase 3**.
+Status: **next active gate**.
 
-Required test paths:
+Editorial completion is not publication.
+
+Every Core mission still needs real Gemini Live/audio testing across:
 
 - canonical normal path
 - valid paraphrase
 - short natural response
-- genuine target-relevant error
+- genuine target-relevant error -> concise correction + retry
 - unclear response
+- factual/task mismatch
 - silence / hesitation
 - learner interruption
 - Arabic help request
@@ -150,20 +143,34 @@ Required test paths:
 - off-topic detour and recovery
 - replay with less support
 - natural ending
-- surface-control check: Gemini must not make low-level normal paths harder merely for variety
+- surface-control check: Gemini must not make A1 harder merely for variety
 
 When the same failure appears across missions, fix the **factory/runtime**, not each mission independently.
 
-A mission is not `published` merely because its source contract exists or because CI/Visual QA passes. Required Listening Preview audio and real Live/audio behaviour still need review.
+### Listening Preview audio gate
 
-## Phase 5 — Complete A1 + begin A2 production
+All eight current Core missions have reviewed preview transcripts, but fixed audio still needs to be produced/reviewed before publication.
 
-After A1 Core survives real Live QA:
+The publication distinction stays explicit:
 
-- promote remaining reviewed A1 missions
-- start A2 Core using the already-reviewed A2 map
+```text
+source contract complete
+!= repository CI passed
+!= Live/audio QA passed
+!= published
+```
+
+## Phase 5 — Complete A1 library + start A2 Core
+
+Start this only after the Core batch provides enough real Live evidence that the factory is stable.
+
+Then:
+
+- author/promote the remaining A1 library missions from the 24-mission map
+- retain `Buy one item and ask the price` as an already-authored library mission
+- start A2 Core from the reviewed A2 map
 - keep canonical dialogue required for every full mission
-- add Listening Preview only where level policy says it materially helps
+- use Listening Preview where level policy says it materially helps
 
 ## Phase 6 — A2 / B1 production
 
@@ -216,7 +223,7 @@ Advanced Core selections should remain balanced; do not equate advanced English 
 
 ## Phase 8 — Recommendations
 
-After enough mission history exists, optional recommendations may use signals such as:
+After enough mission history exists, optional recommendations may use:
 
 ```text
 current level
@@ -233,11 +240,29 @@ Recommendations never become a hidden mandatory path.
 
 Only after authored Practice is stable, allow runtime-generated temporary missions requested by learners.
 
-Custom Practice must stay visibly distinct from reviewed authored missions because calibration/QA guarantees are weaker.
+Custom Practice stays visibly distinct because calibration/QA guarantees are weaker.
 
 ## Phase 10 — Free Speak
 
 Keep Free Speak separate: open conversation without authored mission graph guarantees.
+
+## Authoring order for future missions
+
+1. validate the real communicative goal/workflow
+2. inspect cumulative reviewed level language in `english-course`
+3. select relevant ability/grammar/phrase/word source IDs
+4. write the complete canonical dialogue
+5. review level, realism, turn length, density and naturalness
+6. define scenario truth
+7. derive/validate semantic beats and branches
+8. add preferred AI realizations and level-appropriate surface freedom
+9. define correction focus and accepted semantic alternatives
+10. define dynamic Hint context/anchors
+11. write Listening Preview variant where required/useful
+12. add adversarial QA cases
+13. compile/sync to production runtime
+14. run repository CI/Visual QA
+15. run real Gemini Live/audio QA
 
 ## Working rule
 
