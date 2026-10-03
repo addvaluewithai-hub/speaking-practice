@@ -158,7 +158,7 @@ beats:
   - id: confirm_stay
     type: required
     ai_intent: Confirm exactly one simple booking detail: one night.
-    preferredRealizationsEn:
+    preferred_realizations:
       - One night?
       - You're staying one night, right?
     learner_intent: Confirm that the stay is for one night.
