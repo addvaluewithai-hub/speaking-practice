@@ -23,11 +23,18 @@ missions/
 
 ## Current promoted missions
 
+All eight A1 Core / **Great place to start** map items now have full source contracts.
+
 | Mission | Source file | Current stage |
 | --- | --- | --- |
-| A1-FS-01 — Order a drink | `a1/food-shopping/a1-food-order-drink-v1.yaml` | runtime pilot / Live QA ongoing |
+| A1-PS-01 — Meet someone new | `a1/people-social/a1-people-meet-someone-v1.yaml` | contract reviewed + runtime mirror created; Live/audio QA pending |
 | A1-EV-01 — Ask someone to repeat | `a1/everyday-life/a1-everyday-ask-repeat-v1.yaml` | contract reviewed + runtime mirror created; Live/audio QA pending |
-| A1-PS-01 — Meet someone new | `a1/people-social/a1-people-meet-someone-v1.yaml` | contract reviewed; runtime promotion waits for repeat-mission QA |
+| A1-FS-01 — Order a drink | `a1/food-shopping/a1-food-order-drink-v1.yaml` | runtime pilot / Live QA ongoing |
+| A1-FS-03 — Buy one item and ask the price | `a1/food-shopping/a1-food-buy-one-item-price-v1.yaml` | contract reviewed; runtime promotion pending |
+| A1-TT-01 — Ask where a place is | `a1/travel-transport/a1-travel-ask-place-location-v1.yaml` | contract reviewed; runtime promotion pending |
+| A1-TT-03 — Check into a hotel | `a1/travel-transport/a1-travel-hotel-checkin-v1.yaml` | contract reviewed; runtime promotion pending |
+| A1-HS-02 — Book a simple appointment | `a1/home-services/a1-services-book-simple-appointment-v1.yaml` | contract reviewed; runtime promotion pending |
+| A1-PL-03 — Make a simple plan | `a1/plans-leisure/a1-plans-make-simple-plan-v1.yaml` | contract reviewed; runtime promotion pending |
 
 `runtime pilot` is not the same as `published`. Full publication still requires the mission's QA gate, including Listening Preview audio where the level/map marks it as required.
 
