@@ -17,8 +17,10 @@ Historical/superseded design files should not be kept beside current docs. Git h
 9. `DYNAMIC_HINTS_V1.md` — contextual Hint generation and caching.
 10. `LISTENING_PREVIEW_V1.md` — optional reviewed example conversation before Live Practice.
 11. `AUTHORING_QA_V1.md` — review and publication gates.
-12. `SOURCES.md` — source hierarchy and provenance rules.
-13. `BUILD_PLAN_V2.md` — current production sequence.
+12. `A1_CORE_REVIEW_V1.md` — current eight-mission A1 Core editorial/static review.
+13. `A1_CORE_LANGUAGE_COVERAGE_V1.md` — exact A1 word/phrase/grammar/ability grounding used across the current Core.
+14. `SOURCES.md` — source hierarchy and provenance rules.
+15. `BUILD_PLAN_V2.md` — current production sequence.
 
 ## Repository boundaries
 
@@ -32,16 +34,34 @@ Do not add a `Learn/` curriculum folder here. Practice may reference `english-co
 
 ## Current map status
 
-- A1 — first full map drafted: `practice-map/A1.md`
-- A2 — first full map drafted: `practice-map/A2.md`
-- B1 — first full map drafted: `practice-map/B1.md`
-- B2 — first full map drafted: `practice-map/B2.md`
-- C1 — first full map drafted: `practice-map/C1.md`
-- C2 — first full map drafted: `practice-map/C2.md`
+- A1 — 24 mapped missions / 8 current Core
+- A2 — 24 / 8
+- B1 — 24 / 8
+- B2 — 24 / 8
+- C1 — 21 / 7
+- C2 — 21 / 7
 
 The first complete A1–C2 map is visible. `CROSS_LEVEL_REVIEW_V1.md` records the first whole-map review and current overlap/balance risks.
 
 The map files describe the library and progression. They are not published mission contracts.
+
+## Current A1 production status
+
+The current eight A1 Core missions are **content/editorially complete for the present authoring pass**.
+
+All eight have:
+
+- A1 grounding from `english-course`
+- canonical authored dialogue
+- semantic graph / accepted alternatives
+- correction boundaries
+- contextual Hint policy
+- authored Listening Preview transcript
+- adversarial QA cases
+
+Real Gemini Live/audio QA and fixed Listening Preview audio remain publication gates.
+
+See `A1_CORE_REVIEW_V1.md` and `A1_CORE_LANGUAGE_COVERAGE_V1.md`.
 
 ## Current authoring rule
 
@@ -65,4 +85,4 @@ Detailed authored missions live in `../missions/`.
 
 Use `../missions/MISSION_TEMPLATE.yaml` when promoting a reviewed Practice Map item into a full mission contract.
 
-Current production guidance after the whole-map draft: do **not** bulk-create all mapped missions. Promote reviewed Core missions one by one so real dialogue authoring and Live QA can still change the factory/map when needed.
+Do not bulk-create all mapped missions before the current Core survives empirical Live/audio QA. Repeated runtime failures should improve the factory before the library is scaled.
