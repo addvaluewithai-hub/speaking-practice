@@ -1,0 +1,293 @@
+id: practice.a1.plans.make-simple-plan.v1
+revision: 1
+status: contract_reviewed
+level: A1
+world: plans-leisure
+library_role: core
+title: Make a simple plan
+title_ar: اعمل خطة بسيطة
+estimated_minutes: 4
+
+learner_role: friend making a simple weekend plan
+ai_role: friendly peer
+setting: a short conversation about going to the cinema on Saturday
+mission_goal: Accept or make one simple activity plan, choose a time, confirm a meeting place, and close with the agreed plan clear.
+
+learner_context:
+  known_before_live:
+    - Your friend suggests seeing a film on Saturday.
+    - The plan only needs one time and one meeting place.
+    - The other person is collaborative and offers small choices.
+  privacy_rule: The plan uses fictional public-place details and never requires the learner's real home, live location, schedule, or contact data.
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: The mission combines familiar free-time comprehension, very simple collaboration, time language, and familiar place words. The authored conversation stays short rather than demanding A2-style reasons or negotiation.
+  abilities:
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p15.009
+      source_text: Can understand basic information about free time activities.
+      role: leisure_activity_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p15.010
+      source_text: Can understand basic questions about free time activities.
+      role: simple_plan_question_grounding
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p111.a1.facilitating_collaborative_interaction_with_peers.001
+      source_text: Can invite others' contributions to very simple tasks using short, simple phrases prepared in advance and indicate understanding.
+      role: simple_collaboration_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p22.003
+      source_text: Can tell the time of day to within five minutes.
+      role: time_choice_grounding
+  words:
+    - id: oxford.o3000.p02.041
+      word: film
+      role: activity_language
+    - id: oxford.o3000.p03.141
+      word: Saturday
+      role: day_language
+    - id: oxford.o3000.p01.143
+      word: cinema
+      role: meeting_place_language
+  allowed_untracked_models:
+    - Do you want to see a film on Saturday?
+    - Yes, that sounds good.
+    - Six or seven?
+    - Six, please.
+    - At the cinema?
+    - Yes, at the cinema.
+    - Saturday at six.
+  note: Short planning formulas are reviewed as mission language inside the A1 ability boundary; they are not exact-answer requirements.
+
+truth:
+  plan:
+    activity: see a film
+    day: Saturday
+    offered_times:
+      - six o'clock
+      - seven o'clock
+    canonical_time: six o'clock
+    meeting_place: cinema entrance
+  interaction_facts:
+    - The friend is collaborative and does not introduce competing constraints.
+    - Either six or seven is acceptable.
+    - The meeting place is the cinema entrance.
+    - No transport, ticket purchase, budget, other people, or schedule conflict is required.
+
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: A1 planning is deliberately cooperative. The learner chooses/accepts simple options; reasons, competing preferences, and constraint negotiation belong at higher levels.
+  turns:
+    - beat: agree_activity
+      speaker: ai_role
+      text: Do you want to see a film on Saturday?
+    - beat: agree_activity
+      speaker: learner
+      text: Yes, that sounds good.
+    - beat: choose_time
+      speaker: ai_role
+      text: Six or seven?
+    - beat: choose_time
+      speaker: learner
+      text: Six, please.
+    - beat: confirm_place
+      speaker: ai_role
+      text: Meet at the cinema?
+    - beat: confirm_place
+      speaker: learner
+      text: Yes, at the cinema.
+    - beat: close
+      speaker: ai_role
+      text: Great. Saturday at six, at the cinema.
+    - beat: close
+      speaker: learner
+      text: Great. See you.
+
+runtime:
+  surface_freedom: tight
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: one clear planning decision at a time
+  completion_policy: learner accepts/establishes the activity, chooses an offered time, confirms the authored meeting place, and reaches a clear final plan
+  normal_path_policy: keep the friend collaborative and the option set small; do not add conflict, reasons, or trade-offs
+
+beats:
+  - id: agree_activity
+    type: required
+    ai_intent: Suggest seeing a film on Saturday in one short friendly question.
+    preferred_realizations:
+      - Do you want to see a film on Saturday?
+      - Film on Saturday?
+    learner_intent: Accept the simple activity plan or clearly indicate willingness to go.
+    overview_ar: وافق على خروجة الفيلم
+    authored_learner_models:
+      - Yes, that sounds good.
+      - Yes.
+      - Okay, great.
+      - A film sounds good.
+    accepted_semantics:
+      - learner clearly accepts seeing a film on Saturday
+      - a short Yes is valid
+    correction_focus:
+      - do not require a full sentence when a simple affirmative response is natural
+      - if learner declines, respond naturally and offer one authored recovery option such as another simple activity only if defined; default QA path should stay cooperative
+    next: choose_time
+
+  - id: choose_time
+    type: required
+    ai_intent: Offer exactly two times: six or seven.
+    preferred_realizations:
+      - Six or seven?
+      - Six o'clock or seven o'clock?
+    learner_intent: Choose one of the two offered times.
+    overview_ar: اختار الساعة
+    authored_learner_models:
+      - Six, please.
+      - Seven.
+      - Six o'clock.
+    accepted_semantics:
+      - either six or seven is valid
+      - short time-only answers are valid in context
+    correction_focus:
+      - an unavailable time is a task mismatch, not a grammar error
+      - restate the two available times and let learner choose again
+    next: confirm_place
+
+  - id: confirm_place
+    type: required
+    ai_intent: Suggest the cinema entrance as the meeting place and ask for confirmation.
+    preferred_realizations:
+      - Meet at the cinema?
+      - At the cinema entrance?
+    learner_intent: Confirm the cinema as the meeting place.
+    overview_ar: أكد مكان المقابلة
+    authored_learner_models:
+      - Yes, at the cinema.
+      - At the cinema, yes.
+      - Yes.
+    accepted_semantics:
+      - learner clearly accepts the cinema meeting place
+      - Yes alone is valid because the place is explicit in the question
+    correction_focus:
+      - if learner names a different place, clarify the authored cinema meeting place and let them confirm; do not call the alternate place grammatically wrong
+    next: close
+
+  - id: close
+    type: ending
+    ai_intent: Restate the final activity/day/time/place compactly and close warmly.
+    preferred_realizations:
+      - Great. Saturday at six, at the cinema.
+      - Great. Film on Saturday at seven. See you at the cinema.
+    learner_intent: Optional friendly closing; no further planning detail is required.
+
+agent_policy:
+  - Stay in role as a collaborative friend and never explain the mission engine.
+  - Preserve the simple plan truth: film, Saturday, six/seven, cinema entrance.
+  - Do not introduce competing schedules, transport, ticket price, restaurant plans, weather, other participants, or complex reasons.
+  - Accept either offered time and adapt the final recap consistently.
+  - Accept short natural A1 answers such as Yes, Six, At the cinema.
+  - If learner proposes a harmless equivalent meeting wording such as outside the cinema, accept if it preserves the authored public meeting place rather than forcing exact wording.
+  - Genuine current English errors receive one concise correction and retry; different valid choices do not.
+  - Hints are contextual and learner-controlled.
+  - Keep turns short and one decision at a time.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current offered choice
+    - selected time if already chosen
+    - authored film/Saturday/cinema truth
+    - A1 language grounding
+  expected_behavior:
+    agree_activity:
+      intent_example_ar: وافق إنكم تروحوا فيلم السبت
+      useful_language_examples: [yes, sounds good, Saturday]
+      full_response_example: Yes, that sounds good.
+    choose_time:
+      intent_example_ar: اختار ستة أو سبعة
+      useful_language_examples: [six, seven, please]
+      full_response_example: Six, please.
+    confirm_place:
+      intent_example_ar: أكد إنكم هتقابلوا عند السينما
+      useful_language_examples: [yes, at the cinema]
+      full_response_example: Yes, at the cinema.
+  rules:
+    - examples are QA/support anchors, not hardcoded UI cards
+    - generate all Hint layers in one request on first tap per beat
+    - later reveals use the cached bundle
+    - after the learner chooses seven, later Hint content must preserve seven rather than reverting to canonical six
+    - Hint requests never advance the plan
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_simple_plan_shape_reviewed_variant
+  variant_note: Uses a different activity, day, and meeting place so the learner hears the planning pattern without receiving the Live facts.
+  transcript_default: hidden
+  transcript:
+    - speaker: friend_a
+      text: Do you want to have coffee on Sunday?
+    - speaker: friend_b
+      text: Yes, sounds good.
+    - speaker: friend_a
+      text: Three or four?
+    - speaker: friend_b
+      text: Four, please.
+    - speaker: friend_a
+      text: Meet at the cafe?
+    - speaker: friend_b
+      text: Yes, at the cafe.
+    - speaker: friend_a
+      text: Great. Sunday at four.
+  audio_asset: null
+
+success_conditions:
+  - learner accepts/establishes the Saturday film plan
+  - learner chooses six or seven
+  - learner confirms the cinema meeting place
+  - final plan is internally consistent and conversation closes naturally
+
+qa_cases:
+  - name: short_activity_acceptance
+    learner: Yes.
+    expected: accept and continue; do not demand That sounds good
+
+  - name: canonical_time
+    learner: Six, please.
+    expected: accept and preserve six through the final plan recap
+
+  - name: alternate_offered_time
+    learner: Seven.
+    expected: accept and update the final plan to seven; never snap back to canonical six
+
+  - name: unavailable_time
+    learner: Eight.
+    expected: restate six or seven and let learner choose; task repair, not grammar correction
+
+  - name: short_place_confirmation
+    conversation:
+      - friend: Meet at the cinema?
+      - learner: Yes.
+    expected: accept as sufficient because the place is explicit
+
+  - name: equivalent_public_place_wording
+    learner: Outside the cinema.
+    expected: accept if consistent with the authored cinema entrance and continue naturally
+
+  - name: agent_creates_negotiation
+    expected: reject runtime behaviour that adds conflicting schedules, costs, preferences, or multiple new alternatives; those belong above A1
+
+  - name: contextual_hint_after_time_choice
+    conversation:
+      - learner: Seven.
+      - friend: Meet at the cinema?
+      - learner_action: taps Hint
+    expected: Hint supports confirming the cinema now and preserves the selected seven in any contextual note; it must not return Six, please
+
+  - name: silence
+    learner_behavior: hesitates on activity/time/place
+    expected: wait; do not make the learner's choice for them; Hint remains learner-controlled
