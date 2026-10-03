@@ -26,7 +26,7 @@ Current foundation includes:
 - dynamic contextual Hint bundles
 - optional Listening Preview design
 - correction and authoring QA rules
-- first live A1 vertical slice: `Order a drink`
+- mission-generic authored Practice Live runtime
 
 Remaining architecture changes should be driven by real mission authoring/runtime failures, not speculative schema work.
 
@@ -78,35 +78,39 @@ Cross-level review is not permanently “finished”: canonical-dialogue writing
 
 ## Phase 3 — Promote A1 Core missions
 
-Status: **active production phase**.
+Status: **all eight Core source contracts authored; runtime promotion in progress**.
 
 A1 Core:
 
-1. `A1-PS-01` — Meet someone new
-2. `A1-EV-01` — Ask someone to repeat
-3. `A1-FS-01` — Order a drink
-4. `A1-FS-03` — Buy one item and ask the price
-5. `A1-TT-01` — Ask where a place is
-6. `A1-TT-03` — Check into a hotel
-7. `A1-HS-02` — Book a simple appointment
-8. `A1-PL-03` — Make a simple plan
+1. `A1-PS-01` — Meet someone new — source contract + runtime mirror
+2. `A1-EV-01` — Ask someone to repeat — source contract + runtime mirror
+3. `A1-FS-01` — Order a drink — source contract + runtime pilot
+4. `A1-FS-03` — Buy one item and ask the price — source contract
+5. `A1-TT-01` — Ask where a place is — source contract
+6. `A1-TT-03` — Check into a hotel — source contract
+7. `A1-HS-02` — Book a simple appointment — source contract
+8. `A1-PL-03` — Make a simple plan — source contract
 
-`Order a drink` is already the first full vertical slice.
+See `missions/README.md` for exact source files and promotion status.
 
-### Next mission
+### Current production strategy
 
-Promote **`A1-EV-01 — Ask someone to repeat`** next.
+Do not wait for every mission to finish audio QA before authoring the next source contract. Keep two lanes moving:
 
-Reason: it tests a different mission family from the café transaction:
+```text
+source lane: grounded contract -> canonical dialogue -> graph -> preview -> QA cases
+runtime lane: compile selected reviewed contract -> CI/Visual QA -> real Live/audio QA
+```
 
-- clarification/repair
-- silence/listening timing
-- repeat vs slow-down requests
-- confirming a recovered detail
-- dynamic Hint generation after misunderstanding
-- correction without turning repair into a grammar quiz
+However, do not bulk-promote untested contracts into the app. Runtime promotion should move in small batches so systemic failures are found before the whole library is compiled.
 
-That gives better architectural evidence than immediately authoring another transaction.
+Current runtime pilot set intentionally spans different interaction families:
+
+- transaction: `Order a drink`
+- clarification/repair: `Ask someone to repeat`
+- social opening: `Meet someone new`
+
+The next runtime promotions should add another distinct interaction shape, preferably **directions/location** or **simple planning/arrangement**, before adding several near-identical transactions.
 
 ### Authoring order for every promoted mission
 
@@ -123,11 +127,12 @@ That gives better architectural evidence than immediately authoring another tran
 11. write Listening Preview as a reviewed variant where required/useful
 12. add adversarial QA cases
 13. compile/sync to production runtime
-14. run real Gemini Live/audio QA
+14. run CI/Visual QA
+15. run real Gemini Live/audio QA
 
 ## Phase 4 — A1 Core Live QA
 
-Status: **starts mission-by-mission during Phase 3**.
+Status: **active mission-by-mission during Phase 3**.
 
 Required test paths:
 
@@ -148,6 +153,8 @@ Required test paths:
 - surface-control check: Gemini must not make low-level normal paths harder merely for variety
 
 When the same failure appears across missions, fix the **factory/runtime**, not each mission independently.
+
+A mission is not `published` merely because its source contract exists or because CI/Visual QA passes. Required Listening Preview audio and real Live/audio behaviour still need review.
 
 ## Phase 5 — Complete A1 + begin A2 production
 
