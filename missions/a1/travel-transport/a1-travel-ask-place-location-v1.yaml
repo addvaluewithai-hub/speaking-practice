@@ -1,0 +1,264 @@
+id: practice.a1.travel.ask-place-location.v1
+revision: 1
+status: contract_reviewed
+level: A1
+world: travel-transport
+library_role: core
+title: Ask where a place is
+title_ar: اسأل مكان فين
+estimated_minutes: 4
+
+learner_role: person looking for a nearby place
+ai_role: helpful passerby
+setting: a simple town-centre street near a cafe and a bank
+mission_goal: Get someone's attention, ask where the bank is, understand one short direction/location answer, confirm the key detail, and close politely.
+
+learner_context:
+  known_before_live:
+    - You are looking for the bank.
+    - The bank is nearby.
+    - You only need a short direction, not a full route explanation.
+  privacy_rule: No learner location history, home address, or real-world live location is used.
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: The mission combines an A1 request for directions with one short receptive direction. Grounding controls level and clarity; exact wording is not required from the learner.
+  abilities:
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p24.005
+      source_text: Can ask for simple directions, referring to a map or plan.
+      role: productive_direction_request_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p15.004
+      source_text: Can understand simple directions from X to Y on foot or public transport.
+      role: receptive_direction_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p15.015
+      source_text: Can understand simple directions, if spoken slowly and clearly.
+      role: receptive_clarity_grounding
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p051.a1.understanding_announcements_and_instructions.001
+      source_text: Can understand instructions addressed carefully and slowly and follow short, simple directions.
+      role: supportive_interlocutor_grounding
+  phrases:
+    - id: oxford.phrase.online.0229
+      phrase: excuse me
+      role: polite_attention_getter
+    - id: oxford.phrase.online.0668
+      phrase: Thank you
+      role: polite_closing
+  words:
+    - id: oxford.o3000.p01.058
+      word: bank
+      role: destination_language
+    - id: oxford.o3000.p02.186
+      word: left
+      role: direction_language
+    - id: oxford.o3000.p01.116
+      word: cafe
+      role: landmark_language
+  allowed_untracked_models:
+    - Where is the bank?
+    - Go left.
+    - It's next to the cafe.
+    - Left, next to the cafe?
+  note: The cumulative A1 boundary supports basic location questions and common place language even when the entire direction sentence is not a phrase-list item.
+
+truth:
+  destination:
+    name: bank
+    direction_step: go left
+    landmark_relation: next to the cafe
+  interaction_facts:
+    - The bank is nearby.
+    - The correct direction is left.
+    - The bank is next to the cafe.
+    - Do not add extra streets, turns, distances, transport instructions, or conflicting landmarks.
+
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: The route is deliberately tiny so A1 difficulty comes from asking and understanding a short location answer, not remembering a sequence of instructions.
+  turns:
+    - beat: ask_location
+      speaker: ai_role
+      text: Hello.
+    - beat: ask_location
+      speaker: learner
+      text: Excuse me. Where is the bank?
+    - beat: confirm_direction
+      speaker: ai_role
+      text: Go left. The bank is next to the cafe.
+    - beat: confirm_direction
+      speaker: learner
+      text: Left, next to the cafe?
+    - beat: close
+      speaker: ai_role
+      text: Yes, that's right.
+    - beat: close
+      speaker: learner
+      text: Thank you.
+    - beat: close
+      speaker: ai_role
+      text: You're welcome.
+
+runtime:
+  surface_freedom: tight
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: one clear communicative move at a time
+  completion_policy: learner asks for the bank, recovers the key left/cafe direction, confirms it, and closes
+  normal_path_policy: stay close to the authored one-step direction; do not improvise a richer route for variety
+  audio_policy:
+    directions: clear_slow_natural_a1_delivery
+    no_information_dump: true
+
+beats:
+  - id: ask_location
+    type: required
+    ai_intent: Be available as a friendly passerby and let the learner ask for the nearby bank.
+    preferred_realizations:
+      - Hello.
+      - Hi.
+    learner_intent: Get attention politely if desired and ask where the bank is.
+    overview_ar: اسأل البنك فين
+    authored_learner_models:
+      - Excuse me. Where is the bank?
+      - Where is the bank, please?
+      - The bank, please?
+    accepted_semantics:
+      - learner clearly asks for the bank's location
+      - a short contextual A1 location request is valid
+    correction_focus:
+      - accept short natural forms and do not require Excuse me
+      - if learner produces a genuine malformed where-question that makes the request clearly broken, correct briefly and invite retry
+    next: confirm_direction
+
+  - id: confirm_direction
+    type: required
+    ai_intent: Give exactly the short authored direction/location: go left; the bank is next to the cafe.
+    preferred_realizations:
+      - Go left. The bank is next to the cafe.
+      - Left. It's next to the cafe.
+    learner_intent: Confirm or clearly demonstrate understanding of the key direction/location information.
+    overview_ar: اتأكد: شمال وجنب الكافيه
+    authored_learner_models:
+      - Left, next to the cafe?
+      - On the left, next to the cafe?
+      - Left?
+      - Next to the cafe?
+    accepted_semantics:
+      - learner confirms the left direction and/or cafe landmark clearly enough to show the route was understood
+      - if only one element is confirmed, the partner may naturally restate the other once before closing
+    correction_focus:
+      - wrong right/left or wrong landmark is a factual misunderstanding, not a grammar error
+      - repair the authored fact briefly and keep the beat active until the direction is correctly recovered
+      - accept short confirmation fragments at A1
+    next: close
+
+  - id: close
+    type: ending
+    ai_intent: Confirm the recovered direction and close politely.
+    preferred_realizations:
+      - Yes, that's right.
+      - Yes. Left, next to the cafe.
+    learner_intent: Optional thanks/closing; no further route information is required.
+
+agent_policy:
+  - Stay in role as a helpful passerby and never explain the mission engine.
+  - Preserve the authored location truth: left, next to the cafe.
+  - Give only the short bounded route unless a repair is needed; do not invent street names, extra turns, distances, buses, or maps.
+  - Speak clearly and naturally for A1; do not create difficulty by talking quickly or adding unnecessary landmarks.
+  - Accept natural location questions and short confirmation fragments.
+  - If the learner says right when the truth is left, correct the factual misunderstanding briefly and let them confirm again; do not label it a grammar mistake.
+  - If the learner asks an unrelated travel question, answer minimally if needed and steer back to the bank-location goal.
+  - Genuine current-form English errors receive one concise correction and retry; harmless variation does not.
+  - If the learner hesitates, wait. Hints are learner-controlled and contextual.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current semantic beat and learner intent
+    - bank/left/cafe scenario truth
+    - A1 language grounding
+    - canonical dialogue and learner models as support anchors
+  expected_behavior:
+    ask_location:
+      intent_example_ar: اسأله البنك فين
+      useful_language_examples: [Excuse me, Where is ...?, bank]
+      full_response_example: Excuse me. Where is the bank?
+    confirm_direction:
+      intent_example_ar: اتأكد إن الطريق شمال والبنك جنب الكافيه
+      useful_language_examples: [left, next to, cafe]
+      full_response_example: Left, next to the cafe?
+  rules:
+    - examples are QA anchors, not hardcoded UI cards
+    - first Hint tap returns the whole contextual bundle once; later levels reveal the cached bundle
+    - after a factual repair, the generated Hint must support the current confirmation need rather than restarting the mission
+    - Hint requests never advance the beat
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_direction_shape_reviewed_variant
+  variant_note: Uses a different destination and landmark so the learner hears the pattern without hearing the Live facts.
+  transcript_default: hidden
+  transcript:
+    - speaker: visitor
+      text: Excuse me. Where is the station?
+    - speaker: passerby
+      text: Go right. It's next to the hotel.
+    - speaker: visitor
+      text: Right, next to the hotel?
+    - speaker: passerby
+      text: Yes, that's right.
+    - speaker: visitor
+      text: Thank you.
+  audio_asset: null
+
+success_conditions:
+  - learner asks where the bank is
+  - learner hears or repairs the short direction
+  - learner correctly confirms the left/cafe location information
+  - conversation reaches a natural close
+
+qa_cases:
+  - name: canonical_location_question
+    learner: Excuse me. Where is the bank?
+    expected: accept without correction and give the short authored direction
+
+  - name: short_location_question
+    learner: The bank, please?
+    expected: if intent is clear in context, accept and answer naturally; do not require a full where-question
+
+  - name: correct_confirmation
+    conversation:
+      - passerby: Go left. The bank is next to the cafe.
+      - learner: Left, next to the cafe?
+    expected: confirm and close
+
+  - name: wrong_direction
+    conversation:
+      - passerby: Go left. The bank is next to the cafe.
+      - learner: Right?
+    expected: repair fact briefly with Left; keep confirm_direction active and allow another confirmation
+
+  - name: partial_confirmation
+    learner: Left?
+    expected: confirm left and naturally restate next to the cafe once if useful; do not mark failure solely for short A1 wording
+
+  - name: agent_overexplains_route
+    expected: reject runtime behaviour that adds multiple extra turns, street names, blocks, or landmarks not in truth
+
+  - name: hint_after_wrong_direction
+    conversation:
+      - learner: Right?
+      - passerby: Left. The bank is next to the cafe.
+      - learner_action: taps Hint
+    expected: contextual Hint supports confirming the corrected left/cafe direction, not asking where the bank from the beginning
+
+  - name: silence
+    learner_behavior: hesitates after greeting or after the direction
+    expected: wait; do not say the learner's question/confirmation for them; Hint remains learner-controlled
