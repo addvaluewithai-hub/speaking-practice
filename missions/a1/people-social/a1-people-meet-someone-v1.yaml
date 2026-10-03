@@ -1,0 +1,304 @@
+id: practice.a1.people.meet-someone.v1
+revision: 1
+status: contract_reviewed
+level: A1
+world: people-social
+library_role: core
+title: Meet someone new
+title_ar: اتعرف على شخص جديد
+estimated_minutes: 4
+
+learner_role: person attending a small community activity
+ai_role: another friendly attendee
+setting: a few minutes before a small community activity starts
+mission_goal: Greet a new person, exchange names, handle one simple wellbeing question, make one reciprocal social move, and close the introduction naturally.
+
+learner_context:
+  known_before_live:
+    - You are waiting for a small community activity to start.
+    - Another attendee starts a friendly introduction.
+    - You may use your real first name, a chosen name, or a fictional name.
+  privacy_rule: The mission never requires a real name, age, address, job, location, contact detail, or other personal information to succeed.
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: Selected anchors support a short first-meeting exchange. They shape the reviewed dialogue and Live bounds; they are not mandatory learner passwords.
+  abilities:
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p22.009
+      source_text: Can give key information to introduce themselves, such as name, age, and where they are from.
+      role: self_introduction_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p22.013
+      source_text: Can greet people, ask how they are and react to news.
+      role: greeting_and_wellbeing_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p23.012
+      source_text: Can make an introduction and use basic greeting and leave-taking expressions.
+      role: interaction_shape_grounding
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p137.a1.sociolinguistic_appropriateness.001
+      source_text: Can establish basic social contact using the simplest everyday polite forms for greetings, farewells, introductions, please, thank you, sorry, etc.
+      role: basic_social_contact_grounding
+  grammar:
+    - id: egp.1741163708329x286701804737242940
+      label: simple affirmative declarative clauses
+      role: productive_opportunity_for_basic_self_information
+  phrases:
+    - id: oxford.phrase.online.0346
+      phrase: How are you?
+      role: wellbeing_exchange
+    - id: oxford.phrase.online.0668
+      phrase: Thank you
+      role: optional_polite_response
+  words:
+    - id: oxford.o3000.p02.114
+      word: hello
+      role: greeting_language
+    - id: oxford.o3000.p02.262
+      word: name
+      role: introduction_language
+    - id: oxford.o3000.p02.086
+      word: good
+      role: wellbeing_language
+    - id: oxford.o3000.p02.087
+      word: goodbye
+      role: leave_taking_language
+  allowed_untracked_models:
+    - Hi.
+    - I'm Alex.
+    - My name is Alex.
+    - Nice to meet you.
+    - I'm good, thanks.
+    - And you?
+    - You too.
+  note: Natural social formulas do not each need their own phrase-list entry. Reviewed A1 communicative abilities plus the cumulative language boundary control the dialogue as a whole.
+
+truth:
+  ai_person:
+    first_name: Maya
+    role_in_scene: another attendee
+    wellbeing: good
+  interaction_facts:
+    - Maya is meeting the learner for the first time.
+    - Maya is friendly and cooperative.
+    - Maya does not already know the learner's name.
+    - The learner may provide any plausible chosen or fictional first name.
+    - Maya should use the learner's stated name only if it was clearly understood.
+    - No further personal detail is required for mission completion.
+
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: The canonical path deliberately stays narrow: greeting, names, wellbeing, reciprocal move, natural close. It does not expand into origin, residence, job, age, or contact details because those are separate Practice missions.
+  turns:
+    - beat: exchange_names
+      speaker: ai_role
+      text: Hi. I'm Maya. What's your name?
+    - beat: exchange_names
+      speaker: learner
+      text: Hi. I'm Alex.
+    - beat: wellbeing
+      speaker: ai_role
+      text: Nice to meet you, Alex. How are you?
+    - beat: wellbeing
+      speaker: learner
+      text: I'm good, thanks. And you?
+    - beat: close
+      speaker: ai_role
+      text: I'm good, thanks. Nice to meet you.
+    - beat: close
+      speaker: learner
+      text: Nice to meet you too.
+    - beat: close
+      speaker: ai_role
+      text: See you inside.
+
+runtime:
+  surface_freedom: tight
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: one clear social move at a time
+  completion_policy: learner exchanges a usable chosen name, responds to the simple wellbeing move, makes a reciprocal social response or equivalent natural reaction, and reaches a natural close
+  normal_path_policy: stay close to canonical/preferred wording; adapt to the learner's chosen name and natural A1 alternatives without opening unrelated personal-information branches
+
+beats:
+  - id: exchange_names
+    type: required
+    ai_intent: Greet the learner, introduce yourself as Maya, and ask the learner's name in one short turn.
+    preferred_realizations:
+      - Hi. I'm Maya. What's your name?
+      - Hello. I'm Maya. What's your name?
+    learner_intent: Greet or acknowledge Maya and give a usable chosen or fictional first name.
+    overview_ar: سلم وقول اسم تختاره
+    authored_learner_models:
+      - Hi. I'm Alex.
+      - Hello. My name is Alex.
+      - I'm Alex.
+      - Alex.
+    accepted_semantics:
+      - learner gives a clear first name or chosen fictional name
+      - learner may use a short natural A1 answer such as Alex
+      - greeting is encouraged but omission of an explicit greeting does not invalidate a clear name response
+    correction_focus:
+      - accept short natural forms; do not force My name is or I'm
+      - if the learner's English around the name is genuinely malformed but the name itself is clear, avoid turning the exchange into a grammar lesson; recast briefly only if useful
+      - if the name itself is unclear, ask once for clarification rather than inventing a name
+    next: wellbeing
+
+  - id: wellbeing
+    type: required
+    ai_intent: React warmly to the name, say Nice to meet you, then ask one simple wellbeing question.
+    preferred_realizations:
+      - Nice to meet you. How are you?
+      - Nice to meet you, {learner_name}. How are you?
+    learner_intent: Answer the simple wellbeing question and make one reciprocal social move, normally by asking how Maya is or giving an equivalent natural friendly response.
+    overview_ar: رد على السؤال واسألها هي كمان
+    authored_learner_models:
+      - I'm good, thanks. And you?
+      - Good, thanks. How are you?
+      - I'm fine. And you?
+      - Good, thanks. You?
+    accepted_semantics:
+      - learner gives a simple wellbeing answer and asks/re-directs the same social attention back to Maya
+      - short natural A1 wording is valid
+      - learner may say they are tired, okay, fine, happy, or another simple plausible state instead of good
+    correction_focus:
+      - do not force good/fine as the only valid wellbeing answer
+      - correct only a genuine current-form error that makes the social move unclear or clearly broken
+      - if the learner answers wellbeing but forgets the reciprocal move, Maya may give a tiny natural pause/prompt such as And me? only if needed; do not supply the learner's full answer
+    next: close
+
+  - id: close
+    type: ending
+    ai_intent: Answer the reciprocal wellbeing move briefly and close the first-meeting exchange naturally.
+    preferred_realizations:
+      - I'm good, thanks. Nice to meet you.
+      - I'm good, thanks. See you inside.
+    learner_intent: An optional short friendly closing is welcome but no new personal information is required.
+
+agent_policy:
+  - Stay in role as Maya, another friendly attendee. Never explain the mission engine.
+  - Keep the conversation narrowly focused on a first introduction: greeting, names, wellbeing, reciprocal social contact, close.
+  - Do not turn this mission into Where are you from?, Where do you live?, What do you do?, How old are you?, or contact-detail practice; those are separate missions.
+  - The learner may use a real, chosen, or fictional name. Never challenge whether the name is real.
+  - Use the learner's stated name only when it is clear. If uncertain, ask a short clarification rather than guessing.
+  - Treat the canonical dialogue and preferred realizations as the normal-path A1 anchor, not a required script.
+  - Accept natural alternatives such as My name is ..., I'm ..., a bare clear name, Good thanks, Fine, And you?, How are you?, or You?.
+  - Do not demand complete sentences where a shorter social response is natural.
+  - Genuine English errors that block the current communicative move receive one concise correction/recast and retry before advancement.
+  - Do not correct harmless accent, style, contractions, or wording differences.
+  - If the learner hesitates, wait. Hints are learner-controlled; do not volunteer a model answer.
+  - Keep every AI turn short and ask at most one simple question at a time.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current semantic beat and learner intent
+    - scenario truth including Maya's name and the learner's stated chosen name if known
+    - A1 language grounding
+    - canonical dialogue and learner models as support anchors, never password answers
+  expected_behavior:
+    exchange_names:
+      intent_example_ar: سلم عليها وقول اسم تختاره
+      useful_language_examples: [Hi, I'm ..., My name is ...]
+      full_response_example: Hi. I'm Alex.
+    wellbeing:
+      intent_example_ar: قول لها إنت عامل إيه واسألها هي كمان
+      useful_language_examples: [good, thanks, And you?, How are you?]
+      full_response_example: I'm good, thanks. And you?
+  rules:
+    - examples above are QA/support anchors, not hardcoded UI cards
+    - Gemini generates one complete contextual bundle on the first Hint tap for the active beat
+    - later support levels reveal the same cached bundle with no extra model request
+    - if the learner already gave a chosen name, a generated full-response example must preserve that name when relevant rather than replacing it arbitrarily
+    - a Hint request never counts as learner speech and never advances the mission
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_social_shape_reviewed_variant
+  variant_note: Uses different names and slightly different short wording so it demonstrates the interaction pattern rather than supplying the Live script.
+  transcript_default: hidden
+  transcript:
+    - speaker: attendee_a
+      text: Hello. I'm Sam. What's your name?
+    - speaker: attendee_b
+      text: I'm Lina.
+    - speaker: attendee_a
+      text: Nice to meet you, Lina. How are you?
+    - speaker: attendee_b
+      text: I'm fine, thanks. And you?
+    - speaker: attendee_a
+      text: Good, thanks. See you inside.
+    - speaker: attendee_b
+      text: See you.
+  audio_asset: null
+
+success_conditions:
+  - learner provides a clear chosen or fictional first name
+  - learner handles the simple wellbeing question
+  - learner makes a simple reciprocal social move or clearly returns the social attention to Maya
+  - conversation reaches a natural first-meeting close without requiring extra personal information
+
+qa_cases:
+  - name: canonical_name
+    learner: Hi. I'm Alex.
+    expected: accept without correction; continue to simple wellbeing exchange
+
+  - name: bare_name_is_valid
+    learner: Alex.
+    expected: accept the clear name; do not demand a full sentence
+
+  - name: my_name_is_valid
+    learner: My name is Alex.
+    expected: accept naturally even though it differs from canonical wording
+
+  - name: chosen_or_fictional_name
+    learner: I'm Zed.
+    expected: accept without questioning whether the name is real
+
+  - name: unclear_name
+    learner_behavior: name is not clear enough to identify
+    expected: ask one short natural clarification; do not invent a learner name and do not advance until usable
+
+  - name: canonical_wellbeing
+    learner: I'm good, thanks. And you?
+    expected: accept and close naturally
+
+  - name: short_wellbeing
+    learner: Good, thanks. You?
+    expected: accept as natural A1 social English
+
+  - name: alternate_state
+    learner: I'm tired, but okay. And you?
+    expected: accept if clear; respond briefly and naturally without forcing good/fine
+
+  - name: answer_without_reciprocal_move
+    learner: I'm good, thanks.
+    expected: do not call the answer wrong; keep the wellbeing beat open and create a minimal natural opportunity for the learner to return the social move rather than supplying it for them
+
+  - name: malformed_current_form
+    learner: I good, and you?
+    expected: brief correction/recast such as I'm good; invite a quick retry; remain on wellbeing until the learner repairs it
+
+  - name: off_scope_personal_question
+    learner: Where are you from?
+    expected: Maya may answer very briefly if natural, then steer back to the authored first-meeting move; do not expand into a new origin/residence lesson
+
+  - name: hint_after_name_already_given
+    conversation:
+      - learner: I'm Noor.
+      - maya: Nice to meet you, Noor. How are you?
+      - learner_action: taps Hint
+    expected: one contextual wellbeing Hint bundle; do not generate a new name-introduction answer and do not replace Noor with another name
+
+  - name: silence
+    learner_behavior: hesitates after Maya asks the learner's name or wellbeing
+    expected: wait patiently; do not answer on the learner's behalf; Hint remains learner-controlled
+
+  - name: no_personal_data_requirement
+    learner_behavior: uses a fictional/chosen name and gives no other personal details
+    expected: mission can complete normally
