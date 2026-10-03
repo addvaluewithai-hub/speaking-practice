@@ -1,0 +1,303 @@
+id: practice.a1.travel.hotel-checkin.v1
+revision: 1
+status: contract_reviewed
+level: A1
+world: travel-transport
+library_role: core
+title: Check into a hotel
+title_ar: اعمل check-in في فندق
+estimated_minutes: 4
+
+learner_role: hotel guest with a fictional booking
+ai_role: hotel receptionist
+setting: reception desk of a small hotel
+mission_goal: Say you have a booking, give the fictional booking name, confirm one simple stay detail, understand the room/key information, and close politely.
+
+learner_context:
+  known_before_live:
+    - You have a fictional hotel booking under the name Alex Reed.
+    - The booking is for one night.
+    - You do not need to give any real personal or payment information.
+  privacy_rule: The authored booking identity is fictional. The mission must never request the learner's real passport, address, phone, email, card, account, or other sensitive identifier.
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: A1 has explicit hotel check-in ability support. The fixed booking phrase is treated as reviewed mission language within that ability, not as a password the learner must reproduce exactly.
+  abilities:
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p22.025
+      source_text: Can check into a hotel using a few basic fixed expressions.
+      role: core_hotel_checkin_grounding
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p073.a1.understanding_an_interlocutor.002
+      source_text: Can understand questions and instructions addressed carefully and slowly and follow short, simple directions.
+      role: simple_receptionist_question_grounding
+  grammar:
+    - id: egp.1741163708329x286701804737242940
+      label: simple affirmative declarative clauses
+      role: basic_booking_and_confirmation_language
+  phrases:
+    - id: oxford.phrase.online.0668
+      phrase: Thank you
+      role: polite_closing
+  words:
+    - id: oxford.o3000.p02.132
+      word: hotel
+      role: scenario_language
+    - id: oxford.o3000.p03.132
+      word: room
+      role: room_information
+    - id: oxford.o3000.p02.172
+      word: key
+      role: checkin_information
+    - id: oxford.o3000.p02.275
+      word: night
+      role: stay_detail
+  allowed_untracked_models:
+    - I have a booking.
+    - The name is Alex Reed.
+    - Alex Reed.
+    - One night.
+    - Yes.
+    - Thank you.
+  note: The explicit A1 hotel-check-in ability is the primary communicative anchor; individual fixed expressions do not all need separate lexical-list entries.
+
+truth:
+  booking:
+    fictional_name: Alex Reed
+    nights: 1
+    room_number: 12
+    key_available: true
+  interaction_facts:
+    - The booking exists and is valid.
+    - The guest does not need to solve a booking problem.
+    - No payment, passport, address, contact, breakfast, deposit, or policy discussion is required.
+    - The receptionist must not invent a different name, number of nights, or room number.
+
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: This is a clean A1 check-in. Booking changes, missing reservations, payment issues, room preferences, and complaints are reserved for other/higher-level missions.
+  turns:
+    - beat: state_booking
+      speaker: ai_role
+      text: Hello. Can I help you?
+    - beat: state_booking
+      speaker: learner
+      text: Hi. I have a booking.
+    - beat: give_booking_name
+      speaker: ai_role
+      text: Sure. What's the name?
+    - beat: give_booking_name
+      speaker: learner
+      text: Alex Reed.
+    - beat: confirm_stay
+      speaker: ai_role
+      text: Thank you. One night?
+    - beat: confirm_stay
+      speaker: learner
+      text: Yes.
+    - beat: close
+      speaker: ai_role
+      text: Great. Room twelve. Here's your key.
+    - beat: close
+      speaker: learner
+      text: Thank you.
+    - beat: close
+      speaker: ai_role
+      text: You're welcome.
+
+runtime:
+  surface_freedom: tight
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: one clear check-in move at a time
+  completion_policy: learner states the booking, supplies the fictional booking name, confirms the one-night stay, receives room twelve/key information, and closes
+  normal_path_policy: stay close to the authored clean check-in and do not introduce extra hotel procedures
+
+beats:
+  - id: state_booking
+    type: required
+    ai_intent: Greet the guest and offer help in one short receptionist turn.
+    preferred_realizations:
+      - Hello. Can I help you?
+      - Hi. How can I help?
+    learner_intent: Say that they have a hotel booking/reservation.
+    overview_ar: قول إن عندك حجز
+    authored_learner_models:
+      - I have a booking.
+      - I have a reservation.
+      - Booking, please.
+    accepted_semantics:
+      - learner clearly communicates that they are checking in with an existing booking
+      - short fixed check-in language is valid
+    correction_focus:
+      - do not force the exact word booking if reservation or another clear A1-safe equivalent is used
+      - correct only a genuine malformed form that blocks the check-in intent
+    next: give_booking_name
+
+  - id: give_booking_name
+    type: required
+    ai_intent: Ask only for the fictional booking name.
+    preferred_realizations:
+      - What's the name?
+      - What name is the booking under?
+    learner_intent: Give the authored fictional booking name Alex Reed.
+    overview_ar: قول اسم الحجز الخيالي
+    authored_learner_models:
+      - Alex Reed.
+      - The name is Alex Reed.
+      - It's Alex Reed.
+    accepted_semantics:
+      - learner gives Alex Reed clearly enough to identify the fictional booking
+    correction_focus:
+      - a bare fictional name is fully valid
+      - if the name is unclear, ask for repetition rather than guessing
+      - never ask whether this is the learner's real name
+    next: confirm_stay
+
+  - id: confirm_stay
+    type: required
+    ai_intent: Confirm exactly one simple booking detail: one night.
+    preferredRealizationsEn:
+      - One night?
+      - You're staying one night, right?
+    learner_intent: Confirm that the stay is for one night.
+    overview_ar: أكد إن الحجز ليلة واحدة
+    authored_learner_models:
+      - Yes.
+      - Yes, one night.
+      - One night, yes.
+    accepted_semantics:
+      - learner clearly confirms one night
+    correction_focus:
+      - a simple Yes is valid because the question establishes the detail
+      - if learner says two nights, repair the booking fact naturally as one night and keep the beat active
+    next: close
+
+  - id: close
+    type: ending
+    ai_intent: Give stable room/key information and close: room twelve, here is the key.
+    preferred_realizations:
+      - Great. Room twelve. Here's your key.
+      - Room twelve. Here's your key.
+    learner_intent: Optional thanks/closing; no additional hotel procedure is required.
+
+agent_policy:
+  - Stay in role as a friendly hotel receptionist and never explain the mission engine.
+  - Preserve the fictional booking truth: Alex Reed, one night, room twelve.
+  - Do not request real learner identity or sensitive information.
+  - Do not introduce passport, payment, deposit, breakfast, Wi-Fi, room preference, missing booking, upgrade, complaint, or policy branches.
+  - Treat canonical dialogue and preferred realizations as normal-path A1 anchors, not learner password text.
+  - Accept short natural hotel check-in language and one-word/fragment answers where context makes them sufficient.
+  - Wrong booking facts are factual repairs, not grammar errors.
+  - Genuine current English errors receive one concise correction and learner retry before advancing.
+  - If the learner hesitates, wait. Hints are learner-controlled and contextual.
+  - Keep every receptionist turn short and ask at most one thing at a time.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current beat and learner intent
+    - fictional booking truth
+    - A1 language grounding
+    - canonical dialogue and learner models as support anchors
+  expected_behavior:
+    state_booking:
+      intent_example_ar: قول للموظف إن عندك حجز
+      useful_language_examples: [I have ..., booking, reservation]
+      full_response_example: I have a booking.
+    give_booking_name:
+      intent_example_ar: قول اسم الحجز: Alex Reed
+      useful_language_examples: [name, Alex Reed]
+      full_response_example: Alex Reed.
+    confirm_stay:
+      intent_example_ar: أكد إنك حاجز ليلة واحدة
+      useful_language_examples: [yes, one night]
+      full_response_example: Yes, one night.
+  rules:
+    - examples are QA/support anchors, not hardcoded UI cards
+    - the first Hint request per active beat returns the whole contextual bundle once
+    - later reveals use the same cached bundle
+    - generated support must use the fictional booking identity, never real learner profile data
+    - Hint requests never advance the mission
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_checkin_shape_reviewed_variant
+  variant_note: Uses another fictional guest, a different room number, and slightly different fixed wording.
+  transcript_default: hidden
+  transcript:
+    - speaker: receptionist
+      text: Hello. Can I help you?
+    - speaker: guest
+      text: I have a reservation.
+    - speaker: receptionist
+      text: What's the name?
+    - speaker: guest
+      text: Sam Lee.
+    - speaker: receptionist
+      text: One night?
+    - speaker: guest
+      text: Yes.
+    - speaker: receptionist
+      text: Room eight. Here's your key.
+    - speaker: guest
+      text: Thank you.
+  audio_asset: null
+
+success_conditions:
+  - learner clearly signals an existing booking
+  - learner supplies the fictional name Alex Reed
+  - learner confirms the one-night stay
+  - learner receives/understands room twelve and key information
+  - conversation reaches a natural close without real identity or payment data
+
+qa_cases:
+  - name: canonical_booking
+    learner: I have a booking.
+    expected: accept and ask only for the booking name
+
+  - name: reservation_synonym
+    learner: I have a reservation.
+    expected: accept; do not force booking wording
+
+  - name: bare_booking_name
+    learner: Alex Reed.
+    expected: accept as sufficient response to What's the name?
+
+  - name: wrong_fictional_name
+    learner: Alex Green.
+    expected: do not pretend the booking matches; briefly clarify that the fictional booking here is Alex Reed and let learner retry, without asking for real identity
+
+  - name: one_word_confirmation
+    conversation:
+      - receptionist: One night?
+      - learner: Yes.
+    expected: accept and proceed to room/key close
+
+  - name: wrong_nights
+    learner: Two nights.
+    expected: repair authored booking fact as one night; keep confirm_stay active; do not call it grammar error
+
+  - name: agent_asks_for_card
+    expected: reject runtime behaviour that requests payment/card/account information; this mission's transaction is already settled fictionally
+
+  - name: agent_adds_hotel_topics
+    expected: reject unsolicited breakfast, Wi-Fi, upgrade, policy, or room-preference branches
+
+  - name: hint_name_step
+    conversation:
+      - learner: I have a booking.
+      - receptionist: What's the name?
+      - learner_action: taps Hint
+    expected: one contextual Hint bundle uses Alex Reed and supports the current fictional-name move only
+
+  - name: silence
+    learner_behavior: hesitates on booking/name/night confirmation
+    expected: wait; do not answer for learner; Hint remains learner-controlled
