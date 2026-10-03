@@ -1,0 +1,313 @@
+id: practice.a1.services.book-simple-appointment.v1
+revision: 1
+status: contract_reviewed
+level: A1
+world: home-services
+library_role: core
+title: Book a simple appointment
+title_ar: احجز ميعاد بسيط
+estimated_minutes: 4
+
+learner_role: person calling a routine clinic reception desk
+ai_role: receptionist
+setting: a fictional routine clinic booking call
+mission_goal: Ask to see the doctor, choose from a very small set of offered day/time options, confirm the appointment, and close politely.
+
+learner_context:
+  known_before_live:
+    - You want a routine time to see the doctor.
+    - This is scheduling practice only; you do not need to explain any symptoms or medical history.
+    - The receptionist will offer small, clear choices.
+  privacy_rule: The mission never asks for real health information, date of birth, phone number, address, insurance, or other personal data.
+
+language_grounding:
+  source_repo: addvaluewithai-hub/english-course
+  source_level: A1
+  inventory_scope: cumulative_through_level
+  authoring_note: The dialogue avoids relying on the lexical item appointment. It uses A1 service-request, day/time, and option-selection language to realise the real-world booking task.
+  abilities:
+    - id: ability.cefr_all_descriptors.cefr.cv2020.p078.a1.obtaining_goods_and_services.001
+      source_text: Can ask people for things and give people things.
+      role: simple_service_request_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p14.015
+      source_text: Can recognise basic factual information about times and dates.
+      role: receptive_day_time_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p15.008
+      source_text: Can understand basic information about prices, times, and dates in familiar contexts, if spoken slowly and clearly.
+      role: option_comprehension_grounding
+    - id: ability.gse_all_objectives.gse.adult.2022.a1.p22.003
+      source_text: Can tell the time of day to within five minutes.
+      role: productive_time_grounding
+  grammar:
+    - id: egp.1741163710391x459074403345042000
+      label: can for requests
+      role: simple_service_request_opportunity
+  phrases:
+    - id: oxford.phrase.online.0668
+      phrase: Thank you
+      role: polite_closing
+  words:
+    - id: oxford.o3000.p01.212
+      word: doctor
+      role: service_goal_language
+    - id: oxford.o3000.p02.244
+      word: Monday
+      role: day_choice_language
+    - id: oxford.o3000.p04.018
+      word: Tuesday
+      role: day_choice_language
+    - id: oxford.o3000.p02.248
+      word: morning
+      role: time_of_day_choice
+  allowed_untracked_models:
+    - I need to see the doctor.
+    - Can I see the doctor?
+    - Tuesday, please.
+    - Morning, please.
+    - Nine o'clock?
+    - Yes, thank you.
+  note: The mission tests a simple booking interaction while staying inside A1 communicative resources; no medical consultation takes place.
+
+truth:
+  service:
+    purpose: routine doctor visit scheduling only
+    available_days:
+      - Monday
+      - Tuesday
+    selected_day_target: Tuesday
+    available_tuesday_times:
+      - nine o'clock in the morning
+      - eleven o'clock in the morning
+    canonical_time: nine o'clock
+  interaction_facts:
+    - The receptionist offers Monday or Tuesday first.
+    - If Tuesday is chosen, the receptionist offers nine or eleven in the morning.
+    - Either offered Tuesday time is valid for mission success; nine is the canonical path.
+    - No symptoms, diagnosis, treatment, emergency advice, or medical decision is part of the mission.
+
+canonical_dialogue:
+  purpose: reference_path_not_required_script
+  design_note: The learner books through simple choices rather than needing advanced scheduling vocabulary. The conversation is administrative only.
+  turns:
+    - beat: ask_service
+      speaker: ai_role
+      text: Hello. Can I help you?
+    - beat: ask_service
+      speaker: learner
+      text: Hi. I need to see the doctor.
+    - beat: choose_day
+      speaker: ai_role
+      text: Monday or Tuesday?
+    - beat: choose_day
+      speaker: learner
+      text: Tuesday, please.
+    - beat: choose_time
+      speaker: ai_role
+      text: Nine or eleven in the morning?
+    - beat: choose_time
+      speaker: learner
+      text: Nine, please.
+    - beat: close
+      speaker: ai_role
+      text: Tuesday at nine. Is that right?
+    - beat: close
+      speaker: learner
+      text: Yes, thank you.
+    - beat: close
+      speaker: ai_role
+      text: Great. See you Tuesday.
+
+runtime:
+  surface_freedom: tight
+  max_ai_turn_style: short
+  default_hint_mode: tap
+  learner_turn_policy: one clear scheduling move at a time
+  completion_policy: learner requests the routine visit, chooses an offered day, chooses an offered time, confirms the final day/time, and closes
+  normal_path_policy: keep choices small and explicit; do not introduce reasons, symptoms, provider names, insurance, or rescheduling problems
+
+beats:
+  - id: ask_service
+    type: required
+    ai_intent: Greet and offer help in one short receptionist turn.
+    preferred_realizations:
+      - Hello. Can I help you?
+      - Hi. Can I help?
+    learner_intent: Communicate that they want a routine time to see the doctor.
+    overview_ar: قول إنك عايز تشوف الدكتور
+    authored_learner_models:
+      - I need to see the doctor.
+      - Can I see the doctor?
+      - Doctor, please.
+    accepted_semantics:
+      - learner clearly requests a routine doctor visit/time
+      - short A1 service language is valid
+    correction_focus:
+      - do not require the word appointment
+      - accept short contextual requests when the meaning is clear
+      - correct only a genuine English error that makes the service request unclear
+    next: choose_day
+
+  - id: choose_day
+    type: required
+    ai_intent: Offer exactly two simple choices: Monday or Tuesday.
+    preferred_realizations:
+      - Monday or Tuesday?
+      - We have Monday or Tuesday.
+    learner_intent: Choose one of the offered days.
+    overview_ar: اختار يوم
+    authored_learner_models:
+      - Tuesday, please.
+      - Monday, please.
+      - Tuesday.
+    accepted_semantics:
+      - either offered day is acceptable
+      - short day-only answers are valid
+    correction_focus:
+      - if learner chooses an unavailable day, state the two available choices again without calling their English wrong
+      - do not force please
+    next: choose_time
+
+  - id: choose_time
+    type: required
+    ai_intent: Offer exactly two morning times appropriate to the chosen day; on the canonical Tuesday path offer nine or eleven.
+    preferred_realizations:
+      - Nine or eleven in the morning?
+      - Nine o'clock or eleven o'clock?
+    learner_intent: Choose one of the offered times.
+    overview_ar: اختار الساعة
+    authored_learner_models:
+      - Nine, please.
+      - Eleven, please.
+      - Nine o'clock.
+    accepted_semantics:
+      - either offered time is valid
+      - short number/time answers are valid in context
+    correction_focus:
+      - unavailable time choices are task mismatch/factual repair, not grammar errors
+      - repeat the two available times once and let learner choose again
+    next: close
+
+  - id: close
+    type: ending
+    ai_intent: Restate the selected day/time once as confirmation and close after the learner confirms.
+    preferred_realizations:
+      - Tuesday at nine. Is that right?
+      - Monday at eleven. Is that right?
+    learner_intent: Confirm the final selected day/time and close politely.
+
+agent_policy:
+  - Stay in role as a routine scheduling receptionist; never become a medical adviser or clinician.
+  - Never ask why the learner needs the doctor, what symptoms they have, or any health-history question.
+  - Never request real identifying/contact/insurance information.
+  - Keep the authored small-option structure: day choice, then time choice, then confirmation.
+  - Accept either offered day and offered time, adapting the final confirmation consistently.
+  - Do not create unavailable-option conflict unless learner chooses something outside the offered set.
+  - Treat unavailable selections as task repair, not grammar mistakes.
+  - Accept short natural A1 answers such as Tuesday, Nine, Yes.
+  - Genuine current English errors receive one concise correction and retry; harmless fragments do not.
+  - Hints are learner-controlled and generated from the actual option currently on the table.
+
+hint_policy:
+  generation: live_contextual_bundle
+  trigger: learner_taps_hint
+  request_count: one_model_request_per_active_beat
+  cache_scope: active_beat
+  invalidate_cache_on: beat_change
+  model_context:
+    - full conversation so far
+    - current offered choices
+    - current beat and learner intent
+    - non-medical scheduling boundary
+    - A1 language grounding
+  expected_behavior:
+    ask_service:
+      intent_example_ar: قول إنك عايز ميعاد تشوف فيه الدكتور
+      useful_language_examples: [I need to ..., see the doctor, Can I ...?]
+      full_response_example: I need to see the doctor.
+    choose_day:
+      intent_example_ar: اختار يوم من اللي قالهملك
+      useful_language_examples: [Monday, Tuesday, please]
+      full_response_example: Tuesday, please.
+    choose_time:
+      intent_example_ar: اختار واحدة من الساعتين المتاحين
+      useful_language_examples: [nine, eleven, please]
+      full_response_example: Nine, please.
+  rules:
+    - examples are QA anchors, not hardcoded UI content
+    - one Hint request returns all layers for the active beat and later reveals use the cache
+    - generated support must reflect the options actually offered in the conversation
+    - a Hint request never advances the booking
+
+listening_preview:
+  status: authored
+  purpose: orientation_not_rehearsal
+  relationship_to_canonical: same_small-choice_booking_shape_reviewed_variant
+  variant_note: Uses a different routine service and different day/time choices while preserving the A1 booking pattern.
+  transcript_default: hidden
+  transcript:
+    - speaker: receptionist
+      text: Hello. Can I help you?
+    - speaker: customer
+      text: I need a time for a haircut.
+    - speaker: receptionist
+      text: Wednesday or Thursday?
+    - speaker: customer
+      text: Thursday, please.
+    - speaker: receptionist
+      text: Ten or twelve?
+    - speaker: customer
+      text: Ten, please.
+    - speaker: receptionist
+      text: Thursday at ten. Is that right?
+    - speaker: customer
+      text: Yes, thank you.
+  audio_asset: null
+
+success_conditions:
+  - learner clearly requests the routine service
+  - learner selects an offered day
+  - learner selects an offered time
+  - learner confirms the final day/time
+  - no medical or personal-data branch is required
+
+qa_cases:
+  - name: avoids_advanced_appointment_word
+    learner: I need to see the doctor.
+    expected: accept as the normal A1 service request; do not require the word appointment
+
+  - name: short_day_choice
+    learner: Tuesday.
+    expected: accept as sufficient after Monday or Tuesday?
+
+  - name: alternate_offered_day
+    learner: Monday, please.
+    expected: accept and continue with small time choices for Monday; do not force canonical Tuesday
+
+  - name: unavailable_day
+    learner: Friday, please.
+    expected: restate Monday or Tuesday and let learner choose again; do not call Friday grammatically wrong
+
+  - name: short_time_choice
+    learner: Nine.
+    expected: accept if nine was offered
+
+  - name: unavailable_time
+    learner: Three, please.
+    expected: restate available times and keep choose_time active; task repair, not grammar correction
+
+  - name: medical_question_drift
+    expected: reject runtime behaviour that asks symptoms/history or gives medical advice
+
+  - name: personal_data_drift
+    expected: reject runtime behaviour requesting phone, DOB, address, insurance, or real identity
+
+  - name: contextual_hint_after_day_choice
+    conversation:
+      - learner: Tuesday, please.
+      - receptionist: Nine or eleven in the morning?
+      - learner_action: taps Hint
+    expected: Hint bundle supports choosing nine/eleven now; it must not return a day-choice answer
+
+  - name: silence
+    learner_behavior: hesitates at a choice
+    expected: wait; do not choose for learner; Hint remains learner-controlled
