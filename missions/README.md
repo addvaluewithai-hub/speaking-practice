@@ -1,12 +1,13 @@
 # Authored Missions
 
-This folder contains reviewed Practice missions.
+This folder contains reviewed Practice missions promoted from the level maps into full authoring contracts.
 
 Suggested layout:
 
 ```text
 missions/
   a1/
+    everyday-life/
     people-social/
     food-shopping/
     travel-transport/
@@ -19,6 +20,15 @@ missions/
   c1/
   c2/
 ```
+
+## Current promoted missions
+
+| Mission | Source file | Current stage |
+| --- | --- | --- |
+| A1-FS-01 — Order a drink | `a1/food-shopping/a1-food-order-drink-v1.yaml` | runtime pilot / Live QA ongoing |
+| A1-EV-01 — Ask someone to repeat | `a1/everyday-life/a1-everyday-ask-repeat-v1.yaml` | contract reviewed + runtime mirror created; Live/audio QA pending |
+
+`runtime pilot` is not the same as `published`. Full publication still requires the mission's QA gate, including Listening Preview audio where the level/map marks it as required.
 
 A full mission file should be self-contained enough for review, including:
 
